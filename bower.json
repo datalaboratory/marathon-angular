@@ -1,0 +1,26 @@
+{
+  "name": "marathon-2015",
+  "version": "0.0.0",
+  "authors": [
+    "erohinaelena <erohinaelena1@yandex.ru>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.1",
+    "d3": "~3.5.5",
+    "bootstrap": "~3.3.5",
+    "moment": "~2.10.3",
+    "lodash": "~3.10.0",
+    "normalize.css": "~3.0.3"
+  }
+}

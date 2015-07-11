@@ -1,0 +1,35 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+<div class="big-wrap">
+    <div data-ng-app="marathon" data-ng-controller="MarathonController">
+        <map-container data-ng-if="filteredRunners"></map-container>
+        <div>
+            <time-graph data-ng-if="filteredRunners"></time-graph>
+        </div>
+        <div class="filters-container">
+            <data-lab-dropdown-filter config="filter" data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
+        </div>
+        <table class="runners-list">
+            <tr
+                    data-ng-repeat="runner in limitedFilteredRunners track by runner.id"
+                    data-ng-class="{ 'female': runner.gender == 0, 'male': runner.gender != 0 }">
+                <td>{{runner.pos}}</td>
+                <td>{{runner.full_name}}</td>
+                <td>{{runner.num}}</td>
+                <td>{{runner.age}}</td>
+                <td>{{runner.team}}</td>
+                <td>{{runner.city}}</td>
+                <td>{{runner.result_time_string}}</td>
+            </tr>
+        </table>
+        <button data-ng-click="limit = limit + 100">Ещё 100</button>
+    </div>
+</div>
+
+<script src="/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.big-wrap {
+    margin: 0 auto;
+    max-width: 1000px;
+    position: relative;
+}
+
+.filters-container {
+    overflow: hidden;
+}
+
+.dropdown-filter__current-value span {
+    display: none;
+}
+
+.dropdown-filter__item span {
+    float: right;
+    font-size: 10px;
+}
+
+.runners-list {
+    width: 100%;
+    clear: left;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.runners-list tr {
+}
+
+.runners-list .male:hover {
+    background-color: #e7e9fd;
+}
+
+.runners-list .female:hover {
+    background-color: #fce4ec;
+}

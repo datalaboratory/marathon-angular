@@ -1,0 +1,15 @@
+.slider {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.slider__handle {
+    width: 50px;
+    margin-left: -25px;
+}
+.slider__line {
+    height: 178px;
+}
