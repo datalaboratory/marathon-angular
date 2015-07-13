@@ -1,2 +1,4 @@
 .idea
 *.iml
+static/js
+static/css
