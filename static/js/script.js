@@ -433,12 +433,9 @@ angular.module('dataLab').directive('labDropdownFilter', function ($parse) {
                     $scope.closeList();
                 }
             }, true);
-            $scope.$parent.$watch($scope.config.model, function (id) {
-                $scope.currentId = id;
-                if (id == null) {
-                    $scope.currentValue = $scope.config.allValues
-                } else $scope.currentValue = $scope.values[id];
-
+            $scope.$parent.$watch($scope.config.model, updateValue);
+            $scope.$watch('config.allValues', function () {
+                updateValue($scope.currentId);
             });
             $scope.toggleList = function () {
                 if ($scope.state == 'open') {
@@ -448,6 +445,14 @@ angular.module('dataLab').directive('labDropdownFilter', function ($parse) {
             $scope.closeList = function () {
                 $scope.state = 'closed';
             };
+
+            function updateValue(id) {
+                $scope.currentId = id;
+                if (id == null) {
+                    $scope.currentValue = $scope.config.allValues
+                } else $scope.currentValue = $scope.values[id];
+
+            }
         }
     };
 });
@@ -484,8 +489,13 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
     req.then(function (data) {
         function filter() {
             $scope.filteredRunners = multifilter(runners, $scope.filterValues);
+            updateLimit();
+        }
+
+        function updateLimit() {
             $scope.limitedFilteredRunners = $scope.filteredRunners.slice(0, $scope.limit);
         }
+
         $scope.runnerData = data.data;
         var runners = $scope.runnerData.items;
         $scope.time = {
@@ -552,19 +562,19 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
                 start: 15,
                 end: 22,
                 label: '16-22'
-            },{
+            }, {
                 start: 23,
                 end: 34,
                 label: '23-34'
-            },{
+            }, {
                 start: 35,
                 end: 49,
                 label: '35-49'
-            },{
+            }, {
                 start: 50,
                 end: 65,
                 label: '50-65'
-            },{
+            }, {
                 start: 65,
                 end: 90,
                 label: '65+'
@@ -597,59 +607,75 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
                 model: 'filterValues.ageGroup'
             }
         };
-        $scope.$watch('filterValues', function () {
-            function formatItems(key, sort) {
-                var filters = angular.copy($scope.filterValues);
-                delete filters[key];
-                var filteredItems = multifilter(runners, filters);
-                var names = _.pluck(filteredItems, key);
-                var counts = _.countBy(names);
-                if (sort) {
-                    names.sort(function (a, b) {
-                        return counts[b] - counts[a];
-                    })
-                }
-                var result = {};
-                var filter = {};
-                Object.keys(counts).forEach(function (item) {
-                    filter[key] = item;
-                    var count =  multifilter(filteredItems, filter).length;
-                    result[item] = item + '<span>' + count + '</span>';
-                });
-                return result;
-            }
 
+        function countSort(counts) {
+            var keys = Object.keys(counts);
+            keys.sort(function (a, b) {
+                return counts[b] - counts[a];
+            });
+            return keys;
+        }
+
+        function nameSort(counts) {
+            var keys = Object.keys(counts);
+            keys.sort();
+            return keys;
+        }
+
+        function prefilter(key) {
+            var filters = angular.copy($scope.filterValues);
+            delete filters[key];
+            return multifilter(runners, filters);
+        }
+
+        function formatItems(filteredItems, key, sort) {
+            var names = _.pluck(filteredItems, key);
+            var counts = _.countBy(names);
+            if (sort) {
+                var keys = sort(counts);
+                var newCounts = {};
+                keys.forEach(function (key) {
+                    newCounts[key] = counts[key];
+                });
+                counts = newCounts;
+            }
+            var result = {};
+            var filter = {};
+            Object.keys(counts).forEach(function (item) {
+                filter[key] = item;
+                var count = multifilter(filteredItems, filter).length;
+                result[item] = item + '<span>' + count + '</span>';
+            });
+            return result;
+        }
+
+        $scope.$watch('filterValues', function () {
+            filter();
             $scope.filters.gender.values = {
                 0: 'женщин',
                 1: 'мужчин'
             };
             $scope.filters.gender.allValues = 'всех вместе';
 
-            var allTeams = _.pluck(runners, 'team');
-            var teamsCount = _.countBy(allTeams);
-            var teams = _.uniq(allTeams)
-                .filter(function (team) {
-                    return teamsCount[team] > 2 && team != '';
-                });
-            $scope.filters.team.values = formatItems('team', true);
-            $scope.filters.team.allValues = teams.length + ' ' + numberDeclension(teams.length, ['команда', 'команды', 'команд']);
+            var prefilteredTeams = prefilter('team');
+            $scope.filters.team.values = formatItems(prefilteredTeams, 'team', countSort);
+            var teamCount = Object.keys($scope.filters.team.values);
+            $scope.filters.team.allValues = teamCount.length + ' ' + numberDeclension(teamCount.length, ['команда', 'команды', 'команд']);
 
-            var allCities = _.pluck(runners, 'city');
-            var cities = _.uniq(allCities);
-            $scope.filters.city.values = formatItems('city', true);
-            $scope.filters.city.allValues = cities.length + ' ' + numberDeclension(cities.length, ['город', 'города', 'городов']);
+            var prefilteredCities = prefilter('city');
+            $scope.filters.city.values = formatItems(prefilteredCities, 'city', countSort);
+            var cityCount = Object.keys($scope.filters.city.values);
+            $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, ['город', 'города', 'городов']);
 
-            var ageGroupLabels = _.pluck(runners, 'ageGroup');
-            var minMaxAges = d3.extent(runners, function (runner) {
+            var prefilteredAgeGroups = prefilter('ageGroup');
+            $scope.filters.age.values = formatItems(prefilteredAgeGroups, 'ageGroup', nameSort);
+            var minMaxAges = d3.extent(prefilteredAgeGroups, function (runner) {
                 return runner.age;
             });
             minMaxAges = 'все от ' + minMaxAges.join(' до ');
-            $scope.filters.age.values = formatItems('ageGroup', false);
             $scope.filters.age.allValues = minMaxAges;
-
-            filter();
         }, true);
-        $scope.$watch('limit', filter)
+        $scope.$watch('limit', updateLimit)
     });
 });
 
@@ -1019,6 +1045,46 @@ var checkData = function (items) {
 
 
 
+angular.module('marathon').directive('finishTimeLine', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'directives/finishTimeLine.html',
+        templateNamespace: 'svg',
+        replace: true,
+        link: function link($scope, $element) {
+            var svg = $element.parent();
+            var width = svg.width();
+            var d3rect = d3.select($element[0]).select('rect');
+            var gradient = d3.select(svg[0]).append("svg:defs")
+                .append("svg:linearGradient")
+                .attr("id", "timeline_gradient")
+                .attr("x1", "0%")
+                .attr("x2", "0%")
+                .attr("y1", "0%")
+                .attr("y2", "100%")
+                .attr("spreadMethod", "pad");
+
+            gradient.append("svg:stop")
+                .attr("offset", "0%")
+                .attr("stop-color", "#f8d3dc");
+
+            gradient.append("svg:stop")
+                .attr("offset", "100%")
+                .attr("stop-color", "#d3dff7");
+            d3rect.attr({x: 0, y: 0, height: 4, fill: 'url(#timeline_gradient)'});
+
+            $scope.$watch('time.current', function (time) {
+                var currentWidth = Math.round(width * time / $scope.time.finish) - 25;
+                if (currentWidth < 0) currentWidth = 0;
+                d3rect.attr({width: currentWidth});
+            });
+
+            var timeMarksCount = Math.floor($scope.time.finish / 600) + 1;
+            var step = Math.round(width * 600 / $scope.time.finish);
+            $scope.timeMarks = d3.range(0, timeMarksCount * step, step).concat([width]);
+        }
+    }
+});
 angular.module('marathon').directive('mapContainer', function ($http) {
     return {
         restrict: 'E',
@@ -1083,6 +1149,18 @@ angular.module('marathon').directive('mapContainer', function ($http) {
         }
     }
 });
+angular.module('marathon').directive('selectedRunnerInfo', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'directives/selectedRunnerInfo.html',
+        replace: true,
+        link: function link($scope, $element) {
+            $scope.$watch('selectedRunnerOnGraph', function (runner) {
+                console.log(runner);
+            })
+        }
+    }
+});
 angular.module('marathon').directive('slider', function ($document) {
     return {
         restrict: 'E',
@@ -1098,7 +1176,6 @@ angular.module('marathon').directive('slider', function ($document) {
             });
             function mousemove(event) {
                 x = event.screenX - startX;
-                var realX = $element.position().left;
                 if (x < minX) {
                     x = minX;
                 }
@@ -1115,9 +1192,13 @@ angular.module('marathon').directive('slider', function ($document) {
                 $document.off('mouseup', mouseup)
             }
 
+            var timeFormat = d3.format('02f');
+            $scope.selectedTime = '00:00';
             function setTime(x) {
                 if (!$scope.time) return;
-                $scope.time.current = Math.round(x / maxX * $scope.runnerData.max_time);
+                var time = Math.round(x / maxX * $scope.time.finish);
+                $scope.time.current = time;
+                $scope.selectedTime = timeFormat(Math.floor(time / 3600)) + ':' + timeFormat(Math.floor((time % 3600) / 60) )
             }
         }
     }
@@ -1132,12 +1213,19 @@ angular.module('marathon').directive('timeGraph', function () {
             var width = $element.width();
             var height = $element.height();
             var d3element = d3.select($element[0]);
-            var svg = d3element.select('svg').attr('height', height);
+            var svg = d3element.select('svg');
             var areas_group = svg.append('g');
+
+            var px_step = 3;
+            var y_scale = 1.2;
+
+            var steps = Math.floor(width / px_step);
+            var time_step = 1000 * $scope.time.finish / steps;
+
             var runners = checkData($scope.filteredRunners);
 
-            var array = runners.runners_groups.slice().reverse();
-            array.forEach(function (el) {
+            var runnersGroups = runners.runners_groups.slice();
+            runnersGroups.forEach(function (el) {
                 var color = $scope.genderGradients[el.gender](el.num);
                 var gray = $scope.grayGradient(el.num);
 
@@ -1153,12 +1241,6 @@ angular.module('marathon').directive('timeGraph', function () {
                 };
 
             });
-            var px_step = 3;
-            var y_scale = 1.2;
-
-            var steps = Math.floor(width / px_step);
-
-            var time_step = 1000 * $scope.time.finish / steps;
 
             var makeStep = function (step_num, runners) {
                 var result = [];
@@ -1181,12 +1263,11 @@ angular.module('marathon').directive('timeGraph', function () {
                 return runners_by_time;
             };
 
-            var reversed_groups = runners.runners_groups.slice();
-            reversed_groups.reverse();
+            var reversed_groups = runnersGroups.reverse();
 
             var runners_byd = {};
 
-            runners.runners_groups.forEach(function (el) {
+            runnersGroups.forEach(function (el) {
                 runners_byd[el.key] = getRunnersByTime(el.runners);
             });
             var steps_data = [];
@@ -1210,13 +1291,7 @@ angular.module('marathon').directive('timeGraph', function () {
             var graphHeight = Math.max(height, max_runners_in_step * y_scale);
 
             var height_factor = height / (max_runners_in_step * y_scale);
-
-            reversed_groups.reverse();
             var points_byd = {};
-            var points_byd_left = {};
-            var points_byd_right = {};
-
-
             var cur_step = Math.floor($scope.time.current / $scope.time.finish * steps);
 
             var getRunByDPoints = function (array, prev_array) {
@@ -1282,24 +1357,60 @@ angular.module('marathon').directive('timeGraph', function () {
                 result += ' Z';
                 return result;
             };
-
             $scope.$watch('time.current', function(time){
                 cur_step = Math.floor(time / $scope.time.finish * steps);
                 reversed_groups.forEach(function (el, i) {
                     var prev = reversed_groups[i - 1];
                     prev = prev && points_byd[prev.key];
                     points_byd[el.key] = getRunByDPoints(runners_byd[el.key], prev)[0];
-                    points_byd_left[el.key] = getRunByDPoints(runners_byd[el.key], prev)[1];
-                    points_byd_right[el.key] = getRunByDPoints(runners_byd[el.key], prev)[2];
-                });
-                runners.runners_groups.forEach(function (el) {
-                    age_areas[el.key].left.attr("d", getRunByDPathData(points_byd_left[el.key]));
-                    age_areas[el.key].right.attr("d", getRunByDPathData(points_byd_right[el.key]));
+
+                    var leftPoints = getRunByDPoints(runners_byd[el.key], prev)[1];
+                    var rightPoints = getRunByDPoints(runners_byd[el.key], prev)[2];
+                    age_areas[el.key].left.attr("d", getRunByDPathData(leftPoints));
+                    age_areas[el.key].right.attr("d", getRunByDPathData(rightPoints));
                 });
             });
+            $scope.selectedRunnerStepSize = {
+                width: px_step,
+                height: Math.round(height_factor)
+            };
+            $scope.selectRunnerOnGraph = function ($event) {
+                var x = $event.offsetX - 3;
+                var y = $event.offsetY + 3;
+                var posX = Math.floor(x / px_step);
+                var posY = Math.ceil((graphHeight - y) / height_factor);
+                $scope.selectedRunnerOnGraph = steps_data[posX][posY];
+                $scope.selectedRunnerPosition = {
+                    x: width - (posX + 1) * px_step,
+                    y: -Math.floor(y / height_factor) * height_factor
+                }
+            };
+            $scope.hideRunnerInfo = function () {
+                console.log('hide');
+            }
+
         }
     }
 });
+angular.module('marathon').filter('ageString', function (numberDeclension) {
+    return function (runner) {
+        if (!runner) return '';
+        return runner.age + ' ' + numberDeclension(runner.age, ['год', 'года', 'лет']);
+    };
+});
+
+angular.module('marathon').filter('finishedPosition', function () {
+    return function (runner) {
+        if (!runner) return '';
+        if (runner.gender == 0) {
+            return 'Финишировала ' + runner.pos + '-й'
+        }
+        if (runner.gender == 1) {
+            return 'Финишировал ' + runner.pos + '-м'
+        }
+    };
+});
+
 var SVGNS = 'http://www.w3.org/2000/svg';
 var x_axis_points = {
 	p1: {
@@ -1966,13 +2077,60 @@ angular.module('dataLab').run(['$templateCache', function($templateCache) {
 angular.module('marathon').run(['$templateCache', function($templateCache) {
   'use strict';
 
+  $templateCache.put('directives/finishTimeLine.html',
+    "<g>\n" +
+    "    <rect></rect>\n" +
+    "    <line y1=\"0\"\n" +
+    "          y2=\"4\"\n" +
+    "          stroke=\"#000\"\n" +
+    "          data-ng-repeat=\"x in timeMarks\"\n" +
+    "          data-ng-attr-x1=\"{{x}}\"\n" +
+    "          data-ng-attr-x2=\"{{x}}\"></line>\n" +
+    "</g>\n"
+  );
+
+
   $templateCache.put('directives/mapContainer.html',
     "<svg class=\"map-container\"></svg>"
   );
 
 
+  $templateCache.put('directives/selectedRunnerInfo.html',
+    "<div\n" +
+    "        class=\"selected-runner-info\"\n" +
+    "        data-ng-class=\"{'selected-runner-info--hidden': !selectedRunnerOnGraph}\">\n" +
+    "    <div class=\"selected-runner-info__text\"\n" +
+    "         style=\"\n" +
+    "            right: {{selectedRunnerPosition.x + 4}}px;\n" +
+    "            bottom: {{selectedRunnerPosition.y + 4}}px;\">\n" +
+    "        <div class=\"selected-runner-info__black\">{{selectedRunnerOnGraph.full_name}},<br>{{selectedRunnerOnGraph|ageString}}\n" +
+    "        </div>\n" +
+    "        <div class=\"selected-runner-info__white\">\n" +
+    "            <span class=\"selected-runner-info__result-time\">{{selectedRunnerOnGraph.result_time_string}}</span><br>\n" +
+    "            <span class=\"selected-runner-info__result-position\">\n" +
+    "               <!-- в локализацию -->\n" +
+    "                {{selectedRunnerOnGraph|finishedPosition}}</span>\n" +
+    "        </div>\n" +
+    "        <div class=\"selected-runner-info__yellow\">\n" +
+    "            <div class=\"selected-runner-info__logo-number\">\n" +
+    "                <img src=\"img/mm-logo-small.png\">{{selectedRunnerOnGraph.num}}\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "    <div class=\"selected-runner-info__pointer\"\n" +
+    "         style=\"\n" +
+    "            right: {{selectedRunnerPosition.x}}px;\n" +
+    "            bottom: {{selectedRunnerPosition.y}}px;\n" +
+    "            width: {{selectedRunnerStepSize.width}}px;\n" +
+    "            height: {{selectedRunnerStepSize.height}}px;\n" +
+    "        \"></div>\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('directives/slider.html',
     "<div class=\"slider\">\n" +
+    "    <span class=\"slider__selected-time\">{{selectedTime}}</span>\n" +
     "    <img class=\"slider__handle\" src=\"img/scroll-marker-top.png\">\n" +
     "    <img class=\"slider__line\" src=\"img/scroll-marker-bottom.png\">\n" +
     "</div>"
@@ -1981,8 +2139,12 @@ angular.module('marathon').run(['$templateCache', function($templateCache) {
 
   $templateCache.put('directives/timeGraph.html',
     "<div class=\"time-graph\">\n" +
-    "    <svg class=\"time-graph__svg\"></svg>\n" +
-    "    <slider></slider>\n" +
+    "    <svg\n" +
+    "            class=\"time-graph__svg\"\n" +
+    "            data-ng-mousemove=\"selectRunnerOnGraph($event)\">\n" +
+    "        <finish-time-line></finish-time-line>\n" +
+    "    </svg>\n" +
+    "    <selected-runner-info></selected-runner-info>\n" +
     "</div>"
   );
 

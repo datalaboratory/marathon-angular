@@ -13,7 +13,6 @@ angular.module('marathon').directive('slider', function ($document) {
             });
             function mousemove(event) {
                 x = event.screenX - startX;
-                var realX = $element.position().left;
                 if (x < minX) {
                     x = minX;
                 }
@@ -30,9 +29,13 @@ angular.module('marathon').directive('slider', function ($document) {
                 $document.off('mouseup', mouseup)
             }
 
+            var timeFormat = d3.format('02f');
+            $scope.selectedTime = '00:00';
             function setTime(x) {
                 if (!$scope.time) return;
-                $scope.time.current = Math.round(x / maxX * $scope.runnerData.max_time);
+                var time = Math.round(x / maxX * $scope.time.finish);
+                $scope.time.current = time;
+                $scope.selectedTime = timeFormat(Math.floor(time / 3600)) + ':' + timeFormat(Math.floor((time % 3600) / 60) )
             }
         }
     }

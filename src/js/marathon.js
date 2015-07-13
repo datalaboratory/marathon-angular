@@ -5,8 +5,13 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
     req.then(function (data) {
         function filter() {
             $scope.filteredRunners = multifilter(runners, $scope.filterValues);
+            updateLimit();
+        }
+
+        function updateLimit() {
             $scope.limitedFilteredRunners = $scope.filteredRunners.slice(0, $scope.limit);
         }
+
         $scope.runnerData = data.data;
         var runners = $scope.runnerData.items;
         $scope.time = {
@@ -73,19 +78,19 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
                 start: 15,
                 end: 22,
                 label: '16-22'
-            },{
+            }, {
                 start: 23,
                 end: 34,
                 label: '23-34'
-            },{
+            }, {
                 start: 35,
                 end: 49,
                 label: '35-49'
-            },{
+            }, {
                 start: 50,
                 end: 65,
                 label: '50-65'
-            },{
+            }, {
                 start: 65,
                 end: 90,
                 label: '65+'
@@ -118,59 +123,75 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
                 model: 'filterValues.ageGroup'
             }
         };
-        $scope.$watch('filterValues', function () {
-            function formatItems(key, sort) {
-                var filters = angular.copy($scope.filterValues);
-                delete filters[key];
-                var filteredItems = multifilter(runners, filters);
-                var names = _.pluck(filteredItems, key);
-                var counts = _.countBy(names);
-                if (sort) {
-                    names.sort(function (a, b) {
-                        return counts[b] - counts[a];
-                    })
-                }
-                var result = {};
-                var filter = {};
-                Object.keys(counts).forEach(function (item) {
-                    filter[key] = item;
-                    var count =  multifilter(filteredItems, filter).length;
-                    result[item] = item + '<span>' + count + '</span>';
-                });
-                return result;
-            }
 
+        function countSort(counts) {
+            var keys = Object.keys(counts);
+            keys.sort(function (a, b) {
+                return counts[b] - counts[a];
+            });
+            return keys;
+        }
+
+        function nameSort(counts) {
+            var keys = Object.keys(counts);
+            keys.sort();
+            return keys;
+        }
+
+        function prefilter(key) {
+            var filters = angular.copy($scope.filterValues);
+            delete filters[key];
+            return multifilter(runners, filters);
+        }
+
+        function formatItems(filteredItems, key, sort) {
+            var names = _.pluck(filteredItems, key);
+            var counts = _.countBy(names);
+            if (sort) {
+                var keys = sort(counts);
+                var newCounts = {};
+                keys.forEach(function (key) {
+                    newCounts[key] = counts[key];
+                });
+                counts = newCounts;
+            }
+            var result = {};
+            var filter = {};
+            Object.keys(counts).forEach(function (item) {
+                filter[key] = item;
+                var count = multifilter(filteredItems, filter).length;
+                result[item] = item + '<span>' + count + '</span>';
+            });
+            return result;
+        }
+
+        $scope.$watch('filterValues', function () {
+            filter();
             $scope.filters.gender.values = {
                 0: 'женщин',
                 1: 'мужчин'
             };
             $scope.filters.gender.allValues = 'всех вместе';
 
-            var allTeams = _.pluck(runners, 'team');
-            var teamsCount = _.countBy(allTeams);
-            var teams = _.uniq(allTeams)
-                .filter(function (team) {
-                    return teamsCount[team] > 2 && team != '';
-                });
-            $scope.filters.team.values = formatItems('team', true);
-            $scope.filters.team.allValues = teams.length + ' ' + numberDeclension(teams.length, ['команда', 'команды', 'команд']);
+            var prefilteredTeams = prefilter('team');
+            $scope.filters.team.values = formatItems(prefilteredTeams, 'team', countSort);
+            var teamCount = Object.keys($scope.filters.team.values);
+            $scope.filters.team.allValues = teamCount.length + ' ' + numberDeclension(teamCount.length, ['команда', 'команды', 'команд']);
 
-            var allCities = _.pluck(runners, 'city');
-            var cities = _.uniq(allCities);
-            $scope.filters.city.values = formatItems('city', true);
-            $scope.filters.city.allValues = cities.length + ' ' + numberDeclension(cities.length, ['город', 'города', 'городов']);
+            var prefilteredCities = prefilter('city');
+            $scope.filters.city.values = formatItems(prefilteredCities, 'city', countSort);
+            var cityCount = Object.keys($scope.filters.city.values);
+            $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, ['город', 'города', 'городов']);
 
-            var ageGroupLabels = _.pluck(runners, 'ageGroup');
-            var minMaxAges = d3.extent(runners, function (runner) {
+            var prefilteredAgeGroups = prefilter('ageGroup');
+            $scope.filters.age.values = formatItems(prefilteredAgeGroups, 'ageGroup', nameSort);
+            var minMaxAges = d3.extent(prefilteredAgeGroups, function (runner) {
                 return runner.age;
             });
             minMaxAges = 'все от ' + minMaxAges.join(' до ');
-            $scope.filters.age.values = formatItems('ageGroup', false);
             $scope.filters.age.allValues = minMaxAges;
-
-            filter();
         }, true);
-        $scope.$watch('limit', filter)
+        $scope.$watch('limit', updateLimit)
     });
 });
 

@@ -25,12 +25,9 @@ angular.module('dataLab').directive('labDropdownFilter', function ($parse) {
                     $scope.closeList();
                 }
             }, true);
-            $scope.$parent.$watch($scope.config.model, function (id) {
-                $scope.currentId = id;
-                if (id == null) {
-                    $scope.currentValue = $scope.config.allValues
-                } else $scope.currentValue = $scope.values[id];
-
+            $scope.$parent.$watch($scope.config.model, updateValue);
+            $scope.$watch('config.allValues', function () {
+                updateValue($scope.currentId);
             });
             $scope.toggleList = function () {
                 if ($scope.state == 'open') {
@@ -40,6 +37,14 @@ angular.module('dataLab').directive('labDropdownFilter', function ($parse) {
             $scope.closeList = function () {
                 $scope.state = 'closed';
             };
+
+            function updateValue(id) {
+                $scope.currentId = id;
+                if (id == null) {
+                    $scope.currentValue = $scope.config.allValues
+                } else $scope.currentValue = $scope.values[id];
+
+            }
         }
     };
 });

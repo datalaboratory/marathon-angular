@@ -1,0 +1,52 @@
+.selected-runner-info {
+    position: relative;
+    display: block;
+    pointer-events: none;
+}
+.selected-runner-info--hidden {
+    display: none;
+}
+.selected-runner-info__text {
+    width: 178px;
+    text-align: center;
+    position: absolute;
+}
+.selected-runner-info__black {
+    background: #000;
+    color: #fff;
+}
+.selected-runner-info__white {
+    background: #fff;
+    color: #000;
+    border-left: 1px solid #eae4b3;
+    border-right: 1px solid #eae4b3;
+}
+.selected-runner-info__result-time {
+    font-size: 24px;
+    height: 34px;
+}
+.selected-runner-info__result-position {
+    color: #999;
+    font-size: 10px;
+    height: 20px;
+}
+.selected-runner-info__yellow {
+    background: #ffee66;
+    color: #000;
+    height: 26px;
+    font-size: 14px;
+    padding: 7px 0 0 0;
+}
+.selected-runner-info__logo-number {
+    margin: 0 auto 0;
+}
+.selected-runner-info__logo-number img {
+    margin-top: 1px;
+    margin-right: 3px;
+    width: 17px;
+}
+
+.selected-runner-info__pointer {
+    position: absolute;
+    background: #000;
+}

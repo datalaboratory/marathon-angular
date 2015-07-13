@@ -1,0 +1,29 @@
+<div
+        class="selected-runner-info"
+        data-ng-class="{'selected-runner-info--hidden': !selectedRunnerOnGraph}">
+    <div class="selected-runner-info__text"
+         style="
+            right: {{selectedRunnerPosition.x + 4}}px;
+            bottom: {{selectedRunnerPosition.y + 4}}px;">
+        <div class="selected-runner-info__black">{{selectedRunnerOnGraph.full_name}},<br>{{selectedRunnerOnGraph|ageString}}
+        </div>
+        <div class="selected-runner-info__white">
+            <span class="selected-runner-info__result-time">{{selectedRunnerOnGraph.result_time_string}}</span><br>
+            <span class="selected-runner-info__result-position">
+               <!-- в локализацию -->
+                {{selectedRunnerOnGraph|finishedPosition}}</span>
+        </div>
+        <div class="selected-runner-info__yellow">
+            <div class="selected-runner-info__logo-number">
+                <img src="img/mm-logo-small.png">{{selectedRunnerOnGraph.num}}
+            </div>
+        </div>
+    </div>
+    <div class="selected-runner-info__pointer"
+         style="
+            right: {{selectedRunnerPosition.x}}px;
+            bottom: {{selectedRunnerPosition.y}}px;
+            width: {{selectedRunnerStepSize.width}}px;
+            height: {{selectedRunnerStepSize.height}}px;
+        "></div>
+</div>

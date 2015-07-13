@@ -1,4 +1,8 @@
 <div class="time-graph">
-    <svg class="time-graph__svg"></svg>
-    <slider></slider>
+    <svg
+            class="time-graph__svg"
+            data-ng-mousemove="selectRunnerOnGraph($event)">
+        <finish-time-line></finish-time-line>
+    </svg>
+    <selected-runner-info></selected-runner-info>
 </div>

@@ -44,3 +44,9 @@ table {
 .runners-list .female:hover {
     background-color: #fce4ec;
 }
+
+.time-graph-container {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    position: relative;
+}
