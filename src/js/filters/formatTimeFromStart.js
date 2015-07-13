@@ -1,6 +1,6 @@
-angular.module('marathon').filter('ageString', function (numberDeclension) {
-    return function (runner) {
-        if (!runner) return '';
-        return runner.age + ' ' + numberDeclension(runner.age, ['год', 'года', 'лет']);
+angular.module('marathon').filter('formatTimeFromStart', function () {
+    return function (date, start) {
+        if (!date) return '';
+        return moment(date).subtract(start).format('HH:mm');
     };
 });

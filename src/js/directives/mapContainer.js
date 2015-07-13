@@ -46,6 +46,7 @@ angular.module('marathon').directive('mapContainer', function ($http) {
                 });
                 function drawSnake(time) {
                     if (!time) return;
+                    time = (time - $scope.time.start) / 1000;
                     var runners = checkData($scope.filteredRunners);
                     var d = mh.getPoints(runners.runners_groups, track, ageAreas, time, startTime, trackLength, 500);
                     mh.drawRunnersPoints(colors, $scope.genderGradients, d, $scope.filteredRunners, snakeGroup, time, startTime);

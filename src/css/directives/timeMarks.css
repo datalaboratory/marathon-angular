@@ -1,0 +1,19 @@
+.time-mark {
+    position: absolute;
+    top: -28px;
+    line-height: 1;
+}
+.time-mark:last-child {
+    left: auto !important;
+    right: 0;
+}
+.time-mark:last-child span {
+    float: right;
+}
+.time-mark__from-start {
+    font-size: 14px;
+}
+.time-mark__from-day {
+    font-size: 10px;
+    color: #9c9c9c;
+}

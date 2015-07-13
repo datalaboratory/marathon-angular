@@ -33,9 +33,9 @@ angular.module('marathon').directive('slider', function ($document) {
             $scope.selectedTime = '00:00';
             function setTime(x) {
                 if (!$scope.time) return;
-                var time = Math.round(x / maxX * $scope.time.maxTime);
+                var time = $scope.timeScale.invert(x)//Math.round(x / maxX * $scope.time.maxTime);
                 $scope.time.current = time;
-                $scope.selectedTime = timeFormat(Math.floor(time / 3600)) + ':' + timeFormat(Math.floor((time % 3600) / 60) )
+                $scope.selectedTime = moment(time).subtract($scope.time.start).format('HH:mm'); //timeFormat(Math.floor(time / 3600)) + ':' + timeFormat(Math.floor((time % 3600) / 60) )
             }
         }
     }

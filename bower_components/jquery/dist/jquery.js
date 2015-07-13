@@ -6722,7 +6722,7 @@ jQuery.fn.extend({
 					anim.stop( true );
 				}
 			};
-			doAnimation.finish = doAnimation;
+			doAnimation.maxTime = doAnimation;
 
 		return empty || optall.queue === false ?
 			this.each( doAnimation ) :
@@ -6778,7 +6778,7 @@ jQuery.fn.extend({
 			}
 		});
 	},
-	finish: function( type ) {
+	maxTime: function( type ) {
 		if ( type !== false ) {
 			type = type || "fx";
 		}
@@ -6791,7 +6791,7 @@ jQuery.fn.extend({
 				length = queue ? queue.length : 0;
 
 			// Enable finishing flag on private data
-			data.finish = true;
+			data.maxTime = true;
 
 			// Empty the queue first
 			jQuery.queue( this, type, [] );
@@ -6810,13 +6810,13 @@ jQuery.fn.extend({
 
 			// Look for any animations in the old queue and finish them
 			for ( index = 0; index < length; index++ ) {
-				if ( queue[ index ] && queue[ index ].finish ) {
-					queue[ index ].finish.call( this );
+				if ( queue[ index ] && queue[ index ].maxTime ) {
+					queue[ index ].maxTime.call( this );
 				}
 			}
 
 			// Turn off finishing flag
-			delete data.finish;
+			delete data.maxTime;
 		});
 	}
 });
