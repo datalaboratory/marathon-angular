@@ -27,13 +27,13 @@ angular.module('marathon').directive('finishTimeLine', function () {
             d3rect.attr({x: 0, y: 0, height: 4, fill: 'url(#timeline_gradient)'});
 
             $scope.$watch('time.current', function (time) {
-                var currentWidth = Math.round(width * time / $scope.time.finish) - 25;
+                var currentWidth = Math.round(width * time / $scope.time.maxTime) - 25;
                 if (currentWidth < 0) currentWidth = 0;
                 d3rect.attr({width: currentWidth});
             });
 
-            var timeMarksCount = Math.floor($scope.time.finish / 600) + 1;
-            var step = Math.round(width * 600 / $scope.time.finish);
+            var timeMarksCount = Math.floor($scope.time.maxTime / 600) + 1;
+            var step = Math.round(width * 600 / $scope.time.maxTime);
             $scope.timeMarks = d3.range(0, timeMarksCount * step, step).concat([width]);
         }
     }

@@ -15,7 +15,7 @@ angular.module('marathon').directive('timeGraph', function () {
             var y_scale = 1.2;
 
             var steps = Math.floor(width / px_step);
-            var time_step = 1000 * $scope.time.finish / steps;
+            var time_step = 1000 * $scope.time.maxTime / steps;
 
             var runners = checkData($scope.filteredRunners);
 
@@ -87,7 +87,7 @@ angular.module('marathon').directive('timeGraph', function () {
 
             var height_factor = height / (max_runners_in_step * y_scale);
             var points_byd = {};
-            var cur_step = Math.floor($scope.time.current / $scope.time.finish * steps);
+            var cur_step = Math.floor($scope.time.current / $scope.time.maxTime * steps);
 
             var getRunByDPoints = function (array, prev_array) {
                 var result = [];
@@ -153,7 +153,7 @@ angular.module('marathon').directive('timeGraph', function () {
                 return result;
             };
             $scope.$watch('time.current', function(time){
-                cur_step = Math.floor(time / $scope.time.finish * steps);
+                cur_step = Math.floor(time / $scope.time.maxTime * steps);
                 reversed_groups.forEach(function (el, i) {
                     var prev = reversed_groups[i - 1];
                     prev = prev && points_byd[prev.key];

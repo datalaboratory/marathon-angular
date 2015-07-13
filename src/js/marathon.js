@@ -15,9 +15,9 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
         $scope.runnerData = data.data;
         var runners = $scope.runnerData.items;
         $scope.time = {
-            start: $scope.runnerData.start_time,
+            start: moment($scope.runnerData.start_time),
             current: 0,
-            finish: $scope.runnerData.max_time
+            maxTime: $scope.runnerData.max_time
         };
         $scope.generateGradient = function (beginColor, endColor, stepsCount) {
             return d3.scale.linear()
