@@ -23,7 +23,11 @@ angular.module('marathon').directive('timeGraph', function () {
 
                 var steps = Math.floor(width / px_step);
                 var time_step = 1000 * $scope.time.maxTime / steps;
-
+                var height_factor, graphHeight, cur_step, points_byd, runners_byd, reversed_groups, steps_data;
+                $scope.selectedRunnerStepSize = {
+                    width: px_step,
+                    height: 0
+                };
                 var runners = checkData($scope.filteredRunners);
 
                 var runnersGroups = runners.runners_groups.slice();
@@ -64,38 +68,6 @@ angular.module('marathon').directive('timeGraph', function () {
                     }
                     return runners_by_time;
                 };
-
-                var reversed_groups = runnersGroups.reverse();
-
-                var runners_byd = {};
-
-                runnersGroups.forEach(function (el) {
-                    runners_byd[el.key] = getRunnersByTime(el.runners);
-                });
-                var steps_data = [];
-                var getMaxInStep = function (step_num) {
-                    var summ = 0;
-                    var all_runners_in_step = [];
-                    reversed_groups.forEach(function (el) {
-                        summ += runners_byd[el.key][step_num].length;
-                        all_runners_in_step.push.apply(all_runners_in_step, runners_byd[el.key][step_num]);
-                    });
-
-                    steps_data.push(all_runners_in_step);
-                    return summ;
-                };
-
-                var max_runners_in_step = 0;
-                for (var i = 0; i < steps; i++) {
-                    max_runners_in_step = Math.max(max_runners_in_step, getMaxInStep(i));
-                }
-
-                var graphHeight = Math.max(height, max_runners_in_step * y_scale);
-
-                var height_factor = height / (max_runners_in_step * y_scale);
-                var points_byd = {};
-                var cur_step = Math.floor($scope.time.current / $scope.time.maxTime * steps);
-
                 var getRunByDPoints = function (array, prev_array) {
                     var result = [];
                     var resultLeft = [];
@@ -144,8 +116,6 @@ angular.module('marathon').directive('timeGraph', function () {
                     });
                     return [result, resultLeft, resultRight];
                 };
-
-
                 var getRunByDPathData = function (array) {
                     if (!array.length) {
                         return
@@ -159,8 +129,46 @@ angular.module('marathon').directive('timeGraph', function () {
                     result += ' Z';
                     return result;
                 };
-                $scope.$watch('time.current', function (time) {
-                    cur_step = $scope.timeScale(time)/width * steps;
+
+                function updateRunnersData() {
+                    runners = checkData($scope.filteredRunners);
+
+                    runnersGroups = runners.runners_groups.slice();
+
+                    reversed_groups = runnersGroups.reverse();
+
+                    runners_byd = {};
+
+                    runnersGroups.forEach(function (el) {
+                        runners_byd[el.key] = getRunnersByTime(el.runners);
+                    });
+                    steps_data = [];
+                    var getMaxInStep = function (step_num) {
+                        var summ = 0;
+                        var all_runners_in_step = [];
+                        reversed_groups.forEach(function (el) {
+                            summ += runners_byd[el.key][step_num].length;
+                            all_runners_in_step.push.apply(all_runners_in_step, runners_byd[el.key][step_num]);
+                        });
+
+                        steps_data.push(all_runners_in_step);
+                        return summ;
+                    };
+
+                    var max_runners_in_step = 0;
+                    for (var i = 0; i < steps; i++) {
+                        max_runners_in_step = Math.max(max_runners_in_step, getMaxInStep(i));
+                    }
+
+                    graphHeight = Math.max(height, max_runners_in_step * y_scale);
+
+                    height_factor = height / (max_runners_in_step * y_scale);
+                    $scope.selectedRunnerStepSize.height = Math.round(height_factor);
+                    points_byd = {};
+                    cur_step = Math.floor($scope.time.current / $scope.time.maxTime * steps);
+
+                }
+                function updatePaths() {
                     reversed_groups.forEach(function (el, i) {
                         var prev = reversed_groups[i - 1];
                         prev = prev && points_byd[prev.key];
@@ -171,20 +179,27 @@ angular.module('marathon').directive('timeGraph', function () {
                         age_areas[el.key].left.attr("d", getRunByDPathData(leftPoints));
                         age_areas[el.key].right.attr("d", getRunByDPathData(rightPoints));
                     });
+                }
+                updateRunnersData();
+                updatePaths();
+                $scope.$watch('time.current', function (time) {
+                    cur_step = $scope.timeScale(time) / width * steps;
+                    updatePaths();
                 });
-                $scope.selectedRunnerStepSize = {
-                    width: px_step,
-                    height: Math.round(height_factor)
-                };
+                $scope.$watch('filterValues', function () {
+                    updateRunnersData();
+                    updatePaths();
+                }, true);
+
                 $scope.selectRunnerOnGraph = function ($event) {
                     var x = $event.offsetX - 3;
-                    var y = $event.offsetY + 3;
+                    var y = $event.offsetY;
                     var posX = Math.floor(x / px_step);
-                    var posY = Math.ceil((graphHeight - y) / height_factor);
+                    var posY = Math.floor((graphHeight - y) / height_factor);
                     $scope.selectedRunnerOnGraph = steps_data[posX][posY];
                     $scope.selectedRunnerPosition = {
                         x: width - (posX + 1) * px_step,
-                        y: -Math.floor(y / height_factor) * height_factor
+                        y: -graphHeight + (posY) * height_factor
                     }
                 };
             }

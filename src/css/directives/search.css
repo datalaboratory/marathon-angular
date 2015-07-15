@@ -1,0 +1,15 @@
+.search {
+    float: left;
+    width: 38%;
+    box-sizing: border-box;
+    padding-right: 15px;
+}
+.search__input {
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    width: 100%;
+    padding: 0px 0px 2px 0px;
+    height: 23px;
+    font-size: 14px;
+}

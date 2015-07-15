@@ -7,6 +7,15 @@ angular.module('dataLab').directive('labDropdownFilter', function ($parse) {
             config: '='
         },
         link: function link($scope, $element) {
+            $scope.toggleList = function () {
+                if ($scope.state == 'open') {
+                    $scope.state = 'closed'
+                } else $scope.state = 'open';
+            };
+            $scope.closeList = function () {
+                $scope.state = 'closed';
+            };
+
             $scope.$watch('config', function (config) {
                 if (!config) return;
                 $scope.values = config.values;
@@ -23,28 +32,21 @@ angular.module('dataLab').directive('labDropdownFilter', function ($parse) {
                 $scope.select = function (id) {
                     setModel($scope.$parent, id);
                     $scope.closeList();
+                };
+
+                $scope.$parent.$watch($scope.config.model, updateValue);
+                $scope.$watch('config.allValues', function () {
+                    updateValue($scope.currentId);
+                });
+
+                function updateValue(id) {
+                    $scope.currentId = id;
+                    if (id == null) {
+                        $scope.currentValue = $scope.config.allValues
+                    } else $scope.currentValue = $scope.values[id];
+
                 }
             }, true);
-            $scope.$parent.$watch($scope.config.model, updateValue);
-            $scope.$watch('config.allValues', function () {
-                updateValue($scope.currentId);
-            });
-            $scope.toggleList = function () {
-                if ($scope.state == 'open') {
-                    $scope.state = 'closed'
-                } else $scope.state = 'open';
-            };
-            $scope.closeList = function () {
-                $scope.state = 'closed';
-            };
-
-            function updateValue(id) {
-                $scope.currentId = id;
-                if (id == null) {
-                    $scope.currentValue = $scope.config.allValues
-                } else $scope.currentValue = $scope.values[id];
-
-            }
         }
     };
 });

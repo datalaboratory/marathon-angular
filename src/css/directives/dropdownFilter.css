@@ -1,0 +1,112 @@
+.dropdown-filter {
+    width: 20%;
+}
+.dropdown-filter__list {
+    max-height: 300px;
+    width: 200px;
+    padding: 5px 0 2px;
+    border-radius: 0 0 3px 3px;
+    border: 1px solid #DCDCDC;
+    margin-top: -1px;
+    background: #fff;
+}
+.dropdown-filter__item {
+    padding: 2px 10px;
+    cursor: pointer;
+    font-size: 13px;
+}
+.dropdown-filter__item:hover {
+    background-color: #F5F5F5;
+}
+
+.dropdown-filter__item--active, .dropdown-filter__item--active:hover {
+    background-color: #CCC;
+}
+.dropdown-filter__current-value {
+    width: 100%;
+    color: #333;
+    border: 1px solid #acacac;
+    border-radius: 2px;
+    padding: 3px 8px 0px 8px;
+    box-sizing: border-box;
+    background: url(../img/triangle.png), linear-gradient(#fff, #f3f3f3);
+    background-repeat: no-repeat, repeat;
+    background-position: right 10px center, top left;
+    background-size: 8px 4px, auto;
+    cursor: pointer;
+    outline: 0;
+}
+
+.dropdown-filter__current-value .dropdown-filter__count{
+    display: none;
+}
+
+.dropdown-filter__count {
+    float: right;
+    font-size: 10px;
+}
+
+.gender-filter.dropdown-filter {
+    width: auto;
+    margin: 11px 20px 0 20px;
+}
+.team-filter.dropdown-filter, .city-filter.dropdown-filter, .age-group-filter.dropdown-filter {
+    padding-right: 15px;
+}
+
+.gender-filter .dropdown-filter__item {
+    float: left;
+}
+.gender-filter .dropdown-filter__item:first-child {
+    float: right;
+}
+.gender-filter .dropdown-filter__list {
+    display: block;
+    position: static;
+    width: 100%;
+    margin: auto;
+    border: none;
+    border-radius: 0;
+}
+.gender-filter .dropdown-filter__current-value {
+    display: none;
+}
+.gender-filter .dropdown-filter__item {
+    background: none;
+    border: none;
+    padding: 0;
+}
+.gender-filter .dropdown-filter__item:hover {
+    background: none;
+}
+.gender-filter .dropdown-filter__item--active .gender-filter__item-female {
+    background: #f14b6b;
+    color: #fff;
+}
+.gender-filter .dropdown-filter__item--active .gender-filter__item-male {
+    background: #4285e9;
+    color: #fff;
+}
+.gender-filter .dropdown-filter__item--active .gender-filter__item-all {
+    background-image: url(../img/all-runners-bg.png);
+    background-size: 100%;
+    color: #fff;
+}
+.gender-filter__item-male, .gender-filter__item-female, .gender-filter__item-all {
+    font-size: 14px;
+    padding: 1px 10px 2px 10px;
+    border: 1px solid #ccc;
+}
+.gender-filter__item-male {
+    border-left: none;
+    border-right: none;
+}
+.age-group-filter.dropdown-filter {
+    width: 16.5%;
+}
+.team-filter.dropdown-filter {
+    width: 20%
+}
+.city-filter.dropdown-filter {
+    width: 18%
+}

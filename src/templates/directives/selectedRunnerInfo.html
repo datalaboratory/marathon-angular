@@ -1,10 +1,10 @@
 <div
         class="selected-runner-info"
-        data-ng-class="{'selected-runner-info--hidden': !selectedRunnerOnGraph}">
+        data-ng-class="{'selected-runner-info--hidden': !selectedRunnerOnGraph || state == 'hideInfo' }">
     <div class="selected-runner-info__text"
          style="
             right: {{selectedRunnerPosition.x + 4}}px;
-            bottom: {{selectedRunnerPosition.y + 4}}px;">
+            bottom: {{selectedRunnerPosition.y + selectedRunnerStepSize.height}}px;">
         <div class="selected-runner-info__black">{{selectedRunnerOnGraph.full_name}},<br>{{selectedRunnerOnGraph|ageString}}
         </div>
         <div class="selected-runner-info__white">

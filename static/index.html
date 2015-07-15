@@ -7,12 +7,45 @@
 <div class="big-wrap">
     <div data-ng-app="marathon" data-ng-controller="MarathonController">
         <map-container data-ng-if="filteredRunners"></map-container>
+        <div class="map-overlay">
+            <div class="map-overlay__header"></div>
+            <div class="map-overlay__right-column">
+                <div class="map-overlay__weather"></div>
+                <div class="map-overlay__legend">
+                    <div class="legend">
+                        <div class="legend__altitude">
+                            <span class="legend__header">Высотный профиль</span>
+                            <legend-altitude></legend-altitude>
+                            Общий набор высоты - 73м <br>
+                            169м - самая высокая точка Московского Марафона
+                        </div>
+                        <div class="legend__gender-age">
+                            <span class="legend__header">Пол и возраст</span>
+                        </div>
+                        <div class="legend__snake-rise">
+                            <span class="legend__header">Толщина змея</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="time-graph-container">
             <time-graph data-ng-if="filteredRunners"></time-graph>
         </div>
-        <div class="filters-container">
-            <data-lab-dropdown-filter config="filter" data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
-        </div>
+        <sticky-header>
+            <div class="filters-container">
+                <div class="filters-container__gender-filter">
+                    <h2 class="filters-container__h2">Результаты</h2>
+                    <data-lab-dropdown-filter config="filterGender" class="{{filterGender.filterClass}}"
+                                              data-ng-if="filterGender"></data-lab-dropdown-filter>
+                </div>
+                <div class="filters-container__filters">
+                    <search></search>
+                    <data-lab-dropdown-filter config="filter" class="{{filter.filterClass}}"
+                                              data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
+                </div>
+            </div>
+        </sticky-header>
         <table class="runners-list">
             <tr
                     data-ng-repeat="runner in limitedFilteredRunners track by runner.id"

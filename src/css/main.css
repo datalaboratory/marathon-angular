@@ -14,17 +14,32 @@ table {
     position: relative;
 }
 
-.filters-container {
-    overflow: hidden;
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
-.dropdown-filter__current-value span {
-    display: none;
-}
-
-.dropdown-filter__item span {
+.map-overlay__right-column {
     float: right;
-    font-size: 10px;
+    width: 260px;
+}
+.legend__header {
+    font-family: Bold, Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.filters-container__filters {
+    clear: both;
+    padding: 7px 0;
+}
+.filters-container__h2 {
+    font-size: 30px;
+    display: inline-block;
+    float: left;
+    font-family: Bold, Arial, Helvetica, sans-serif;
+    margin: 0;
 }
 
 .runners-list {
@@ -34,8 +49,6 @@ table {
     margin-top: 20px;
 }
 
-.runners-list tr {
-}
 
 .runners-list .male:hover {
     background-color: #e7e9fd;

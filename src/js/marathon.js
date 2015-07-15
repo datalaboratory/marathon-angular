@@ -1,6 +1,7 @@
 var app = angular.module('marathon', ['dataLab']);
 
 app.controller('MarathonController', function ($scope, $http, numberDeclension, multifilter) {
+    $scope.track = $http.get('data/geo/mm2014-42km-geo-accurate.json');
     var req = $http.get('data/runners/data.json');
     req.then(function (data) {
         function filter() {
@@ -106,21 +107,26 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
             runner.ageGroupForSnake = ageGroupsForSnake.filter(function (group) {
                 return group.start <= runner.age && runner.age <= group.end;
             })[0].label;
+            runner.winner = (runner.gender_pos && runner.gender_pos < 7);
         });
         $scope.limit = 100;
         $scope.filterValues = {};
+        $scope.filterGender = {
+            model: 'filterValues.gender',
+            filterClass: 'gender-filter'
+        };
         $scope.filters = {
-            gender: {
-                model: 'filterValues.gender'
+            age: {
+                model: 'filterValues.ageGroup',
+                filterClass: 'age-group-filter'
             },
             team: {
-                model: 'filterValues.team'
+                model: 'filterValues.team',
+                filterClass: 'team-filter'
             },
             city: {
-                model: 'filterValues.city'
-            },
-            age: {
-                model: 'filterValues.ageGroup'
+                model: 'filterValues.city',
+                filterClass: 'city-filter'
             }
         };
 
@@ -160,18 +166,18 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
             Object.keys(counts).forEach(function (item) {
                 filter[key] = item;
                 var count = multifilter(filteredItems, filter).length;
-                result[item] = item + '<span>' + count + '</span>';
+                result[item] = item + '<span class="dropdown-filter__count">' + count + '</span>';
             });
             return result;
         }
 
         $scope.$watch('filterValues', function () {
             filter();
-            $scope.filters.gender.values = {
-                0: 'женщин',
-                1: 'мужчин'
+            $scope.filterGender.values = {
+                0: '<span class="gender-filter__item-female">женщин</span>',
+                1: '<span class="gender-filter__item-male">мужчин</span>'
             };
-            $scope.filters.gender.allValues = 'всех вместе';
+            $scope.filterGender.allValues = '<span class="gender-filter__item-all">всех вместе</span>';
 
             var prefilteredTeams = prefilter('team');
             $scope.filters.team.values = formatItems(prefilteredTeams, 'team', countSort);
