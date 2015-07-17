@@ -310,7 +310,7 @@ var getStepHeight = function(track, distance, seconds, runners_array, start_time
 	var base = track;
 	var d3path_node = base.node(),
 		px_distance = d3path_node.getTotalLength(),
-		px_in_m = px_distance/total_distance;
+		px_in_m = px_distance / total_distance;
 
 	var step;
 	if (step_distance){
@@ -327,7 +327,6 @@ var getStepHeight = function(track, distance, seconds, runners_array, start_time
 	var distances = getDistances(runners_array, start_time +  seconds * 1000);
 	var runners = getRunners(distances, step_start, step_end);
 	var height = getHeightByRunners(runners, step);
-    // console.log('step, height, runners, step_distance, step/px_in_m, start_time, seconds, start_time +  seconds * 1000', '\n', step, height, runners, step_distance, step/px_in_m, start_time, seconds, start_time +  seconds * 1000)
 	return {
 		step: step,
 		height: height,
@@ -336,6 +335,7 @@ var getStepHeight = function(track, distance, seconds, runners_array, start_time
 		distance: distance
 	};
 };
+
 var base_points_cache = {};
 var getBasePoints = function(base, boundrect, total_distance, step_in_m){
 	var points_key = base.projection_key;

@@ -1,8 +1,8 @@
 var app = angular.module('marathon', ['dataLab']);
 
 app.controller('MarathonController', function ($scope, $http, numberDeclension, multifilter) {
-    $scope.track = $http.get('data/geo/mm2014-42km-geo-accurate.json');
-    var req = $http.get('data/runners/data.json');
+    $scope.track = $http.get('data/geo/mm2015_17may-10km-geo.json');
+    var req = $http.get('data/runners/data10.json');
     req.then(function (data) {
         function filter() {
             $scope.filteredRunners = multifilter(runners, $scope.filterValues);
@@ -24,13 +24,18 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
             return d3.scale.linear()
                 .domain([1, stepsCount])
                 .range([beginColor, endColor])
-                .interpolate(d3.interpolateHsl);
+                .clamp(true)
+                .interpolate(d3.interpolateHcl);
         };
-        $scope.genderGradients = {
-            0: $scope.generateGradient('#FFCBD5', '#EE2046', 5),
-            1: $scope.generateGradient('#B8E8FF', '#1D56DF', 5)
-        };
+        $scope.genderGradients = [
+            $scope.generateGradient('#FFCBD5', '#EE2046', 5),
+            $scope.generateGradient('#B8E8FF', '#1D56DF', 5)
+        ];
         $scope.grayGradient = $scope.generateGradient('#EEEEEE', '#777777', 5);
+        $scope.genderWords = [
+            ['женщинa', 'женщины', 'женщин'],
+            ['мужчинa', 'мужчины', 'мужчин']
+        ];
         var ageGroups = [
             {
                 start: 15,

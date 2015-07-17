@@ -15,15 +15,17 @@
                     <div class="legend">
                         <div class="legend__altitude">
                             <span class="legend__header">Высотный профиль</span>
-                            <legend-altitude></legend-altitude>
+                            <altitude-legend></altitude-legend>
                             Общий набор высоты - 73м <br>
                             169м - самая высокая точка Московского Марафона
                         </div>
                         <div class="legend__gender-age">
                             <span class="legend__header">Пол и возраст</span>
+                            <gender-age-legend data-ng-if="runnerData"></gender-age-legend>
                         </div>
                         <div class="legend__snake-rise">
                             <span class="legend__header">Толщина змея</span>
+                            <snake-rise-legend></snake-rise-legend>
                         </div>
                     </div>
                 </div>

@@ -29,6 +29,18 @@ table {
     font-family: Bold, Arial, Helvetica, sans-serif;
     font-weight: normal;
 }
+.legend__altitude {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+.legend__gender-age {
+    width: 50%;
+    float: left;
+}
+.legend__snake-rise {
+    width: 50%;
+    float: left;
+}
 
 .filters-container__filters {
     clear: both;

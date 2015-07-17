@@ -166,17 +166,14 @@ var checkData = function (items) {
     var big_ga_groups = getGenderAgesGroups(items, big_ages_group);
     setRunnersGroupMark(big_ga_groups.runners_groups, 'big_genderage_group');
 
-
     items.getAgeGroups = function (array, ranges, field) {
         return getAgeGroups(array, ranges, field, start_year);
     };
     items.genders_groups = ga_groups.genders_groups;
     items.runners_groups = ga_groups.runners_groups;
     items.big_genders_groups = big_ga_groups.genders_groups;
-    //cvs_data.start_year = start_year;
 
     items.last_finish_time = last_finish_time;
-    //cvs_data.run_gap = (last_finish_time - cvs_data.start_time) / 1000;
     items.age_ranges = small_ages_group;
     items.big_ages_ranges = big_ages_group;
     return items

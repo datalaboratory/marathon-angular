@@ -22,6 +22,10 @@ angular.module('marathon').directive('mapContainer', function ($http) {
                 // в t задайтся общий сдвиг пары трек-карта
                 var s = 0.7 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
                 var t = [(width - s * (b[1][0] + b[0][0])) / 2 - 70, (height - s * (b[1][1] + b[0][1])) / 2 + 40];
+
+                s = 0.6 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+                t = [(width - s * (b[1][0] + b[0][0])) / 2 - 130, (height - s * (b[1][1] + b[0][1])) / 2 + 80];
+
                 projection.scale(s).translate(t);
                 var track = trackGroup.append('path')
                     .datum(geodata)
@@ -32,7 +36,6 @@ angular.module('marathon').directive('mapContainer', function ($http) {
 
                 var ageAreas = {};
                 var runners = checkData($scope.filteredRunners);
-                var colorCount = runners.runners_groups.length;
 
                 var runnerGroups = runners.runners_groups.slice().reverse();
                 runnerGroups.forEach(function (el) {

@@ -1,0 +1,90 @@
+<div class="gender-age-legend">
+    <svg class="gender-age-legend__svg">
+        <g transform="translate(2,1)">
+            <g
+                    data-ng-mouseover="showToolTip(item, $last); hovered = true"
+                    data-ng-mousemove="moveToolTip($event)"
+                    data-ng-mouseleave="hideToolTip(); hovered = false"
+                    data-ng-repeat="item in ageGraphData.genderItems[1]">
+                <rect
+                        data-ng-attr-x="{{ageGraphData.maxMaleWidth - item.width - ageGraphData.space}}"
+                        data-ng-attr-y="{{item.y}}"
+                        data-ng-attr-width="{{item.width}}"
+                        data-ng-attr-height="{{item.height - ageGraphData.space}}"
+                        data-ng-attr-fill="{{item.color}}"
+                        data-ng-attr-stroke="{{item.color}}"
+                        data-ng-class="{'gender-age-legend__color-rect--highlighted': hovered}"
+                        class="gender-age-legend__color-rect"></rect>
+                <rect
+                        x="0"
+                        data-ng-attr-y="{{item.y}}"
+                        data-ng-attr-width="{{ageGraphData.maxMaleWidth}}"
+                        data-ng-attr-height="{{item.height}}"
+                        class="gender-age-legend__color-transparent-rect"
+                        ></rect>
+            </g>
+            <g
+                    data-ng-mouseover="showToolTip(item, $last); hovered = true"
+                    data-ng-mousemove="moveToolTip($event)"
+                    data-ng-mouseleave="hideToolTip(); hovered = false"
+                    data-ng-repeat="item in ageGraphData.genderItems[0]">
+                <rect
+                        data-ng-attr-x="{{ageGraphData.maxMaleWidth + ageGraphData.space}}"
+                        data-ng-attr-y="{{item.y}}"
+                        data-ng-attr-width="{{item.width}}"
+                        data-ng-attr-height="{{item.height - ageGraphData.space}}"
+                        data-ng-attr-fill="{{item.color}}"
+                        data-ng-attr-stroke="{{item.color}}"
+                        data-ng-class="{'gender-age-legend__color-rect--highlighted': hovered}"></rect>
+                <rect
+                        data-ng-attr-x="{{ageGraphData.maxMaleWidth + ageGraphData.space}}"
+                        data-ng-attr-y="{{item.y}}"
+                        data-ng-attr-width="{{ageGraphData.maxFemaleWidth}}"
+                        data-ng-attr-height="{{item.height}}"
+                        class="gender-age-legend__color-transparent-rect"
+                        ></rect>
+            </g>
+            <g data-ng-attr-transform="translate({{ageGraphData.maxMaleWidth + ageGraphData.maxFemaleWidth + 3}},0)">
+                <text
+                        data-ng-repeat="label in labelsData"
+                        x="0"
+                        data-ng-attr-y="{{label.y}}"
+                        class="gender-age-legend__label">{{label.label}}
+                </text>
+            </g>
+            <rect
+                    class="gender-age-legend__blur-rect"
+                    data-ng-attr-width="{{ageGraphData.maxMaleWidth + ageGraphData.maxFemaleWidth}}"
+                    data-ng-attr-height="{{ageGraphData.genderItems[0][ageGraphData.genderItems[0].length - 1].height}}"
+                    data-ng-attr-x="0"
+                    data-ng-attr-y="{{ageGraphData.genderItems[0][ageGraphData.genderItems[0].length - 1].y}}"
+                    fill="url(#ageBottomGradient)"></rect>
+        </g>
+        <defs>
+            <linearGradient
+                    id="ageBottomGradient"
+                    x1="0%" y1="0%" x2="0%" y2="100%"
+                    >
+                <stop offset="0%" stop-color="rgba(255,255,255,0)"></stop>
+                <stop offset="100%" stop-color="rgba(255,255,255,255)"></stop>
+            </linearGradient>
+        </defs>
+
+    </svg>
+    <div
+            class="gender-age-legend__tool-tip"
+            style="
+                top: {{toolTipPosition.top}};
+                left: {{toolTipPosition.left}};
+            "
+            data-ng-if="toolTipData">
+        <span data-ng-hide="isLast">
+            {{toolTipData.count}} {{toolTipData.count | numberDeclension:genderWords[toolTipData.gender] }} <br>
+            от {{toolTipData.start}} до {{toolTipData.end}} лет
+        </span>
+        <span data-ng-show="isLast">
+            {{toolTipData.count}} {{toolTipData.count | numberDeclension:genderWords[toolTipData.gender] }} <br>
+            старше {{toolTipData.start}} лет
+        </span>
+    </div>
+</div>

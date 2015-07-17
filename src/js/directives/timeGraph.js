@@ -129,9 +129,17 @@ angular.module('marathon').directive('timeGraph', function () {
                     result += ' Z';
                     return result;
                 };
-
+                $scope.runnersCount = {};
+                $scope.ageWords = ['года', 'лет', 'лет'];
                 function updateRunnersData() {
                     runners = checkData($scope.filteredRunners);
+                    $scope.runnersCount.male = runners.genders_groups[1].raw.length;
+                    $scope.runnersCount.female = runners.genders_groups[0].raw.length;
+                    var minMax = d3.extent($scope.filteredRunners, function (runner) {
+                        return runner.age
+                    });
+                    $scope.runnersCount.minAge = minMax[0];
+                    $scope.runnersCount.maxAge = minMax[1];
 
                     runnersGroups = runners.runners_groups.slice();
 

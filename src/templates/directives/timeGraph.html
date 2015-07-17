@@ -1,4 +1,18 @@
 <div class="time-graph">
+    <div class="time-graph__runners-count">
+        <span class="time-graph__bold-text" data-ng-show="runnersCount.male">
+            {{runnersCount.male}} {{runnersCount.male | numberDeclension:genderWords[1]}}</span>
+        <span class="time-graph__bold-text" data-ng-show="runnersCount.male && runnersCount.female">
+            и <br> </span>
+        <span class="time-graph__bold-text" data-ng-show="runnersCount.female">
+            {{runnersCount.female}} {{runnersCount.female | numberDeclension:genderWords[0]}}</span>
+        <span class="time-graph__text" data-ng-show="runnersCount.male || runnersCount.female">
+            <span data-ng-show="runnersCount.minAge != runnersCount.maxAge">
+                <br>от {{runnersCount.minAge}} до </span>
+            {{runnersCount.maxAge}} {{runnersCount.maxAge | numberDeclension:ageWords}}</span>
+        <span class="time-graph__text" data-ng-show="runnersCount.male || runnersCount.female">
+            <br>по времени финиша</span>
+    </div>
     <time-marks></time-marks>
     <svg
             class="time-graph__svg"

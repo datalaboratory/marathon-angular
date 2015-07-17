@@ -48,6 +48,7 @@ module.exports = (grunt) ->
     watch:
       js:
         files: [
+          'dataLab/js/**/*.js'
           'dataLab/blocks/**/*.js'
           'dataLab/blocks/**/*.html'
           'src/js/**/*.js'

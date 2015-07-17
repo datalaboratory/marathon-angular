@@ -1,12 +1,11 @@
-angular.module('marathon').directive('legendAltitude', function () {
+angular.module('marathon').directive('altitudeLegend', function () {
     return {
         restrict: 'E',
-        templateUrl: 'directives/legendAltitude.html',
+        templateUrl: 'directives/altitudeLegend.html',
         replace: true,
         templateNamespace: 'svg',
         link: function ($scope, $element) {
             var width = 246, height = 20, offset_ver = 22, offset_hor = 7;
-            var svg = d3.select($element[0]);
             $element.css({
                 width: width + 2 * offset_hor,
                 height: height + 2 * offset_ver
@@ -56,7 +55,7 @@ angular.module('marathon').directive('legendAltitude', function () {
                 var trackLength = d3.geo.length(geo) * earth_radius;
 
                 var distance_in_km = Math.round(trackLength / 1000), // 21\42\10 и т.п. для рисок на графике
-                    distance_marks = (distance_type == 42) ? [10, distance_in_km / 2, 30] : [2, distance_in_km / 2, 7]; // Где будем ставить риски
+                    distance_marks = (distance_in_km == 42) ? [10, distance_in_km / 2, 30] : [2, distance_in_km / 2, 7]; // Где будем ставить риски
 
                 scaleXFromDistance
                     .domain([0, distance_in_km])

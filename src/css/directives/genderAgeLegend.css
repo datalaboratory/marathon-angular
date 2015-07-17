@@ -1,0 +1,37 @@
+.gender-age-legend {
+    position: relative;
+    width: 100%;
+}
+.gender-age-legend__svg {
+    width: 100%;
+}
+
+.gender-age-legend__tool-tip {
+    position: absolute;
+    display: block;
+    padding-left: 2px;
+    padding-top: 1px;
+    margin-left: 10px;
+    width: 100px;
+    line-height: 16px;
+    background: rgba(255,255,255,0.75);
+    border-radius: 3px;
+}
+.gender-age-legend__color-rect--highlighted {
+    stroke: #000 !important;
+}
+.gender-age-legend__info--hidden {
+    display: none;
+}
+.gender-age-legend__color-transparent-rect {
+    pointer-events: all;
+    opacity: 0;
+}
+.gender-age-legend__label {
+    font-size: 8px;
+    fill: #999;
+    alignment-baseline: central;
+}
+.gender-age-legend__blur-rect {
+    pointer-events: none;
+}
