@@ -73,22 +73,22 @@ angular.module('marathon').directive('genderAgeLegend', function () {
             $scope.ageGraphData.maxMaleWidth = d3.extent(genderGroupsMale.age_groups, getGroupWidth)[1];
             $scope.ageGraphData.maxFemaleWidth = d3.extent(genderGroupsFemale.age_groups, getGroupWidth)[1];
 
-            $scope.showToolTip = function (item, isLast) {
-                $scope.toolTipData = item;
+            $scope.showTooltip = function (item, isLast) {
+                $scope.tooltipData = item;
                 $scope.isLast = isLast;
             };
-            $scope.toolTipPosition = {};
-            $scope.moveToolTip = function ($event) {
+            $scope.tooltipPosition = {};
+            $scope.moveTooltip = function ($event) {
                 var y = $event.offsetY;
                 var x = $event.offsetX;
-                $scope.toolTipPosition = {
+                $scope.tooltipPosition = {
                     top: y + 'px',
                     left: x + 'px'
                 };
             };
 
-            $scope.hideToolTip = function () {
-                $scope.toolTipData = null;
+            $scope.hideTooltip = function () {
+                $scope.tooltipData = null;
             };
         }
     }

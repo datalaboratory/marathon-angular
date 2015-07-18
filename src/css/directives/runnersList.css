@@ -1,0 +1,65 @@
+.runners-list {
+    width: 100%;
+    clear: left;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    min-height: 1em;
+    color: #222;
+    font-family: Regular, Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.runners-list__item {
+    cursor: pointer;
+}
+
+.runners-list__item.male:hover, .runners-list__item--selected.male {
+    background-color: #e7e9fd;
+}
+.runners-list__item--selected.male .runners-list__mark {
+    background-color: #acf;
+}
+.runners-list__item.female:hover, .runners-list__item--selected.female {
+    background-color: #fce4ec;
+}
+.runners-list__item--selected.female .runners-list__mark {
+    background-color: #fab;
+}
+.runners-list__item--selected .runners-list__mark {
+    padding: 0.09em 0.49em 0.09em;
+    border-radius: 10px;
+    margin-left: -0.49em;
+}
+
+.winner.male .runners-list__name {
+    color: #4285e9;
+}
+.winner.female .runners-list__name {
+    color: #f14b6b;
+}
+
+.runners-list__position {
+    width: 5%;
+    min-width: 20px;
+}
+.runners-list__name {
+    width: 25%;
+    min-width: 100px;
+}
+.runners-list__number {
+    width: 15%;
+    min-width: 20px;
+}
+.runners-list__age {
+    width: 20%;
+}
+.runners-list__team {
+    width: 20%;
+}
+.runners-list__city {
+    width: 20%;
+}
+.runners-list__result {
+    font-family: Bold, Arial, Helvetica, sans-serif;
+}

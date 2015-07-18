@@ -2,9 +2,9 @@
     <svg class="gender-age-legend__svg">
         <g transform="translate(2,1)">
             <g
-                    data-ng-mouseover="showToolTip(item, $last); hovered = true"
-                    data-ng-mousemove="moveToolTip($event)"
-                    data-ng-mouseleave="hideToolTip(); hovered = false"
+                    data-ng-mouseover="showTooltip(item, $last); hovered = true"
+                    data-ng-mousemove="moveTooltip($event)"
+                    data-ng-mouseleave="hideTooltip(); hovered = false"
                     data-ng-repeat="item in ageGraphData.genderItems[1]">
                 <rect
                         data-ng-attr-x="{{ageGraphData.maxMaleWidth - item.width - ageGraphData.space}}"
@@ -24,9 +24,9 @@
                         ></rect>
             </g>
             <g
-                    data-ng-mouseover="showToolTip(item, $last); hovered = true"
-                    data-ng-mousemove="moveToolTip($event)"
-                    data-ng-mouseleave="hideToolTip(); hovered = false"
+                    data-ng-mouseover="showTooltip(item, $last); hovered = true"
+                    data-ng-mousemove="moveTooltip($event)"
+                    data-ng-mouseleave="hideTooltip(); hovered = false"
                     data-ng-repeat="item in ageGraphData.genderItems[0]">
                 <rect
                         data-ng-attr-x="{{ageGraphData.maxMaleWidth + ageGraphData.space}}"
@@ -72,19 +72,19 @@
 
     </svg>
     <div
-            class="gender-age-legend__tool-tip"
+            class="gender-age-legend__tooltip"
             style="
-                top: {{toolTipPosition.top}};
-                left: {{toolTipPosition.left}};
+                top: {{tooltipPosition.top}};
+                left: {{tooltipPosition.left}};
             "
-            data-ng-if="toolTipData">
+            data-ng-if="tooltipData">
         <span data-ng-hide="isLast">
-            {{toolTipData.count}} {{toolTipData.count | numberDeclension:genderWords[toolTipData.gender] }} <br>
-            от {{toolTipData.start}} до {{toolTipData.end}} лет
+            {{tooltipData.count}} {{tooltipData.count | numberDeclension:genderWords[tooltipData.gender] }} <br>
+            от {{tooltipData.start}} до {{tooltipData.end}} лет
         </span>
         <span data-ng-show="isLast">
-            {{toolTipData.count}} {{toolTipData.count | numberDeclension:genderWords[toolTipData.gender] }} <br>
-            старше {{toolTipData.start}} лет
+            {{tooltipData.count}} {{tooltipData.count | numberDeclension:genderWords[tooltipData.gender] }} <br>
+            старше {{tooltipData.start}} лет
         </span>
     </div>
 </div>

@@ -17,10 +17,10 @@
     <svg
             class="time-graph__svg"
             data-ng-mousemove="selectRunnerOnGraph($event)"
-            data-ng-mouseover="showInfo()"
-            data-ng-mouseleave="hideInfo()">
+            data-ng-mouseover="showTooltip()"
+            data-ng-mouseleave="hideTooltip()">
         <finish-time-line></finish-time-line>
     </svg>
-    <selected-runner-info></selected-runner-info>
+    <selected-runner-tooltip></selected-runner-tooltip>
     <slider></slider>
 </div>

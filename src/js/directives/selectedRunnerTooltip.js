@@ -1,13 +1,13 @@
-angular.module('marathon').directive('selectedRunnerInfo', function () {
+angular.module('marathon').directive('selectedRunnerTooltip', function () {
     return {
         restrict: 'E',
-        templateUrl: 'directives/selectedRunnerInfo.html',
+        templateUrl: 'directives/selectedRunnerTooltip.html',
         replace: true,
         link: function link($scope, $element) {
-            $scope.hideInfo = function () {
+            $scope.hideTooltip = function () {
                 $scope.state = 'hideInfo'
             };
-            $scope.showInfo = function () {
+            $scope.showTooltip = function () {
                 $scope.state = 'showInfo'
             }
         }

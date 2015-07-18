@@ -174,7 +174,6 @@ angular.module('marathon').directive('timeGraph', function () {
                     $scope.selectedRunnerStepSize.height = Math.round(height_factor);
                     points_byd = {};
                     cur_step = Math.floor($scope.time.current / $scope.time.maxTime * steps);
-
                 }
                 function updatePaths() {
                     reversed_groups.forEach(function (el, i) {
@@ -196,6 +195,7 @@ angular.module('marathon').directive('timeGraph', function () {
                 });
                 $scope.$watch('filterValues', function () {
                     updateRunnersData();
+                    cur_step = $scope.timeScale($scope.time.current) / width * steps;
                     updatePaths();
                 }, true);
 

@@ -4,7 +4,7 @@ angular.module('marathon').directive('mapContainer', function ($http) {
         templateUrl: 'directives/mapContainer.html',
         replace: true,
         link: function link($scope, $element) {
-            var d3element = d3.select($element[0]);
+            var d3element = d3.select($element.find('.snakeGroup')[0]);
             var trackGroup = d3element.append('g');
             var snakeGroup = d3element.append('g');
             var width = $element.width();
@@ -33,6 +33,7 @@ angular.module('marathon').directive('mapContainer', function ($http) {
                     .attr('stroke', '#000')
                     .attr('fill', 'none');
                 track.projection_key = Date.now();
+                $scope.trackPath = track;
 
                 var ageAreas = {};
                 var runners = checkData($scope.filteredRunners);

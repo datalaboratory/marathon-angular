@@ -134,6 +134,7 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
                 filterClass: 'city-filter'
             }
         };
+        $scope.selectedRunners = [];
 
         function countSort(counts) {
             var keys = Object.keys(counts);

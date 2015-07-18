@@ -1,0 +1,16 @@
+<g
+        class="selected-runners"
+        data-ng-repeat="runner in selectedRunners"
+        data-ng-attr-transform="translate({{getRunnerPosition(runner).x}},{{getRunnerPosition(runner).y}})"
+        data-ng-mouseover="showTooltip(runner)">
+    <rect
+            class="selected-runners__rect"
+            data-ng-class="{
+            'selected-runners__rect-male': runner.gender == 1,
+            'selected-runners__rect-female': runner.gender == 0}"
+            data-ng-attr-width="{{20 + (runner.pos.toString().length - 1) * 6}}"
+            data-ng-attr-x="{{-(20 + (runner.pos.toString().length - 1) * 6)/2}}"
+            y="-10" rx="10" ry="10" height="20"></rect>
+    <text class="selected-runners__text" data-ng-show="!filterValues.gender">{{runner.pos}}</text>
+    <text class="selected-runners__text" data-ng-show="filterValues.gender">{{runner.gender_pos}}</text>
+</g>

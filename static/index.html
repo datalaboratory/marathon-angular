@@ -48,19 +48,7 @@
                 </div>
             </div>
         </sticky-header>
-        <table class="runners-list">
-            <tr
-                    data-ng-repeat="runner in limitedFilteredRunners track by runner.id"
-                    data-ng-class="{ 'female': runner.gender == 0, 'male': runner.gender != 0 }">
-                <td>{{runner.pos}}</td>
-                <td>{{runner.full_name}}</td>
-                <td>{{runner.num}}</td>
-                <td>{{runner.age}}</td>
-                <td>{{runner.team}}</td>
-                <td>{{runner.city}}</td>
-                <td>{{runner.result_time_string}}</td>
-            </tr>
-        </table>
+        <runners-list data-ng-if="limitedFilteredRunners"></runners-list>
         <button data-ng-click="limit = limit + 100">Ещё 100</button>
     </div>
 </div>

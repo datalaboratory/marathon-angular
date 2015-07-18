@@ -6,7 +6,7 @@
     width: 100%;
 }
 
-.gender-age-legend__tool-tip {
+.gender-age-legend__tooltip {
     position: absolute;
     display: block;
     padding-left: 2px;
@@ -19,9 +19,6 @@
 }
 .gender-age-legend__color-rect--highlighted {
     stroke: #000 !important;
-}
-.gender-age-legend__info--hidden {
-    display: none;
 }
 .gender-age-legend__color-transparent-rect {
     pointer-events: all;
