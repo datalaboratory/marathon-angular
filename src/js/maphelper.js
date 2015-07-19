@@ -338,12 +338,12 @@ var getStepHeight = function(track, distance, seconds, runners_array, start_time
 
 var base_points_cache = {};
 var getBasePoints = function(base, boundrect, total_distance, step_in_m){
-	var points_key = base.projection_key;
+	/*var points_key = base.projection_key;
 	if (base_points_cache[points_key]){
 		return base_points_cache[points_key];
 	} else {
 		
-
+		console.log(arguments);*/
 		var d3path_node = base.node(),
 			px_distance = d3path_node.getTotalLength(),
 			i;
@@ -382,13 +382,13 @@ var getBasePoints = function(base, boundrect, total_distance, step_in_m){
 			//console.log(getAngleBySegmentsPointsM(p1, p2, x_axis_points.p1, x_axis_points.p2)/(Math.PI/180));
 		}
 
-		base_points_cache[points_key] = {
+		base_points_cache = {
 			complects: complects,
 			points: steps,
 			step: step
 		};
-		return base_points_cache[points_key];
-	}
+		return base_points_cache;
+	//}
 };
 
 var drawRunnersPoints = function(colors, grads, data, cvs_data_items, place, seconds, start_time) {
@@ -420,8 +420,7 @@ var drawRunnersPoints = function(colors, grads, data, cvs_data_items, place, sec
 			if (!el){
 				continue;
 			}
-			//var grad = grads[el.gender];
-			var color = grads[el.gender](el.num); //colors.getGradColor(el.num, 1, el.groups_count, grad);
+			var color = grads[el.gender](el.num);
 
 			var data = getSQPoint(width, i + 1);
 			if (!data){

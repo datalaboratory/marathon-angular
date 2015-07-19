@@ -4,7 +4,11 @@ angular.module('marathon').directive('slider', function ($document) {
         templateUrl: 'directives/slider.html',
         replace: true,
         link: function link($scope, $element) {
-            var startX = 0, x = 0, minX = 0, maxX = $element.parent().width();
+            var startX = $scope.timeScale($scope.time.current), x = startX, minX = 0, maxX = $element.parent().width();
+            $scope.$watch('time.start', function () {
+                startX = $scope.timeScale($scope.time.current); x = startX;
+                setTime(startX);
+            });
             $element.on('mousedown', function (event) {
                 event.preventDefault();
                 startX = event.screenX - x;
@@ -20,7 +24,6 @@ angular.module('marathon').directive('slider', function ($document) {
                     x = maxX;
                 }
                 setTime(x);
-                $element.css({left: x});
                 $scope.$apply();
             }
 
@@ -29,13 +32,12 @@ angular.module('marathon').directive('slider', function ($document) {
                 $document.off('mouseup', mouseup)
             }
 
-            var timeFormat = d3.format('02f');
-            $scope.selectedTime = '00:00';
             function setTime(x) {
                 if (!$scope.time) return;
-                var time = $scope.timeScale.invert(x)//Math.round(x / maxX * $scope.time.maxTime);
+                var time = $scope.timeScale.invert(x);
                 $scope.time.current = time;
-                $scope.selectedTime = moment(time).subtract($scope.time.start).format('HH:mm'); //timeFormat(Math.floor(time / 3600)) + ':' + timeFormat(Math.floor((time % 3600) / 60) )
+                $scope.selectedTime = moment(time).subtract($scope.time.start).format('HH:mm');
+                $element.css({left: x + 'px'})
             }
         }
     }

@@ -21,8 +21,18 @@ angular.module('marathon').directive('timeGraph', function () {
                 var px_step = 3;
                 var y_scale = 1.2;
 
+                $scope.$watch('time.start', function (start) {
+                    $scope.timeScale
+                        .domain([moment(start).toDate(), moment(start + $scope.time.maxTime * 1000).toDate()])
+                        .range([0, width]);
+                    console.log($scope.timeScale, start)
+                });
+
                 var steps = Math.floor(width / px_step);
                 var time_step = 1000 * $scope.time.maxTime / steps;
+                $scope.$watch('time.maxTime', function (time) {
+                    time_step = 1000 * time / steps;
+                });
                 var height_factor, graphHeight, cur_step, points_byd, runners_byd, reversed_groups, steps_data;
                 $scope.selectedRunnerStepSize = {
                     width: px_step,
@@ -191,6 +201,11 @@ angular.module('marathon').directive('timeGraph', function () {
                 updatePaths();
                 $scope.$watch('time.current', function (time) {
                     cur_step = $scope.timeScale(time) / width * steps;
+                    updatePaths();
+                });
+                $scope.$watch('time.start', function () {
+                    updateRunnersData();
+                    cur_step = $scope.timeScale($scope.time.current) / width * steps;
                     updatePaths();
                 });
                 $scope.$watch('filterValues', function () {

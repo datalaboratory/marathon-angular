@@ -1,9 +1,21 @@
 <g>
-    <rect></rect>
+    <rect
+            x="0" y="0" height="4"
+            fill="url(#timeline_gradient)"
+            data-ng-attr-width="{{currentWidth}}"></rect>
     <line y1="0"
           y2="4"
           stroke="#000"
           data-ng-repeat="x in tickTimes"
           data-ng-attr-x1="{{x}}"
           data-ng-attr-x2="{{x}}"></line>
+    <defs>
+        <linearGradient
+                id="timeline_gradient"
+                x1="0%" x2="0%" y1="0%" y2="100%"
+                spreadMethod="pad">
+            <stop offset="0%" stop-color="#f8d3dc"></stop>
+            <stop offset="100%" stop-color="#d3dff7"></stop>
+        </linearGradient>
+    </defs>
 </g>

@@ -8,7 +8,10 @@
     <div data-ng-app="marathon" data-ng-controller="MarathonController">
         <map-container data-ng-if="filteredRunners"></map-container>
         <div class="map-overlay">
-            <div class="map-overlay__header"></div>
+            <div class="map-overlay__header">
+                <span class="map-overlay__title">МОСКОВСКИЙ ПОЛУМАРАФОН</span>
+                <div class="track-switch-container"><track-switch></track-switch></div>
+            </div>
             <div class="map-overlay__right-column">
                 <div class="map-overlay__weather"></div>
                 <div class="map-overlay__legend">
@@ -21,7 +24,7 @@
                         </div>
                         <div class="legend__gender-age">
                             <span class="legend__header">Пол и возраст</span>
-                            <gender-age-legend data-ng-if="runnerData"></gender-age-legend>
+                            <gender-age-legend data-ng-if="runnersData"></gender-age-legend>
                         </div>
                         <div class="legend__snake-rise">
                             <span class="legend__header">Толщина змея</span>

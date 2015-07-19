@@ -17,15 +17,6 @@ angular.module('marathon').directive('selectedRunners', function () {
                     y: cur_coord.y
                 };
             };
-            /*$scope.$watch('selectedRunners', function (selectedRunners) {
-                $scope.processedSelectedRunners = selectedRunners;
-
-            });
-            $scope.$watch('time.current', function (time) {
-                currentTime = time * 1;
-                $scope.processedSelectedRunners.forEach(getRunnerPosition);
-
-            })*/
         }
     }
 });

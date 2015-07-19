@@ -23,6 +23,19 @@ table {
     right: 0;
 }
 
+.map-overlay__header {
+    padding-top: 40px;
+    float: left;
+    width: 100%;
+    letter-spacing: 0.03em;
+}
+.map-overlay__title {
+    font-family: Bold, Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    line-height: 1;
+    float: left;
+}
+
 .map-overlay__right-column {
     float: right;
     width: 260px;
@@ -43,7 +56,11 @@ table {
     width: 50%;
     float: left;
 }
-
+.track-switch-container{
+    float: left;
+    margin-left: 20px;
+    margin-top: -4px;
+}
 .filters-container__filters {
     clear: both;
     padding: 7px 0;
