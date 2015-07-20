@@ -14,8 +14,8 @@ angular.module('marathon').directive('finishTimeLine', function () {
             $scope.$watch('time.current', function (time) {
                 updateWidth(time)
             });
-
-            $scope.$watch('selectedTrack', function () {
+            $scope.$watch('timeScale.domain()', function () {
+                updateWidth($scope.time.current);
                 var timeMarksCount = Math.ceil($scope.time.maxTime / 1200);
                 var tickTimes = [];
                 for (var i = 0; i < timeMarksCount; i++) {
@@ -24,8 +24,8 @@ angular.module('marathon').directive('finishTimeLine', function () {
                 }
                 tickTimes.push(width);
                 $scope.tickTimes = tickTimes;
-                updateWidth($scope.time.current);
-            });
+            }, true);
+
 
         }
     }

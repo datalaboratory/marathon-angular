@@ -4,7 +4,7 @@ angular.module('marathon').directive('timeMarks', function () {
         templateUrl: 'directives/timeMarks.html',
         replace: true,
         link: function link($scope) {
-            $scope.$watch('selectedTrack', function () {
+            $scope.$watch('timeScale.domain()', function () {
                 $scope.timeMarks = [];
                 var timeMarksCount = Math.ceil($scope.time.maxTime / 3600);
                 for (var i = 0; i < timeMarksCount; i++) {
@@ -19,7 +19,7 @@ angular.module('marathon').directive('timeMarks', function () {
                     date: lastMark,
                     x: $scope.timeScale(lastMark)
                 });
-            });
+            }, true);
         }
     }
 });
