@@ -1,29 +1,19 @@
 <div
-        class="selected-runner-tooltip"
-        data-ng-class="{'selected-runner-tooltip--hidden': !selectedRunnerOnGraph || state == 'hideInfo' }">
+        class="selected-runner-tooltip">
     <div class="selected-runner-tooltip__text"
-         style="
-            right: {{selectedRunnerPosition.x + 4}}px;
-            bottom: {{selectedRunnerPosition.y + selectedRunnerStepSize.height}}px;">
-        <div class="selected-runner-tooltip__black">{{selectedRunnerOnGraph.full_name}},<br>{{selectedRunnerOnGraph|ageString}}
+         style="{{position}}">
+        <div class="selected-runner-tooltip__black">{{runner.full_name}},<br>{{runner|ageString}}
         </div>
         <div class="selected-runner-tooltip__white">
-            <div class="selected-runner-tooltip__result-time">{{selectedRunnerOnGraph.result_time_string}}</div>
+            <div class="selected-runner-tooltip__result-time">{{runner.result_time_string}}</div>
             <div class="selected-runner-tooltip__result-position">
                <!-- в локализацию -->
-                {{selectedRunnerOnGraph|finishedPosition}}</div>
+                {{runner|finishedPosition}}</div>
         </div>
         <div class="selected-runner-tooltip__yellow">
             <div class="selected-runner-tooltip__logo-number">
-                <img src="img/mm-logo-small.png">{{selectedRunnerOnGraph.num}}
+                <img src="img/mm-logo-small.png">{{runner.num}}
             </div>
         </div>
     </div>
-    <div class="selected-runner-tooltip__pointer"
-         style="
-            right: {{selectedRunnerPosition.x}}px;
-            bottom: {{selectedRunnerPosition.y}}px;
-            width: {{selectedRunnerStepSize.width}}px;
-            height: {{selectedRunnerStepSize.height}}px;
-        "></div>
 </div>

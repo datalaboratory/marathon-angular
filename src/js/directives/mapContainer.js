@@ -9,9 +9,8 @@ angular.module('marathon').directive('mapContainer', function () {
             var snakeGroup = d3element.append('g');
             var width = $element.width();
             var height = $element.height();
-            var trackPath = trackGroup.append('path')
-                .attr('stroke', '#000')
-                .attr('fill', 'none');
+            var trackPath = trackGroup.append('path');
+
             $scope.mapParams = {
                 10: {
                     width: '78%',
@@ -25,6 +24,10 @@ angular.module('marathon').directive('mapContainer', function () {
                     x: -205,
                     y: 110
                 }
+            };
+            $scope.selectedRunnerOnMap = {
+                runner: null,
+                position: null
             };
             $scope.$watch('selectedTrack', function (track) {
                 track.then(function (data) {

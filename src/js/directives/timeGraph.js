@@ -33,9 +33,11 @@ angular.module('marathon').directive('timeGraph', function () {
                     time_step = 1000 * time / steps;
                 });
                 var height_factor, graphHeight, cur_step, points_byd, runners_byd, reversed_groups, steps_data;
-                $scope.selectedRunnerStepSize = {
-                    width: px_step,
-                    height: 0
+                $scope.tooltipPointer = {
+                    stepSize: {
+                        width: px_step,
+                        height: 0
+                    }
                 };
                 var runners = checkData($scope.filteredRunners);
 
@@ -180,10 +182,11 @@ angular.module('marathon').directive('timeGraph', function () {
                     graphHeight = Math.max(height, max_runners_in_step * y_scale);
 
                     height_factor = height / (max_runners_in_step * y_scale);
-                    $scope.selectedRunnerStepSize.height = Math.round(height_factor);
+                    $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
                     points_byd = {};
                     cur_step = Math.floor($scope.time.current / $scope.time.maxTime * steps);
                 }
+
                 function updatePaths() {
                     reversed_groups.forEach(function (el, i) {
                         var prev = reversed_groups[i - 1];
@@ -196,6 +199,7 @@ angular.module('marathon').directive('timeGraph', function () {
                         age_areas[el.key].right.attr("d", getRunByDPathData(rightPoints));
                     });
                 }
+
                 updateRunnersData();
                 updatePaths();
                 $scope.$watch('time.current', function (time) {
@@ -219,9 +223,12 @@ angular.module('marathon').directive('timeGraph', function () {
                     var posX = Math.floor(x / px_step);
                     var posY = Math.floor((graphHeight - y) / height_factor);
                     $scope.selectedRunnerOnGraph = steps_data[posX][posY];
-                    $scope.selectedRunnerPosition = {
-                        x: width - (posX + 1) * px_step,
-                        y: -graphHeight + (posY) * height_factor
+                    $scope.selectedRunnerPosition =
+                        'right: ' + (width - (posX + 1) * px_step + 4) + 'px;' +
+                        'bottom: ' + (-graphHeight + (posY) * height_factor + Math.round(height_factor)) + 'px;';
+                    $scope.tooltipPointer.position = {
+                        x: (width - (posX + 1) * px_step),
+                        y: ((posY) * height_factor)
                     }
                 };
             }

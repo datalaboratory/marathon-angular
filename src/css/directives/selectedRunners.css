@@ -6,6 +6,8 @@
     fill: #fff;
     text-anchor: middle;
     alignment-baseline: central;
+    cursor: default;
+    pointer-events: none;
 }
 .selected-runners__rect-male {
     fill: rgb(68, 136, 238);

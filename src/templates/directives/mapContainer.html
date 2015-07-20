@@ -1,14 +1,21 @@
-<svg class="map-container">
-    <image
-            class="map-container__background-map"
-            xlink:href="img/half-marathon-map.png"
-            data-ng-attr-width="{{mapParams[currentTrackName].width}}"
-            data-ng-attr-height="{{mapParams[currentTrackName].height}}"
-            data-ng-attr-x="{{mapParams[currentTrackName].x}}"
-            data-ng-attr-y="{{mapParams[currentTrackName].y}}"/>
-    <g class="snakeGroup">
-        <path
-                data-ng-attr-d="{{}}"></path>
-    </g>
-    <selected-runners data-ng-if="trackPath"></selected-runners>
-</svg>
+<div class="map-container">
+    <selected-runner-tooltip
+            runner="selectedRunnerOnMap.runner"
+            position="selectedRunnerOnMap.position"
+            data-ng-show="selectedRunnerOnMap.runner"></selected-runner-tooltip>
+    <svg class="map-container__svg">
+        <image
+                class="map-container__background-map"
+                xlink:href="img/half-marathon-map.png"
+                data-ng-attr-width="{{mapParams[currentTrackName].width}}"
+                data-ng-attr-height="{{mapParams[currentTrackName].height}}"
+                data-ng-attr-x="{{mapParams[currentTrackName].x}}"
+                data-ng-attr-y="{{mapParams[currentTrackName].y}}"/>
+        <g class="snakeGroup">
+            <path
+                    data-ng-attr-d="{{}}"></path>
+        </g>
+        <selected-runners data-ng-if="trackPath"></selected-runners>
+    </svg>
+
+</div>

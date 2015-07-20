@@ -16,11 +16,21 @@
     <time-marks></time-marks>
     <svg
             class="time-graph__svg"
-            data-ng-mousemove="selectRunnerOnGraph($event)"
-            data-ng-mouseover="showTooltip()"
-            data-ng-mouseleave="hideTooltip()">
+            data-ng-mousemove="selectRunnerOnGraph($event)">
         <finish-time-line></finish-time-line>
     </svg>
-    <selected-runner-tooltip></selected-runner-tooltip>
+    <selected-runner-tooltip
+            runner="selectedRunnerOnGraph"
+            position="selectedRunnerPosition"
+            data-ng-show="selectedRunnerOnGraph"></selected-runner-tooltip>
+    <div
+            class="selected-runner-tooltip__pointer"
+            style="
+                right: {{tooltipPointer.position.x}}px;
+                bottom: {{tooltipPointer.position.y}}px;
+                width: {{tooltipPointer.stepSize.width}}px;
+                height: {{tooltipPointer.stepSize.height}}px;
+            "
+            data-ng-if="selectedRunnerOnGraph"></div>
     <slider></slider>
 </div>

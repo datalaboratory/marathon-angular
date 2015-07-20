@@ -6,6 +6,11 @@ body {
     line-height: 1.5;
 }
 
+svg {
+    width: 100%;
+    height: 100%;
+}
+
 table {
     border-collapse: collapse;
 }
@@ -51,6 +56,9 @@ table {
 .legend__gender-age {
     width: 50%;
     float: left;
+}
+.legend__gender-age-container {
+    height: 150px;
 }
 .legend__snake-rise {
     width: 50%;

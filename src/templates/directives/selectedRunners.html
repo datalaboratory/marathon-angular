@@ -2,7 +2,8 @@
         class="selected-runners"
         data-ng-repeat="runner in selectedRunners"
         data-ng-attr-transform="translate({{getRunnerPosition(runner).x}},{{getRunnerPosition(runner).y}})"
-        data-ng-mouseover="showTooltip(runner)">
+        data-ng-mousemove="showTooltip($event, runner)"
+        data-ng-mouseleave="selectedRunnerOnMap.runner = null">
     <rect
             class="selected-runners__rect"
             data-ng-class="{

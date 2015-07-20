@@ -17,6 +17,10 @@ angular.module('marathon').directive('selectedRunners', function () {
                     y: cur_coord.y
                 };
             };
+            $scope.showTooltip = function($event, runner) {
+                $scope.selectedRunnerOnMap.runner = runner;
+                $scope.selectedRunnerOnMap.position = "left:" + ($event.offsetX + 6) + 'px;top:' + ($event.offsetY + 6) + 'px;';
+            }
         }
     }
 });

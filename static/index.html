@@ -10,7 +10,10 @@
         <div class="map-overlay">
             <div class="map-overlay__header">
                 <span class="map-overlay__title">МОСКОВСКИЙ ПОЛУМАРАФОН</span>
-                <div class="track-switch-container"><track-switch></track-switch></div>
+
+                <div class="track-switch-container">
+                    <track-switch></track-switch>
+                </div>
             </div>
             <div class="map-overlay__right-column">
                 <div class="map-overlay__weather"></div>
@@ -24,7 +27,9 @@
                         </div>
                         <div class="legend__gender-age">
                             <span class="legend__header">Пол и возраст</span>
-                            <gender-age-legend data-ng-if="runnersData"></gender-age-legend>
+                            <div class="legend__gender-age-container">
+                                <gender-age-legend data-ng-if="runnersData"></gender-age-legend>
+                            </div>
                         </div>
                         <div class="legend__snake-rise">
                             <span class="legend__header">Толщина змея</span>
@@ -41,13 +46,17 @@
             <div class="filters-container">
                 <div class="filters-container__gender-filter">
                     <h2 class="filters-container__h2">Результаты</h2>
-                    <data-lab-dropdown-filter config="filterGender" class="{{filterGender.filterClass}}"
-                                              data-ng-if="filterGender"></data-lab-dropdown-filter>
+                    <data-lab-dropdown-filter
+                            config="filterGender"
+                            class="{{filterGender.filterClass}}"
+                            data-ng-if="filterGender"></data-lab-dropdown-filter>
                 </div>
                 <div class="filters-container__filters">
                     <search></search>
-                    <data-lab-dropdown-filter config="filter" class="{{filter.filterClass}}"
-                                              data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
+                    <data-lab-dropdown-filter
+                            config="filter"
+                            class="{{filter.filterClass}}"
+                            data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
                 </div>
             </div>
         </sticky-header>
