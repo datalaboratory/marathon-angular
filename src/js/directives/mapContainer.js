@@ -12,7 +12,20 @@ angular.module('marathon').directive('mapContainer', function () {
             var trackPath = trackGroup.append('path')
                 .attr('stroke', '#000')
                 .attr('fill', 'none');
-
+            $scope.mapParams = {
+                10: {
+                    width: '78%',
+                    height: '89%',
+                    x: -36,
+                    y: 85
+                },
+                21: {
+                    width: '100%',
+                    height: '85%',
+                    x: -205,
+                    y: 110
+                }
+            };
             $scope.$watch('selectedTrack', function (track) {
                 track.then(function (data) {
                     var projection = d3.geo.mercator().scale(1).translate([0, 0]);

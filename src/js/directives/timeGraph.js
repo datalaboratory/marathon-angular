@@ -25,7 +25,6 @@ angular.module('marathon').directive('timeGraph', function () {
                     $scope.timeScale
                         .domain([moment(start).toDate(), moment(start + $scope.time.maxTime * 1000).toDate()])
                         .range([0, width]);
-                    console.log($scope.timeScale, start)
                 });
 
                 var steps = Math.floor(width / px_step);

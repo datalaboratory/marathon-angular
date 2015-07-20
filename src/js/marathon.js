@@ -1,18 +1,23 @@
 var app = angular.module('marathon', ['dataLab']);
 
 app.controller('MarathonController', function ($scope, $http, numberDeclension, multifilter) {
-    $scope.req = {};
-    $scope.req.track = {
-        10: $http.get('data/geo/mm2015_17may-10km-geo.json'),
-        21: $http.get('data/geo/mm2015_17may-21km-geo.json')
-    };
-    $scope.req.runners = {
-        10: $http.get('data/runners/data10.json'),
-        21: $http.get('data/runners/data21.json')
+    $scope.externalData = {
+        track: {
+            10: $http.get('data/geo/mm2015_17may-10km-geo.json'),
+            21: $http.get('data/geo/mm2015_17may-21km-geo.json')
+        },
+        runners: {
+            10: $http.get('data/runners/data10.json'),
+            21: $http.get('data/runners/data21.json')
+        }
     };
 
-    $scope.selectedTrack = $scope.req.track[10];
-    $scope.selectedRunnersData = $scope.req.runners[10];
+    $scope.$watch('currentTrackName', function (name) {
+        $scope.selectedTrack = $scope.externalData.track[name];
+        $scope.selectedRunnersData = $scope.externalData.runners[name];
+
+        $scope.selectedRunners = [];
+    });
 
     $scope.generateGradient = function (beginColor, endColor, stepsCount) {
         return d3.scale.linear()
@@ -51,7 +56,6 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
         }
     };
     $scope.selectedRunners = [];
-
 
     function updateLimit() {
         $scope.limitedFilteredRunners = $scope.filteredRunners.slice(0, $scope.limit);

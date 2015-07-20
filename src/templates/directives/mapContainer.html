@@ -2,10 +2,10 @@
     <image
             class="map-container__background-map"
             xlink:href="img/half-marathon-map.png"
-            width="78%"
-            height="89%"
-            x="-36"
-            y="85"/>
+            data-ng-attr-width="{{mapParams[currentTrackName].width}}"
+            data-ng-attr-height="{{mapParams[currentTrackName].height}}"
+            data-ng-attr-x="{{mapParams[currentTrackName].x}}"
+            data-ng-attr-y="{{mapParams[currentTrackName].y}}"/>
     <g class="snakeGroup">
         <path
                 data-ng-attr-d="{{}}"></path>
