@@ -1,4 +1,4 @@
-angular.module('marathon').directive('selectedRunners', function () {
+angular.module('marathon').directive('selectedRunners', function (mapHelper) {
     return {
         restrict: 'E',
         templateUrl: 'directives/selectedRunners.html',
@@ -8,7 +8,7 @@ angular.module('marathon').directive('selectedRunners', function () {
             var path_node = $scope.trackPath.node();
             var px_total_length = path_node.getTotalLength();
             $scope.getRunnerPosition = function (runner) {
-                var current_distance = mh.getDistanceByRangesAndTime(runner, $scope.time.current * 1);
+                var current_distance = mapHelper.getDistanceByRangesAndTime(runner, $scope.time.current * 1);
                 current_distance = Math.max(0, current_distance);
                 var px_current_length = current_distance * px_total_length / $scope.trackLength;
                 var cur_coord = path_node.getPointAtLength(px_current_length);

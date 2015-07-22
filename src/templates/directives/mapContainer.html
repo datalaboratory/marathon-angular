@@ -13,7 +13,21 @@
                 data-ng-attr-y="{{mapParams[currentTrackName].y}}"/>
         <g class="snakeGroup">
             <path
-                    data-ng-attr-d="{{}}"></path>
+                    data-ng-attr-d="{{pathData}}"
+                    class="snake-group__track"></path>
+            <path
+                    data-ng-repeat="area in ageAreas"
+                    data-ng-attr-d="{{area.d}}"
+                    data-ng-attr-fill="{{area.color}}"
+                    class="snake-group__snake"></path>
+
+            <circle
+                    data-ng-repeat="circle in circles"
+                    data-ng-attr-cx="{{circle.cx}}"
+                    data-ng-attr-cy="{{circle.cy}}"
+                    data-ng-attr-r="{{circle.r}}"
+                    data-ng-attr-fill="{{circle.fill}}"
+                    data-distance="{{circle.distance}}"></circle>
         </g>
         <selected-runners data-ng-if="trackPath"></selected-runners>
     </svg>

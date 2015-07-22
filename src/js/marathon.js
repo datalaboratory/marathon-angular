@@ -95,6 +95,77 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
         });
         return result;
     }
+    var ageGroups = [
+        {
+            start: 15,
+            end: 19,
+            label: '15-19'
+        }, {
+            start: 20,
+            end: 22,
+            label: '20-22'
+        }, {
+            start: 23,
+            end: 34,
+            label: '23-34'
+        }, {
+            start: 35,
+            end: 39,
+            label: '35-39'
+        }, {
+            start: 40,
+            end: 44,
+            label: '40-44'
+        }, {
+            start: 45,
+            end: 49,
+            label: '45-49'
+        }, {
+            start: 50,
+            end: 54,
+            label: '50-54'
+        }, {
+            start: 55,
+            end: 59,
+            label: '55-59'
+        }, {
+            start: 60,
+            end: 64,
+            label: '60-64'
+        }, {
+            start: 65,
+            end: 90,
+            label: '65+'
+        }
+    ];
+    var ageGroupsForSnake = [
+        {
+            start: 15,
+            end: 22,
+            label: '16-22'
+        }, {
+            start: 23,
+            end: 34,
+            label: '23-34'
+        }, {
+            start: 35,
+            end: 49,
+            label: '35-49'
+        }, {
+            start: 50,
+            end: 65,
+            label: '50-65'
+        }, {
+            start: 65,
+            end: 90,
+            label: '65+'
+        }
+    ];
+    var ageGroupStarts = _.pluck(ageGroupsForSnake, 'start');
+    ageGroupStarts.shift();
+    $scope.colorNumberScale = d3.scale.threshold()
+        .domain(ageGroupStarts)
+        .range(d3.range(1, 6));
 
     $scope.$watch('selectedRunnersData', function (runnersData) {
         runnersData.then(function (data) {
@@ -114,72 +185,7 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
                 delete filters[key];
                 return multifilter(runners, filters);
             }
-            var ageGroups = [
-                {
-                    start: 15,
-                    end: 19,
-                    label: '15-19'
-                }, {
-                    start: 20,
-                    end: 22,
-                    label: '20-22'
-                }, {
-                    start: 23,
-                    end: 34,
-                    label: '23-34'
-                }, {
-                    start: 35,
-                    end: 39,
-                    label: '35-39'
-                }, {
-                    start: 40,
-                    end: 44,
-                    label: '40-44'
-                }, {
-                    start: 45,
-                    end: 49,
-                    label: '45-49'
-                }, {
-                    start: 50,
-                    end: 54,
-                    label: '50-54'
-                }, {
-                    start: 55,
-                    end: 59,
-                    label: '55-59'
-                }, {
-                    start: 60,
-                    end: 64,
-                    label: '60-64'
-                }, {
-                    start: 65,
-                    end: 90,
-                    label: '65+'
-                }
-            ];
-            var ageGroupsForSnake = [
-                {
-                    start: 15,
-                    end: 22,
-                    label: '16-22'
-                }, {
-                    start: 23,
-                    end: 34,
-                    label: '23-34'
-                }, {
-                    start: 35,
-                    end: 49,
-                    label: '35-49'
-                }, {
-                    start: 50,
-                    end: 65,
-                    label: '50-65'
-                }, {
-                    start: 65,
-                    end: 90,
-                    label: '65+'
-                }
-            ];
+
             var currentYear = new Date($scope.runnersData.start_time).getFullYear();
             runners.forEach(function (runner, i) {
                 runner.id = i;

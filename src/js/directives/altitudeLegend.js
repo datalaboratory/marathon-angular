@@ -1,4 +1,4 @@
-angular.module('marathon').directive('altitudeLegend', function () {
+angular.module('marathon').directive('altitudeLegend', function (mapHelper) {
     return {
         restrict: 'E',
         templateUrl: 'directives/altitudeLegend.html',
@@ -52,8 +52,8 @@ angular.module('marathon').directive('altitudeLegend', function () {
 
                         data_top.push(point)
                     });
-                    data_top = mh.formatPathPoints(data_top);
-                    var trackLength = d3.geo.length(geo) * earth_radius;
+                    data_top = mapHelper.formatPathPoints(data_top);
+                    var trackLength = d3.geo.length(geo) * mapHelper.earth_radius;
 
                     var distance_in_km = Math.round(trackLength / 1000), // 21\42\10 и т.п. для рисок на графике
                         distance_marks = (distance_in_km == 21) ? [5, distance_in_km / 2, 15] : [2, distance_in_km / 2, 7]; // Где будем ставить риски

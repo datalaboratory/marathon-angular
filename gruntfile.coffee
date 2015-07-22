@@ -5,11 +5,11 @@ module.exports = (grunt) ->
     concat:
       js:
         src: [
-          'bower_components/jquery/dist/jquery.min.js'
-          'bower_components/moment/min/moment.min.js'
-          'bower_components/lodash/lodash.min.js'
-          'bower_components/d3/d3.min.js'
-          'bower_components/angular/angular.min.js'
+          'bower_components/jquery/dist/jquery.js'
+          'bower_components/moment/moment.js'
+          'bower_components/lodash/lodash.js'
+          'bower_components/d3/d3.js'
+          'bower_components/angular/angular.js'
 
           'dataLab/js/app.js'
           'dataLab/**/*.js'

@@ -4,8 +4,12 @@
     height: 700px;
 }
 
-.snakeGroup path {
+.snake-group__path {
     fill: none;
     stroke: #999;
     stroke-width: 1px;
+}
+
+.snake-group__snake {
+    stroke: none;
 }
