@@ -1,4 +1,4 @@
-angular.module('marathon').directive('timeGraph', function (mapHelper) {
+angular.module('marathon').directive('timeGraph', function (mapHelper, toGrayscale) {
     return {
         restrict: 'E',
         templateUrl: 'directives/timeGraph.html',
@@ -44,12 +44,14 @@ angular.module('marathon').directive('timeGraph', function (mapHelper) {
 
                 var runnersGroups = runners.runners_groups.slice();
                 runnersGroups.forEach(function (el) {
+                    var color = $scope.genderGradients[el.gender](el.num);
+                    var gray = toGrayscale(color);
                     $scope.ageAreas[el.key] = {
                         left: {
-                            color: $scope.genderGradients[el.gender](el.num)
+                            color: color
                         },
                         right: {
-                            color: $scope.grayGradient(el.num)
+                            color: gray
                         }
                     };
                 });
@@ -128,7 +130,7 @@ angular.module('marathon').directive('timeGraph', function (mapHelper) {
                                 y: height - 90
                             },
                             color: $scope.genderGradients[1]($scope.colorNumberScale(winnerMale.age)),
-                            grey: $scope.grayGradient($scope.colorNumberScale(winnerMale.age))
+                            gray: toGrayscale($scope.genderGradients[1]($scope.colorNumberScale(winnerMale.age)))
 
                         },
                         female: {
@@ -138,10 +140,9 @@ angular.module('marathon').directive('timeGraph', function (mapHelper) {
                                 y: height - 160
                             },
                             color: $scope.genderGradients[0]($scope.colorNumberScale(winnerFemale.age)),
-                            grey: $scope.grayGradient($scope.colorNumberScale(winnerMale.age))
+                            gray: toGrayscale($scope.genderGradients[0]($scope.colorNumberScale(winnerFemale.age)))
                         }
                     };
-                    console.log(runners.genders_groups[1].raw[0]);
                     var minMax = d3.extent($scope.filteredRunners, function (runner) {
                         return runner.age
                     });

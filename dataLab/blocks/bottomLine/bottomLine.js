@@ -6,7 +6,7 @@ angular.module('dataLab').directive('bottomLine', function(removePrototype) {
         templateUrl: 'bottomLine/bottomLine.html',
         scope: {
             stroke: '=',
-            offset: '='
+            padding: '='
         },
         transclude: true,
         link: function($scope, $element) {
@@ -20,7 +20,7 @@ angular.module('dataLab').directive('bottomLine', function(removePrototype) {
             $scope.$watch(bbox, function(box) {
                 $line.attr({
                     x1: box.x,
-                    y1: box.y + box.height + $scope.offset,
+                    y1: box.y + box.height + $scope.padding,
                     x2: box.x,
                     y2: $svg.height()
                 });

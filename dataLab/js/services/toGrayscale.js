@@ -1,5 +1,6 @@
-angular.module('dataLab').constant('numberDeclension', function (number, titles) {
-    if (!angular.isDefined(number) || !titles) return 'no declension';
-    var cases = [2, 0, 1, 1, 1, 2];
-    return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+angular.module('dataLab').constant('toGrayscale', function (color) {
+    var lab = d3.lab(color);
+    lab.a = 0;
+    lab.b = 0;
+    return lab.toString()
 });

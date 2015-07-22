@@ -26,11 +26,11 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
             .clamp(true)
             .interpolate(d3.interpolateHcl);
     };
+
     $scope.genderGradients = [
         $scope.generateGradient('#FFCBD5', '#EE2046', 5),
         $scope.generateGradient('#B8E8FF', '#1D56DF', 5)
     ];
-    $scope.grayGradient = $scope.generateGradient('#EEEEEE', '#777777', 5);
     $scope.genderWords = [
         ['женщинa', 'женщины', 'женщин'],
         ['мужчинa', 'мужчины', 'мужчин']

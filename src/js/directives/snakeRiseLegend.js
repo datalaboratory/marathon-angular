@@ -4,9 +4,9 @@ angular.module('marathon').directive('snakeRiseLegend', function () {
             templateUrl: 'directives/snakeRiseLegend.html',
             replace: true,
             link: function ($scope, $element) {
-                /*var width = 77;
+                var width = 77;
                 var svg = d3.select($element[0]);
-                var dots_on_distance=[100,];
+                var dots_on_distance;
                 var step_for_dots = 1000; // шаг на дистанции с которым смотрим высоту змея
                 var rr_on_distance = {},
                     heights_on_distance = [],
@@ -15,15 +15,38 @@ angular.module('marathon').directive('snakeRiseLegend', function () {
                     rr_female_on_max_height;
                 var time_value = 6000;
                 var step_for_height = 1000;
-                // Из total distance формируем массив точек, где смотрим толщину змея
-                while ((dots_on_distance[dots_on_distance.length - 1] + step_for_dots) < this.total_distance) {
-                    dots_on_distance.push(dots_on_distance[dots_on_distance.length - 1] + step_for_dots);
-                }
-                dots_on_distance.push(this.total_distance);
+                
+                var track = $scope.trackPath;
+                var trackLength = $scope.trackLength;
 
+                $scope.$watch('filteredRunners', function (runners) {
+                    if (!runners) return
+                    var checkedRunners = checkData(runners);
+                    var runnersMale = checkedRunners.genders_groups[1].raw;
+                    var runnersFemale = checkedRunners.genders_groups[0].raw;
+                    var allRunners = runnersMale.concat(runnersFemale);
+                });
+
+                $scope.$watch('trackLength', function (trackLength) {
+                    dots_on_distance = d3.range(0, trackLength, step_for_dots);
+                });
+                // Из total distance формируем массив точек, где смотрим толщину змея
+                /*while ((dots_on_distance[dots_on_distance.length - 1] + step_for_dots) < trackLength) {
+                    dots_on_distance.push(dots_on_distance[dots_on_distance.length - 1] + step_for_dots);
+                }*/
+
+                return
+                dots_on_distance.push(trackLength);
                 // Идём по всем точкам и определяем там высоту змея. Запоминаем высоту в массив
                 dots_on_distance.forEach(function (dot, i) {
-                    var rr_on_dot = mh.getStepHeight(that.knodes, dot, time_value, $scope.filteredRunners, $scope.time.start, that.total_distance, step_for_height);
+                    var rr_on_dot = mapHelper.getStepHeight(
+                        track,
+                        dot,
+                        time_value,
+                        $scope.filteredRunners,
+                        $scope.time.start,
+                        trackLength,
+                        step_for_height);
                     rr_on_distance[rr_on_dot['height']] = rr_on_dot;
                     heights_on_distance.push(rr_on_dot['height'])
                 });
@@ -31,8 +54,22 @@ angular.module('marathon').directive('snakeRiseLegend', function () {
                 rr_with_max_height = rr_on_distance[d3.max(heights_on_distance)];
 
                 // Вычисляем высоты М и Ж змеев на участке с максимальной высотой
-                rr_male_on_max_height = mh.getStepHeight(that.knodes, rr_with_max_height['distance'], time_value, current_runners_data.genders_groups[1].raw, cvs_data.start_time, that.total_distance, step_for_height)
-                rr_female_on_max_height = mh.getStepHeight(that.knodes, rr_with_max_height['distance'], time_value, current_runners_data.genders_groups[0].raw, cvs_data.start_time, that.total_distance, step_for_height)
+                rr_male_on_max_height = mapHelper.getStepHeight(
+                    track,
+                    rr_with_max_height['distance'],
+                    time_value,
+                    current_runners_data.genders_groups[1].raw,
+                    cvs_data.start_time,
+                    that.total_distance,
+                    step_for_height);
+                rr_female_on_max_height = mapHelper.getStepHeight(
+                    track,
+                    rr_with_max_height['distance'],
+                    time_value,
+                    current_runners_data.genders_groups[0].raw,
+                    cvs_data.start_time,
+                    that.total_distance,
+                    step_for_height);
 
                 // Возвращаем массив с runners rate для [всех, M, Ж]
                 var runners_rate = [rr_female_on_max_height, rr_male_on_max_height, rr_with_max_height];
@@ -43,7 +80,7 @@ angular.module('marathon').directive('snakeRiseLegend', function () {
                 var magic_coefficient = 0.7; // Костыль для корректировки высоты змея в легенде к змею на карте.
 
                 // Высота змея «макс» — высота контейнера
-                var container_height = Math.ceil(mh.getHeightByRunners(max_count, (runners_rate) ? runners_rate[2].step : 1) * magic_coefficient);
+                var container_height = Math.ceil(mapHelper.getHeightByRunners(max_count, (runners_rate) ? runners_rate[2].step : 1) * magic_coefficient);
                 // Массив высот для Ж, М и всех вместе
                 // var height= (runners_rate) ? [runners_rate[0]['height'], runners_rate[1]['height'], runners_rate[2]['height']] : [1,1,1] //При первой загрузке подставляем [1,1,1]
                 var height = {
@@ -84,7 +121,7 @@ angular.module('marathon').directive('snakeRiseLegend', function () {
                 // Обновляем максимальное кол-во бегунов
                 $('.legendcount_num.legendcount_num_max').css('bottom', container_height - 1).html(text + '</br>' + max_count);
                 return height
-            */}
+            }
         }
     }
 );

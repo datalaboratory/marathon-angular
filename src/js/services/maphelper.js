@@ -1,4 +1,4 @@
-angular.module('marathon').factory('mapHelper', function () {
+angular.module('marathon').factory('mapHelper', function (track) {
     var x_axis_points = {
         p1: {
             x: 0,
@@ -236,9 +236,8 @@ angular.module('marathon').factory('mapHelper', function () {
         return steps;
     };
 
-    var getStepHeight = function (track, distance, timestamp, runners_array, total_distance, step_distance) {
-        var d3path_node = track.node(),
-            px_distance = d3path_node.getTotalLength(),
+    var getStepHeight = function (distance, timestamp, runners_array, total_distance, step_distance) {
+        var px_distance = track.getTotalLength(),
             px_in_m = px_distance / total_distance;
 
         var step = step_distance * px_in_m;
@@ -260,14 +259,14 @@ angular.module('marathon').factory('mapHelper', function () {
     };
 
     var base_points_cache = {};
-    var getBasePoints = function (base, total_distance, step_in_m) {
-        var points_key = base.projection_key;
+    var getBasePoints = function (step_in_m) {
+        var points_key = null; //base.projection_key; TODO: вернуть кэширование
         if (base_points_cache[points_key]) {
             return base_points_cache[points_key];
         }
 
-        var d3path_node = base.node(),
-            px_distance = d3path_node.getTotalLength(),
+        var total_distance = track.getTrackLength(),
+            px_distance = track.getTotalLength(),
             i;
         var complects = [],
             px_per_m = px_distance / total_distance;
@@ -275,7 +274,7 @@ angular.module('marathon').factory('mapHelper', function () {
         var step = step_in_m * px_per_m;
         var steps = getSteps(step, px_distance);
         steps.forEach(function (step) {
-            step.p = d3path_node.getPointAtLength(step.p);
+            step.p = track.getPointAtLength(step.p);
         });
 
         for (i = 1; i < steps.length; i++) {
@@ -303,32 +302,35 @@ angular.module('marathon').factory('mapHelper', function () {
             complects.push(obj);
         }
 
-        base_points_cache[points_key] = {
+        var result = {
             complects: complects,
             points: steps,
             step: step
         };
+        return result;
+        base_points_cache[points_key] = result;
         return base_points_cache[points_key];
     };
 
-    var getRunnerPosition = function (runner, path_node, time, trackLength, prevPosition) {
-        var px_total_length = path_node.getTotalLength();
+    var getRunnerPosition = function (runner, time, prevPosition) {
+        var px_total_length = track.getTotalLength();
+        var trackLength = track.getTrackLength();
         var current_distance = getDistanceByTime(runner, time * 1);
         current_distance = Math.max(0, current_distance);
         var px_current_length = current_distance * px_total_length / trackLength;
-        var cur_coord = path_node.getPointAtLength(px_current_length);
+        var cur_coord = track.getPointAtLength(px_current_length);
         var i = 0;
         if (prevPosition) {
             while (getPointsDistanceM(cur_coord, prevPosition) <= 8) {
                 px_current_length -= 1;
-                cur_coord = path_node.getPointAtLength(px_current_length);
+                cur_coord = track.getPointAtLength(px_current_length);
                 i++;
                 if (i == 100) debugger
             }
         }
         var movedPosition = getPointOnPerpendicularM(
-            path_node.getPointAtLength(px_current_length - 5),
-            path_node.getPointAtLength(px_current_length + 5),
+            track.getPointAtLength(px_current_length - 5),
+            track.getPointAtLength(px_current_length + 5),
             cur_coord, 5);
         return {
             x: movedPosition[0],
@@ -336,7 +338,7 @@ angular.module('marathon').factory('mapHelper', function () {
         };
     };
 
-    var drawRunnersPoints = function (grads, data, runners, timestamp, track, trackLength) {
+    var drawRunnersPoints = function (grads, data, runners, timestamp) {
         var point_radius = 2;
         var prevPosition;
 
@@ -353,7 +355,7 @@ angular.module('marathon').factory('mapHelper', function () {
             var d = runner.distance;
             runner = runner.runner;
             var el = runner.big_genderage_group_full;
-            var position = getRunnerPosition(runner, track, timestamp, trackLength, prevPosition);
+            var position = getRunnerPosition(runner, timestamp, prevPosition);
             prevPosition = position;
             return {
                 distance: d,
@@ -381,8 +383,8 @@ angular.module('marathon').factory('mapHelper', function () {
     };
 
 
-    var getPoints = function (runners_groups, track, age_areas, seconds, total_distance, step) {
-        var data = getBasePoints(track, total_distance, step);
+    var getPoints = function (runners_groups, age_areas, seconds, step) {
+        var data = getBasePoints(step);
 
         var complects = data.complects;
 
