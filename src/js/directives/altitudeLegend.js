@@ -1,4 +1,4 @@
-angular.module('marathon').directive('altitudeLegend', function (mapHelper) {
+angular.module('marathon').directive('altitudeLegend', function (mapHelper, track) {
     return {
         restrict: 'E',
         templateUrl: 'directives/altitudeLegend.html',
@@ -18,13 +18,12 @@ angular.module('marathon').directive('altitudeLegend', function (mapHelper) {
                 x: scaleX,
                 y: scaleY
             };
-            $scope.$watch('selectedTrack', function (track) {
-                track.then(function (data) {
+            $scope.$watch('selectedTrack', function (selectedTrack) {
+                selectedTrack.then(function (data) {
                     var geo = data.data;
                     var alt = geo.geometry.coordinates.map(function (coord) {
                         return coord[2]
                     });
-                    var distance_type = 42;
                     var min_max_alt = d3.extent(alt);
 
                     scaleY
@@ -53,7 +52,7 @@ angular.module('marathon').directive('altitudeLegend', function (mapHelper) {
                         data_top.push(point)
                     });
                     data_top = mapHelper.formatPathPoints(data_top);
-                    var trackLength = d3.geo.length(geo) * mapHelper.earth_radius;
+                    var trackLength = d3.geo.length(geo) * track.earth_radius;
 
                     var distance_in_km = Math.round(trackLength / 1000), // 21\42\10 и т.п. для рисок на графике
                         distance_marks = (distance_in_km == 21) ? [5, distance_in_km / 2, 15] : [2, distance_in_km / 2, 7]; // Где будем ставить риски

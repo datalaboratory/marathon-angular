@@ -1,0 +1,28 @@
+.snake-rise-legend__male-path, .snake-rise-legend__counter-male {
+    fill: #82c0fd;
+    stroke: none;
+}
+
+.snake-rise-legend__female-path, .snake-rise-legend__counter-female {
+    fill: #f492a2;
+    stroke: none;
+}
+.snake-rise-legend__all-path {
+    fill: none;
+    stroke: #bbb;
+    stroke-width: 1px;
+}
+.snake-rise-legend__numbers-current {
+    font-size: 14px;
+}
+.snake-rise-legend__text-current {
+    font-size: 10px;
+}
+.snake-rise-legend__text-max, .snake-rise-legend__numbers-max {
+    font-size: 10px;
+    fill: #999;
+}
+.snake-rise-legend__counter-male, .snake-rise-legend__counter-female {
+    alignment-baseline: central;
+    font-size: 10px;
+}

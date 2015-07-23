@@ -1,3 +1,8 @@
 <div class="search">
-    <input class="search__input" placeholder="Имя или номер" type="search">
+    <input
+        class="search__input"
+        placeholder="Имя или номер"
+        type="search"
+        data-ng-model="searchQuery"
+        data-ng-model-options="{debounce: {default: 300}}">
 </div>

@@ -56,6 +56,7 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
         }
     };
     $scope.selectedRunners = [];
+    $scope.storage = {};
 
     function updateLimit() {
         $scope.limitedFilteredRunners = $scope.filteredRunners.slice(0, $scope.limit);
@@ -177,7 +178,22 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
             };
             var runners = $scope.runnersData.items;
             function filter() {
-                $scope.filteredRunners = multifilter(runners, $scope.filterValues);
+                var query = $scope.storage.search;
+                if (angular.isString(query) && query.length) {
+                    $scope.filteredRunners = runners.filter(function (runner) {
+                        var q = query.toLowerCase();
+                        function found(where) {
+                            return where.toLowerCase().indexOf(q) > -1;
+                        }
+                        return [
+                            runner.full_name,
+                            runner.num.toString(),
+                            String(runner.pos)
+                        ].some(found);
+                    });
+                } else {
+                    $scope.filteredRunners = multifilter(runners, $scope.filterValues);
+                }
                 updateLimit();
             }
             function prefilter(key) {
@@ -199,6 +215,10 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
                 runner.winner = (runner.gender_pos && runner.gender_pos < 7);
             });
 
+            $scope.$watch('storage.search', function () {
+                console.log('whe');
+                filter()
+            });
 
             $scope.$watch('filterValues', function () {
                 filter();

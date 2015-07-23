@@ -4,12 +4,8 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
         templateUrl: 'directives/mapContainer.html',
         replace: true,
         link: function link($scope, $element) {
-            var snakeGroupContainer = d3.select($element.find('.snakeGroup')[0]);
-            var trackGroup = snakeGroupContainer.append('g').attr('opacity', 0);
-            var snakeGroup = snakeGroupContainer.append('g');
             var width = $element.width();
             var height = $element.height();
-            var trackPath = trackGroup.append('path');
 
             $scope.mapParams = {
                 10: {
@@ -68,7 +64,6 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
 
                 })
             });
-
         }
     }
 });

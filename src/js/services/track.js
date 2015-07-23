@@ -54,8 +54,8 @@ angular.module('marathon').factory('track', function () {
         return pathData;
     }
 
-
     return {
+        earth_radius: 6371000,
         getTotalLength: getTotalLength,
         getTrackLength: getTrackLength,
         getPointAtLength: getPointAtLength,

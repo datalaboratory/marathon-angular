@@ -15,7 +15,7 @@
                     <track-switch></track-switch>
                 </div>
             </div>
-            <div class="map-overlay__right-column">
+            <div class="map-overlay__right-column" data-ng-if="filteredRunners">
                 <div class="map-overlay__weather"></div>
                 <div class="map-overlay__legend">
                     <div class="legend">
@@ -48,12 +48,14 @@
                     <h2 class="filters-container__h2">Результаты</h2>
                     <data-lab-dropdown-filter
                             config="filterGender"
+                            data-ng-hide="storage.search.length"
                             class="{{filterGender.filterClass}}"
                             data-ng-if="filterGender"></data-lab-dropdown-filter>
                 </div>
                 <div class="filters-container__filters">
-                    <search></search>
+                    <search data-storage="storage.search"></search>
                     <data-lab-dropdown-filter
+                            data-ng-hide="storage.search.length"
                             config="filter"
                             class="{{filter.filterClass}}"
                             data-ng-repeat="filter in filters"></data-lab-dropdown-filter>

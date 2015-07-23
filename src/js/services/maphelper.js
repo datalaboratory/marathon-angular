@@ -223,7 +223,7 @@ angular.module('marathon').factory('mapHelper', function (track) {
         var pieces = d3.range(0, px_distance, step);
         pieces.push(px_distance);
 
-        var steps = [{p:0,l:0}].concat(pieces.map(function (piece) {
+        var steps = [{p: 0, l: 0}].concat(pieces.map(function (piece) {
             return {
                 p: piece,
                 l: piece
@@ -235,26 +235,40 @@ angular.module('marathon').factory('mapHelper', function (track) {
         });
         return steps;
     };
+    var getRunnersToArray = function (array, d_ge, d_l) {
+        return array.filter(function (item) {
+            return item.time >= d_ge && item.time < d_l
+        });
 
-    var getStepHeight = function (distance, timestamp, runners_array, total_distance, step_distance) {
-        var px_distance = track.getTotalLength(),
+    };
+
+    var getStepHeight = function (current_distance, timestamp, runners_array, step_distance) {
+        var total_distance = track.getTrackLength(),
+            px_distance = track.getTotalLength(),
             px_in_m = px_distance / total_distance;
 
         var step = step_distance * px_in_m;
 
-        var step_start = distance;
-        var step_end = distance + step / px_in_m;
+        var step_start = current_distance;
+        var step_end = current_distance + step / px_in_m;
 
 
-        var distances = getDistances(runners_array, timestamp);
-        var runners = getRunners(distances, step_start, step_end);
-        var height = getHeightByRunners(runners, step);
+        var distances = getDistances(runners_array, timestamp, true);
+        var runners = getRunnersToArray(distances, step_start, step_end);
+        var height = getHeightByRunners(runners.length, step);
         return {
             step: step,
             height: height,
-            runners: runners,
+            runners: {
+                male: runners.filter(function (runner) {
+                    return runner.item.gender == 1
+                }).length,
+                female: runners.filter(function (runner) {
+                    return runner.item.gender == 0
+                }).length
+            },
             step_m: step_distance || step / px_in_m,
-            distance: distance
+            distance: current_distance
         };
     };
 

@@ -1,1 +1,40 @@
-<svg></svg>
+<svg class="snake-rise-legend">
+    <g transform="translate(0, 15)">
+        <path
+            class="snake-rise-legend__male-path"
+            data-ng-attr-d="{{snake.path.male}}"></path>
+        <path
+            class="snake-rise-legend__female-path"
+            data-ng-attr-d="{{snake.path.female}}"></path>
+        <path
+            class="snake-rise-legend__all-path"
+            data-ng-attr-d="{{snake.path.all}}"></path>
+        <text
+            class="snake-rise-legend__counter"
+            data-ng-attr-y="{{snake.maxHeight + 20}}">
+            <tspan class="snake-rise-legend__numbers-current">{{snake.count.all}}</tspan>
+            <tspan class="snake-rise-legend__text-current"> бегунов на км</tspan>
+        </text>
+    </g>
+    <g data-ng-attr-transform="translate({{snake.width + 5}},15)">
+        <text
+            class="snake-rise-legend__counter-max"
+            x="0"
+            y="0">
+            <tspan class="snake-rise-legend__text-max" x="0">макс.</tspan>
+            <tspan class="snake-rise-legend__numbers-max" x="0" dy="10">
+                {{snake.count.max}}
+            </tspan>
+        </text>
+        <text
+            class="snake-rise-legend__counter-male"
+            x="0"
+            data-ng-attr-y="{{snake.countPosition.male}}"
+            data-ng-show="snake.count.male">{{snake.count.male}}</text>
+        <text
+            class="snake-rise-legend__counter-female"
+            x="0"
+            data-ng-attr-y="{{snake.countPosition.female}}"
+            data-ng-show="snake.count.female">{{snake.count.female}}</text>
+    </g>
+</svg>
