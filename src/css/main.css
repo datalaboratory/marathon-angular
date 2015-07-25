@@ -26,6 +26,7 @@ table {
     top: 0;
     left: 0;
     right: 0;
+    pointer-events: none;
 }
 
 .map-overlay__header {
@@ -79,6 +80,23 @@ table {
     float: left;
     font-family: Bold, Arial, Helvetica, sans-serif;
     margin: 0;
+}
+.filters-container__gender-filter {
+    float: left;
+    margin-left: 20px;
+    padding-top: 10px;
+}
+.filters-container__winners-filter {
+    float: left;
+    border-radius: 3px 0 0 3px;
+    padding: 0 10px 2px 10px;
+    border: 1px solid #ccc;
+    margin-right: -1px;
+    height: 19px;
+    cursor: pointer;
+}
+.filters-container__winners-filter--active {
+    background: #fd0;
 }
 .time-graph-container {
     margin-top: 50px;

@@ -1,4 +1,4 @@
-angular.module('marathon').factory('track', function () {
+angular.module('marathon').factory('track', function ($rootScope) {
     var earth_radius = 6371000;
     var projection = d3.geo.mercator().scale(1).translate([0, 0]);
     var path = d3.geo.path().projection(projection);
@@ -31,6 +31,7 @@ angular.module('marathon').factory('track', function () {
         projection.scale(s).translate(t);
         pathData = path(geodata);
         pathElement.attr('d', pathData);
+        $rootScope.$broadcast('trackUpdated');
     }
     function updateContainerSize(w, h){
         width = w;

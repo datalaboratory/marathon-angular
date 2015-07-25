@@ -61,7 +61,7 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                         drawSnake($scope.time.current);
                     }, true);
                     $scope.$watch('time.current', drawSnake);
-
+                    return true;
                 })
             });
         }

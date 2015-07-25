@@ -1,17 +1,16 @@
-angular.module('marathon').directive('selectedRunners', function (mapHelper) {
+angular.module('marathon').directive('selectedRunners', function (mapHelper, track) {
     return {
         restrict: 'E',
         templateUrl: 'directives/selectedRunners.html',
         replace: true,
         templateNamespace: 'svg',
         link: function link($scope) {
-            var path_node = $scope.trackPath.node();
-            var px_total_length = path_node.getTotalLength();
             $scope.getRunnerPosition = function (runner) {
+                var px_total_length = track.getTotalLength();
                 var current_distance = mapHelper.getDistanceByRangesAndTime(runner, $scope.time.current * 1);
                 current_distance = Math.max(0, current_distance);
-                var px_current_length = current_distance * px_total_length / $scope.trackLength;
-                var cur_coord = path_node.getPointAtLength(px_current_length);
+                var px_current_length = current_distance * px_total_length / track.getTrackLength();
+                var cur_coord = track.getPointAtLength(px_current_length);
                 return {
                     x: cur_coord.x,
                     y: cur_coord.y

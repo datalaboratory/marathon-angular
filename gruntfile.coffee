@@ -13,6 +13,7 @@ module.exports = (grunt) ->
 
           'dataLab/js/app.js'
           'dataLab/**/*.js'
+          'src/js/app.js'
           'src/js/marathon.js'
           'src/js/**/*.js'
 

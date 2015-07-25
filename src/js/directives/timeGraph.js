@@ -116,10 +116,8 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                 };
                 $scope.runnersCount = {};
                 $scope.ageWords = ['года', 'лет', 'лет'];
-                function updateRunnersData() {
+                function updateWinnersData() {
                     runners = checkData($scope.filteredRunners);
-                    $scope.runnersCount.male = runners.genders_groups[1].raw.length;
-                    $scope.runnersCount.female = runners.genders_groups[0].raw.length;
                     var winnerMale = runners.genders_groups[1].raw[0];
                     var winnerFemale = runners.genders_groups[0].raw[0];
                     $scope.winners = {
@@ -143,6 +141,14 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                             gray: toGrayscale($scope.genderGradients[0]($scope.colorNumberScale(winnerFemale.age)))
                         }
                     };
+                }
+
+                function updateRunnersData() {
+                    runners = checkData($scope.filteredRunners);
+
+                    $scope.runnersCount.male = runners.genders_groups[1].raw.length;
+                    $scope.runnersCount.female = runners.genders_groups[0].raw.length;
+
                     var minMax = d3.extent($scope.filteredRunners, function (runner) {
                         return runner.age
                     });
@@ -178,8 +184,10 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
 
                     graphHeight = Math.max(height, max_runners_in_step * y_scale);
 
-                    height_factor = height / (max_runners_in_step * y_scale);
-                    $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
+                    if (!height_factor) {
+                        height_factor = height / (max_runners_in_step * y_scale);
+                        $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
+                    }
                     points_byd = {};
                     current_step = Math.floor($scope.time.current / $scope.time.maxTime * stepsCount);
                 }
@@ -204,7 +212,9 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                     updatePaths();
                 });
                 $scope.$watch('timeScale.domain()', function () {
+                    height_factor = null;
                     updateRunnersData();
+                    updateWinnersData();
                     current_step = $scope.timeScale($scope.time.current) / width * stepsCount;
                     updatePaths();
                 }, true);

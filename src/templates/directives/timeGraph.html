@@ -27,23 +27,25 @@
                 data-ng-attr-d="{{area.right.d}}"
                 data-ng-attr-fill="{{area.right.color}}"></path>
         </g>
-        <g
-            data-ng-repeat="winner in [winners.female, winners.male]"
-            data-ng-attr-transform="translate({{winner.position.x}},{{winner.position.y}})"
-            >
-            <bottom-line
-                stroke="color=(time.current > winner.runner.end_time)? winner.color : winner.gray"
-                padding="10">
-                <backed-text>
-                    <text y="0" class="time-graph__winners-text">
-                        <tspan x="0">{{winner.runner.full_name.split(' ')[0]}}</tspan>
-                        <tspan x="0" dy="16">{{winner.runner.full_name.split(' ')[1]}}</tspan>
-                        <tspan x="0" dy="16">{{winner.runner.result_time_string}}</tspan>
-                    </text>
-                </backed-text>
-            </bottom-line>
-
+        <g data-ng-if="winners">
+            <g
+                data-ng-repeat="winner in [winners.female, winners.male]"
+                data-ng-attr-transform="translate({{winner.position.x}},{{winner.position.y}})"
+                >
+                <bottom-line
+                    stroke="color=(time.current > winner.runner.end_time)? winner.color : winner.gray"
+                    padding="10">
+                    <backed-text>
+                        <text y="0" class="time-graph__winners-text">
+                            <tspan x="0">{{winner.runner.full_name.split(' ')[0]}}</tspan>
+                            <tspan x="0" dy="16">{{winner.runner.full_name.split(' ')[1]}}</tspan>
+                            <tspan x="0" dy="16">{{winner.runner.result_time_string}}</tspan>
+                        </text>
+                    </backed-text>
+                </bottom-line>
+            </g>
         </g>
+
 
         <finish-time-line></finish-time-line>
     </svg>

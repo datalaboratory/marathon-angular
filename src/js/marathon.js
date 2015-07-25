@@ -1,6 +1,4 @@
-var app = angular.module('marathon', ['dataLab']);
-
-app.controller('MarathonController', function ($scope, $http, numberDeclension, multifilter) {
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, numberDeclension, multifilter) {
     $scope.externalData = {
         track: {
             10: $http.get('data/geo/mm2015_17may-10km-geo.json'),
@@ -17,6 +15,8 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
         $scope.selectedRunnersData = $scope.externalData.runners[name];
 
         $scope.selectedRunners = [];
+        $scope.filteredRunners = null;
+        $scope.filterValues = {};
     });
 
     $scope.generateGradient = function (beginColor, endColor, stepsCount) {
@@ -58,7 +58,12 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
     $scope.selectedRunners = [];
     $scope.storage = {};
 
+    $scope.states = {
+        winnersInTable: false
+    };
+
     function updateLimit() {
+        if (!$scope.filteredRunners) return;
         $scope.limitedFilteredRunners = $scope.filteredRunners.slice(0, $scope.limit);
     }
 
@@ -96,6 +101,7 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
         });
         return result;
     }
+
     var ageGroups = [
         {
             start: 15,
@@ -168,41 +174,49 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
         .domain(ageGroupStarts)
         .range(d3.range(1, 6));
 
-    $scope.$watch('selectedRunnersData', function (runnersData) {
-        runnersData.then(function (data) {
-            $scope.runnersData = data.data;
-            $scope.time = {
-                start: moment($scope.runnersData.start_time),
-                current: moment($scope.runnersData.start_time + 0.2 * $scope.runnersData.max_time * 1000),
-                maxTime: $scope.runnersData.max_time
-            };
-            var runners = $scope.runnersData.items;
-            function filter() {
-                var query = $scope.storage.search;
-                if (angular.isString(query) && query.length) {
-                    $scope.filteredRunners = runners.filter(function (runner) {
-                        var q = query.toLowerCase();
-                        function found(where) {
-                            return where.toLowerCase().indexOf(q) > -1;
-                        }
-                        return [
-                            runner.full_name,
-                            runner.num.toString(),
-                            String(runner.pos)
-                        ].some(found);
-                    });
-                } else {
-                    $scope.filteredRunners = multifilter(runners, $scope.filterValues);
-                }
-                updateLimit();
-            }
-            function prefilter(key) {
-                var filters = angular.copy($scope.filterValues);
-                delete filters[key];
-                return multifilter(runners, filters);
-            }
+    function applyFilters() {
+        var runners = $scope.runnersData.items;
+        var query = $scope.storage.search;
+        if (angular.isString(query) && query.length) {
+            $scope.filteredRunners = runners.filter(function (runner) {
+                var q = query.toLowerCase();
 
-            var currentYear = new Date($scope.runnersData.start_time).getFullYear();
+                function found(where) {
+                    return where.toLowerCase().indexOf(q) > -1;
+                }
+
+                return [
+                    runner.full_name,
+                    runner.num.toString(),
+                    String(runner.pos)
+                ].some(found);
+            });
+        } else {
+            $scope.filteredRunners = multifilter(runners, $scope.filterValues);
+        }
+        updateLimit();
+    }
+
+    function prefilter(key) {
+        if (!$scope.runnersData) return;
+        var filters = angular.copy($scope.filterValues);
+        delete filters[key];
+        return multifilter($scope.runnersData.items, filters);
+    }
+
+    $scope.$watch('selectedRunnersData', function (selectedRunnersData) {
+        selectedRunnersData.then(function (data) {
+            data = $scope.runnersData = data.data;
+
+            $scope.time = {
+                start: moment(data.start_time),
+                current: moment(data.start_time + 0.2 * data.max_time * 1000),
+                maxTime: data.max_time
+            };
+
+            var currentYear = new Date(data.start_time).getFullYear();
+            $scope.winnersForTable = [];
+            var runners = data.items;
             runners.forEach(function (runner, i) {
                 runner.id = i;
                 runner.age = currentYear - runner.birthyear;
@@ -213,41 +227,54 @@ app.controller('MarathonController', function ($scope, $http, numberDeclension, 
                     return group.start <= runner.age && runner.age <= group.end;
                 })[0].label;
                 runner.winner = (runner.gender_pos && runner.gender_pos < 7);
+                if (runner.winner) {
+                    $scope.winnersForTable.push(runner)
+                }
             });
-
-            $scope.$watch('storage.search', function () {
-                console.log('whe');
-                filter()
-            });
-
-            $scope.$watch('filterValues', function () {
-                filter();
-                $scope.filterGender.values = {
-                    0: '<span class="gender-filter__item-female">женщин</span>',
-                    1: '<span class="gender-filter__item-male">мужчин</span>'
-                };
-                $scope.filterGender.allValues = '<span class="gender-filter__item-all">всех вместе</span>';
-
-                var prefilteredTeams = prefilter('team');
-                $scope.filters.team.values = formatItems(prefilteredTeams, 'team', countSort);
-                var teamCount = Object.keys($scope.filters.team.values);
-                $scope.filters.team.allValues = teamCount.length + ' ' + numberDeclension(teamCount.length, ['команда', 'команды', 'команд']);
-
-                var prefilteredCities = prefilter('city');
-                $scope.filters.city.values = formatItems(prefilteredCities, 'city', countSort);
-                var cityCount = Object.keys($scope.filters.city.values);
-                $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, ['город', 'города', 'городов']);
-
-                var prefilteredAgeGroups = prefilter('ageGroup');
-                $scope.filters.age.values = formatItems(prefilteredAgeGroups, 'ageGroup', nameSort);
-                var minMaxAges = d3.extent(prefilteredAgeGroups, function (runner) {
-                    return runner.age;
-                });
-                minMaxAges = 'все от ' + minMaxAges.join(' до ');
-                $scope.filters.age.allValues = minMaxAges;
-            }, true);
-            $scope.$watch('limit', updateLimit)
         });
     });
+
+    $scope.$watch('storage.search', function () {
+        if (!$scope.runnersData) return;
+        $scope.states.winnersInTable = false;
+        applyFilters()
+    });
+
+    $scope.$watch('runnersData', function (runnersData) {
+        if (!runnersData) return;
+        updateFilters();
+    });
+    function updateFilters() {
+        if (!$scope.runnersData) return;
+        $scope.winnersInTable = false;
+        $scope.limit = 100;
+        applyFilters();
+        $scope.filterGender.values = {
+            0: '<span class="gender-filter__item-female">женщин</span>',
+            1: '<span class="gender-filter__item-male">мужчин</span>'
+        };
+        $scope.filterGender.allValues = '<span class="gender-filter__item-all">всех вместе</span>';
+
+        var prefilteredTeams = prefilter('team');
+        $scope.filters.team.values = formatItems(prefilteredTeams, 'team', countSort);
+        var teamCount = Object.keys($scope.filters.team.values);
+        $scope.filters.team.allValues = teamCount.length + ' ' + numberDeclension(teamCount.length, ['команда', 'команды', 'команд']);
+
+        var prefilteredCities = prefilter('city');
+        $scope.filters.city.values = formatItems(prefilteredCities, 'city', countSort);
+        var cityCount = Object.keys($scope.filters.city.values);
+        $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, ['город', 'города', 'городов']);
+
+        var prefilteredAgeGroups = prefilter('ageGroup');
+        $scope.filters.age.values = formatItems(prefilteredAgeGroups, 'ageGroup', nameSort);
+        var minMaxAges = d3.extent(prefilteredAgeGroups, function (runner) {
+            return runner.age;
+        });
+        minMaxAges = 'все от ' + minMaxAges.join(' до ');
+        $scope.filters.age.allValues = minMaxAges;
+    }
+
+    $scope.$watch('filterValues', updateFilters, true);
+    $scope.$watch('limit', updateLimit)
 });
 

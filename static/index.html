@@ -15,7 +15,7 @@
                     <track-switch></track-switch>
                 </div>
             </div>
-            <div class="map-overlay__right-column" data-ng-if="filteredRunners">
+            <div class="map-overlay__right-column">
                 <div class="map-overlay__weather"></div>
                 <div class="map-overlay__legend">
                     <div class="legend">
@@ -27,13 +27,14 @@
                         </div>
                         <div class="legend__gender-age">
                             <span class="legend__header">Пол и возраст</span>
+
                             <div class="legend__gender-age-container">
                                 <gender-age-legend data-ng-if="runnersData"></gender-age-legend>
                             </div>
                         </div>
                         <div class="legend__snake-rise">
                             <span class="legend__header">Толщина змея</span>
-                            <snake-rise-legend></snake-rise-legend>
+                            <snake-rise-legend data-ng-if="filteredRunners"></snake-rise-legend>
                         </div>
                     </div>
                 </div>
@@ -44,21 +45,30 @@
         </div>
         <sticky-header>
             <div class="filters-container">
-                <div class="filters-container__gender-filter">
+                <div>
                     <h2 class="filters-container__h2">Результаты</h2>
-                    <data-lab-dropdown-filter
+                    <div
+                        class="filters-container__gender-filter"
+                        data-ng-class="{'disable-gender': states.winnersInTable}"
+                        data-ng-hide="storage.search.length">
+                    <span
+                        class="filters-container__winners-filter"
+                        data-ng-click="states.winnersInTable = !states.winnersInTable"
+                        data-ng-class="{'filters-container__winners-filter--active': states.winnersInTable}">призёров</span>
+                        <data-lab-dropdown-filter
                             config="filterGender"
-                            data-ng-hide="storage.search.length"
                             class="{{filterGender.filterClass}}"
-                            data-ng-if="filterGender"></data-lab-dropdown-filter>
+                            data-ng-if="filterGender"
+                            data-ng-click="states.winnersInTable = false"></data-lab-dropdown-filter>
+                    </div>
                 </div>
                 <div class="filters-container__filters">
                     <search data-storage="storage.search"></search>
                     <data-lab-dropdown-filter
-                            data-ng-hide="storage.search.length"
-                            config="filter"
-                            class="{{filter.filterClass}}"
-                            data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
+                        data-ng-hide="storage.search.length"
+                        config="filter"
+                        class="{{filter.filterClass}}"
+                        data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
                 </div>
             </div>
         </sticky-header>
