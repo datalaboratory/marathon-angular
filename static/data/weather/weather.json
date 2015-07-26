@@ -1,0 +1,30 @@
+{
+  "10": [
+    {
+      "minutes": 0,
+      "temperature": "+10°",
+      "sky": "w-small-rain",
+      "wind": "→ 2 м/c"
+    },
+    {
+      "minutes": 60,
+      "temperature": "+11°",
+      "sky": "w-small-rain",
+      "wind": "→ 3 м/c"
+    }
+  ],
+  "21": [
+    {
+      "minutes": 0,
+      "temperature": "+10°",
+      "sky": "w-small-rain",
+      "wind": "→ 2 м/c"
+    },
+    {
+      "minutes": 60,
+      "temperature": "+11°",
+      "sky": "w-small-rain",
+      "wind": "→ 3 м/c"
+    }
+  ]
+}

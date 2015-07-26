@@ -1,0 +1,26 @@
+.weather {
+    text-align: center;
+}
+
+.weather__temperature {
+    font-size: 24px;
+    text-align: left;
+    width: 46px;
+    float: left;
+    margin-top: 19px;
+    font-family: Bold, Arial, Helvetica, sans-serif;
+}
+.weather__sky {
+    float: left;
+    margin-left: 5px;
+}
+.weather__sky-img {
+    width: 150px;
+}
+.weather__wind {
+    font-size: 14px;
+    text-align: right;
+    width: 51px;
+    float: right;
+    margin-top: 28px;
+}

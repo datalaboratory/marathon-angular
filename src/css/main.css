@@ -28,6 +28,13 @@ table {
     right: 0;
     pointer-events: none;
 }
+.map-overlay__weather {
+    float: left;
+    margin-bottom: -15px;
+}
+.map-overlay__legend {
+    float: left;
+}
 
 .map-overlay__header {
     padding-top: 40px;
@@ -52,7 +59,6 @@ table {
 }
 .legend__altitude {
     margin-bottom: 30px;
-    margin-top: 30px;
 }
 .legend__gender-age {
     width: 50%;

@@ -16,7 +16,9 @@
                 </div>
             </div>
             <div class="map-overlay__right-column">
-                <div class="map-overlay__weather"></div>
+                <div class="map-overlay__weather">
+                    <weather data-ng-if="time.start"></weather>
+                </div>
                 <div class="map-overlay__legend">
                     <div class="legend">
                         <div class="legend__altitude">
