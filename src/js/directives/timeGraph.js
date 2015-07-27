@@ -186,6 +186,7 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
 
                     if (!height_factor) {
                         height_factor = height / (max_runners_in_step * y_scale);
+
                         $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
                     }
                     points_byd = {};

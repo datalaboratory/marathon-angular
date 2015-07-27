@@ -11,8 +11,8 @@
             >
         <td class="runners-list__position">
             <span class="runners-list__mark">
-                <span data-ng-show="!filterValues.gender">{{runner.pos}}</span>
-                <span data-ng-show="filterValues.gender">{{runner.gender_pos}}</span>
+                <span data-ng-show="!filterValues.gender && !states.winnersInTable">{{runner.pos}}</span>
+                <span data-ng-show="filterValues.gender || states.winnersInTable">{{runner.gender_pos}}</span>
             </span></td>
         <td class="runners-list__name">{{runner.full_name}}</td>
         <td class="runners-list__number">{{runner.num}}</td>

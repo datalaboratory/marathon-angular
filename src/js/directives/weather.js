@@ -8,7 +8,10 @@ angular.module('marathon').directive('weather', function ($http) {
                 var weatherStates = data.data;
                 $scope.$watch('time.current', function (currentTime) {
                     $scope.currentWeather = weatherStates[$scope.currentTrackName].reduce(function (a, b) {
-                        if (moment($scope.time.start).add(b.minutes, 'm') < currentTime) {
+                        var dayTime = b.time.split(':');
+                        var hour = dayTime[0];
+                        var minute = dayTime[1];
+                        if (moment($scope.time.start).hour(hour).minute(minute) < currentTime) {
                             return b;
                         } else {
                             return a;

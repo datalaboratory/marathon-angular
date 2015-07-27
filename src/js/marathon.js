@@ -1,4 +1,8 @@
-angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, numberDeclension, multifilter) {
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $q, numberDeclension, multifilter) {
+    $scope.setLanguage = function (lang) {
+        $translate.use(lang);
+    };
+
     $scope.externalData = {
         track: {
             10: $http.get('data/geo/mm2015_17may-10km-geo.json'),
@@ -18,6 +22,13 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         $scope.filteredRunners = null;
         $scope.filterValues = {};
     });
+
+    $scope.clearFilters = function () {
+        Object.keys($scope.filterValues).forEach(function (key) {
+            if (key == 'gender') return;
+            $scope.filterValues[key] = null;
+        })
+    };
 
     $scope.generateGradient = function (beginColor, endColor, stepsCount) {
         return d3.scale.linear()
@@ -60,6 +71,14 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.states = {
         winnersInTable: false
+    };
+    var activatingWinners;
+    $scope.showWinners = function () {
+        if (!$scope.states.winnersInTable) {
+            activatingWinners = true;
+            $scope.filterValues = {};
+        }
+        $scope.states.winnersInTable = !$scope.states.winnersInTable;
     };
 
     function updateLimit() {
@@ -244,34 +263,62 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         if (!runnersData) return;
         updateFilters();
     });
+    $rootScope.$on('$translateChangeSuccess', function () {
+        console.log('translate change start');
+        updateFilters();
+    });
     function updateFilters() {
         if (!$scope.runnersData) return;
-        $scope.winnersInTable = false;
+        if (activatingWinners) {
+            activatingWinners = false;
+        } else {
+            $scope.states.winnersInTable = false;
+        }
         $scope.limit = 100;
         applyFilters();
-        $scope.filterGender.values = {
-            0: '<span class="gender-filter__item-female">женщин</span>',
-            1: '<span class="gender-filter__item-male">мужчин</span>'
-        };
-        $scope.filterGender.allValues = '<span class="gender-filter__item-all">всех вместе</span>';
+        $q.all([
+            $translate('WOMEN'),
+            $translate('MEN'),
+            $translate('ALL_RUNNERS')
+        ]).then(function (results) {
+            var women = results[0];
+            var men = results[1];
+            var all = results[2];
+            $scope.filterGender.values = {
+                0: '<span class="gender-filter__item-female">' + women + '</span>',
+                1: '<span class="gender-filter__item-male">' + men + '</span>'
+            };
+            $scope.filterGender.allValues = '<span class="gender-filter__item-all">' + all + '</span>';
+        });
 
         var prefilteredTeams = prefilter('team');
         $scope.filters.team.values = formatItems(prefilteredTeams, 'team', countSort);
         var teamCount = Object.keys($scope.filters.team.values);
-        $scope.filters.team.allValues = teamCount.length + ' ' + numberDeclension(teamCount.length, ['команда', 'команды', 'команд']);
 
         var prefilteredCities = prefilter('city');
         $scope.filters.city.values = formatItems(prefilteredCities, 'city', countSort);
         var cityCount = Object.keys($scope.filters.city.values);
-        $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, ['город', 'города', 'городов']);
 
         var prefilteredAgeGroups = prefilter('ageGroup');
         $scope.filters.age.values = formatItems(prefilteredAgeGroups, 'ageGroup', nameSort);
         var minMaxAges = d3.extent(prefilteredAgeGroups, function (runner) {
             return runner.age;
         });
-        minMaxAges = 'все от ' + minMaxAges.join(' до ');
-        $scope.filters.age.allValues = minMaxAges;
+
+
+        $q.all({
+            team: $translate('TEAMS'),
+            city: $translate('CITIES'),
+            all: $translate('ALL'),
+            from: $translate('FROM'),
+            to: $translate('TO')
+        }).then(function (result) {
+            $scope.filters.team.allValues = teamCount.length + ' ' + numberDeclension(teamCount.length, result.team);
+            $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, result.city);
+            minMaxAges = result.all + ' ' + result.from + ' ' + minMaxAges.join(' ' + result.to + ' ');
+            $scope.filters.age.allValues = minMaxAges;
+
+        })
     }
 
     $scope.$watch('filterValues', updateFilters, true);

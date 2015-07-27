@@ -9,9 +9,11 @@
     width: 50px;
     margin-left: -25px;
     margin-top: -33px;
+    cursor: pointer;
 }
 .slider__line {
     height: 178px;
+    cursor: pointer;
 }
 
 .slider__selected-time {

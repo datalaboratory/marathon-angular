@@ -1,4 +1,5 @@
 angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, track, roundTo) {
+    var round = roundTo(10);
     return {
         restrict: 'E',
         templateUrl: 'directives/snakeRiseLegend.html',
@@ -13,7 +14,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             var maxCount;
             var heightScale = d3.scale.linear();
 
-            $scope.$on('trackUpdated', function () {
+            function updateTrack() {
                 var timeStamps = d3.range($scope.time.start, $scope.time.start + $scope.time.maxTime * 1000, 60000);
                 section_with_max_height = timeStamps.map(getMaxSnakeHeight).reduce(function (a, b) {
                     if (a.height > b.height) return a;
@@ -25,7 +26,9 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                     .domain([0, maxCount])
                     .range([maxHeight, 0]);
                 updateSnakes();
-            });
+            }
+            if (track.getTrackLength()) updateTrack();
+            $scope.$on('trackUpdated', updateTrack);
             $scope.$watch('time.current', updateSnakes);
             $scope.$watch('filterValues', updateSnakes, true);
 
@@ -43,10 +46,10 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 });
             }
 
-            var round = roundTo(10);
-
             function updateSnakes() {
                 if (!track.getTrackLength()) return;
+                if (isNaN(maxHeight)) return;
+                if (!section_with_max_height) return;
                 section_with_max_height = getMaxSnakeHeight($scope.time.current);
                 var countMale = round(section_with_max_height.runners.male / ratio);
                 var countFemale = round(section_with_max_height.runners.female / ratio);
@@ -56,9 +59,9 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 ) : heightScale(countMale / 2);
                 $scope.snake = {
                     path: {
-                        male: formatSnakePath(width, section_with_max_height.height, 1, maxHeight),
-                        female: formatSnakePath(width, section_with_max_height.height, section_with_max_height.runners.female / (section_with_max_height.runners.female + section_with_max_height.runners.male), maxHeight),
-                        all: formatSnakePath(width, maxHeight, 1, maxHeight)
+                        male: formatSnakePath(width, section_with_max_height.height, 1),
+                        female: formatSnakePath(width, section_with_max_height.height, section_with_max_height.runners.female / (section_with_max_height.runners.female + section_with_max_height.runners.male)),
+                        all: formatSnakePath(width, maxHeight, 1)
                     },
                     maxHeight: maxHeight,
                     width: width,
@@ -75,7 +78,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 }
             }
 
-            function formatSnakePath(width, height, factor, maxHeight) {
+            function formatSnakePath(width, height, factor) {
                 return 'M0 ' + maxHeight +
                     'L' + width + ' ' + maxHeight +
                     'L' + width + ' ' + (maxHeight - height * factor) +

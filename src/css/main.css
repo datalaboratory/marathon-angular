@@ -53,13 +53,48 @@ table {
     float: right;
     width: 260px;
 }
+.map-overlay__copyright {
+    float: left;
+    margin-top: 20px;
+    pointer-events: all;
+}
+.map-overlay__copyright-logo {
+    width: 35px;
+}
+.map-overlay__copyright-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid rgb(209, 209, 209);
+    display: inline-block;
+    line-height: 1em;
+}
+.map-overlay__copyright-link:hover {
+    color: #dc322f;
+    text-decoration: none;
+    border-bottom:1px solid #dc322f;
+}
+
+.map-overlay__copyright-text {
+    width: 92px;
+    margin-left: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    display: inline-block;
+}
+
 .legend__header {
     font-family: Bold, Arial, Helvetica, sans-serif;
     font-weight: normal;
 }
 .legend__altitude {
     margin-bottom: 30px;
+    float: left;
 }
+.legend__altitude-text {
+    margin-top: 12px;
+    float: left;
+}
+
 .legend__gender-age {
     width: 50%;
     float: left;
@@ -70,6 +105,7 @@ table {
 .legend__snake-rise {
     width: 50%;
     float: left;
+    height: 150px;
 }
 .track-switch-container{
     float: left;
@@ -104,8 +140,36 @@ table {
 .filters-container__winners-filter--active {
     background: #fd0;
 }
+.filters-container__clear {
+    background: url(../img/x.png) no-repeat;
+    background-size: 17px;
+    width: 17px;
+    height: 17px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 1px;
+    cursor: pointer;
+}
+
 .time-graph-container {
     margin-top: 50px;
     margin-bottom: 30px;
     position: relative;
+}
+
+.language-buttons {
+    float: right;
+    margin-left: 30px;
+    pointer-events: all;
+}
+
+.add-runners {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #f4f4f4;
+    border-bottom-color: #e5e5e5;
+    margin-top: 1em;
+    text-align: center;
+    background-image: linear-gradient(#fafafa,#f2f2f2);
 }

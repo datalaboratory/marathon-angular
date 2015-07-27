@@ -8,11 +8,15 @@
     <div data-ng-app="marathon" data-ng-controller="MarathonController">
         <map-container data-ng-if="filteredRunners"></map-container>
         <div class="map-overlay">
+            <factoids data-ng-if="time.start"></factoids>
             <div class="map-overlay__header">
-                <span class="map-overlay__title">МОСКОВСКИЙ ПОЛУМАРАФОН</span>
-
+                <span class="map-overlay__title">{{ 'MAIN_TITLE' | translate }}</span>
                 <div class="track-switch-container">
                     <track-switch></track-switch>
+                </div>
+                <div class="language-buttons">
+                    <button data-ng-click="setLanguage('en')">EN</button>
+                    <button data-ng-click="setLanguage('ru')">RU</button>
                 </div>
             </div>
             <div class="map-overlay__right-column">
@@ -22,23 +26,32 @@
                 <div class="map-overlay__legend">
                     <div class="legend">
                         <div class="legend__altitude">
-                            <span class="legend__header">Высотный профиль</span>
+                            <span class="legend__header">{{ 'ALTITUDE_TITLE' | translate }}</span>
                             <altitude-legend></altitude-legend>
-                            Общий набор высоты - 73м <br>
-                            169м - самая высокая точка Московского Марафона
+                            <span class="legend__altitude-text"
+                                data-ng-bind-html="'ALTITUDE_TEXT' | translate | trust "></span>
                         </div>
                         <div class="legend__gender-age">
-                            <span class="legend__header">Пол и возраст</span>
+                            <span class="legend__header">{{ 'GENDER_AGE_TITLE' | translate }}</span>
 
                             <div class="legend__gender-age-container">
                                 <gender-age-legend data-ng-if="runnersData"></gender-age-legend>
                             </div>
                         </div>
                         <div class="legend__snake-rise">
-                            <span class="legend__header">Толщина змея</span>
+                            <span class="legend__header">{{ 'SNAKE_WIDTH_TITLE' | translate }}</span>
                             <snake-rise-legend data-ng-if="filteredRunners"></snake-rise-legend>
                         </div>
                     </div>
+                </div>
+                <div class="map-overlay__copyright">
+                    <a href="http://datalaboratory.ru/"><img class="map-overlay__copyright-logo" src="img/dl-logo.png"/></a>
+                    <span class="map-overlay__copyright-text">
+                        Визуализация
+                        <a href="http://datalaboratory.ru/" class="map-overlay__copyright-link">
+                            Лаборатории&nbsp;данных
+                        </a>
+                    </span>
                 </div>
             </div>
         </div>
@@ -48,15 +61,16 @@
         <sticky-header>
             <div class="filters-container">
                 <div>
-                    <h2 class="filters-container__h2">Результаты</h2>
+                    <h2 class="filters-container__h2">{{ 'RESULTS' | translate }}</h2>
+
                     <div
                         class="filters-container__gender-filter"
                         data-ng-class="{'disable-gender': states.winnersInTable}"
                         data-ng-hide="storage.search.length">
                     <span
                         class="filters-container__winners-filter"
-                        data-ng-click="states.winnersInTable = !states.winnersInTable"
-                        data-ng-class="{'filters-container__winners-filter--active': states.winnersInTable}">призёров</span>
+                        data-ng-click="showWinners()"
+                        data-ng-class="{'filters-container__winners-filter--active': states.winnersInTable}">{{'WINNERS' | translate}}</span>
                         <data-lab-dropdown-filter
                             config="filterGender"
                             class="{{filterGender.filterClass}}"
@@ -71,11 +85,18 @@
                         config="filter"
                         class="{{filter.filterClass}}"
                         data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
+                    <div
+                        class="filters-container__clear"
+                        data-ng-show="(filterValues.ageGroup || filterValues.team || filterValues.city) && !storage.search.length"
+                        data-ng-click="clearFilters()"></div>
                 </div>
             </div>
         </sticky-header>
         <runners-list data-ng-if="limitedFilteredRunners"></runners-list>
-        <button data-ng-click="limit = limit + 100">Ещё 100</button>
+        <div
+            class="add-runners"
+            data-ng-click="limit = limit + 100"
+            data-ng-show="!states.winnersInTable">{{'SHOW_MORE_RESULTS' | translate}}</div>
     </div>
 </div>
 

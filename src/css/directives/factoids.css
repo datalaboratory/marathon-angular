@@ -1,0 +1,15 @@
+.factoids {
+    width: 100%;
+    height: 500px;
+    position: absolute;
+}
+.factoids__factoid {
+    position: absolute;
+}
+.factoids__img {
+    margin-bottom: 5px;
+}
+.factoids__bold {
+    font-family: Bold, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}

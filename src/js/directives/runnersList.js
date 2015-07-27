@@ -4,13 +4,15 @@ angular.module('marathon').directive('runnersList', function () {
         templateUrl: 'directives/runnersList.html',
         replace: true,
         link: function link($scope) {
-            $scope.$watch('states.winnersInTable', function(winnersInTable) {
-                if (winnersInTable) {
-                    $scope.runnersList = $scope.winnersForTable
+            function updateRunnersList() {
+                if ($scope.states.winnersInTable) {
+                    $scope.runnersList = $scope.winnersForTable;
                 } else {
-                    $scope.runnersList = $scope.limitedFilteredRunners
+                    $scope.runnersList = $scope.limitedFilteredRunners;
                 }
-            });
+            }
+            $scope.$watch('states.winnersInTable', updateRunnersList);
+            $scope.$watch('limitedFilteredRunners', updateRunnersList);
 
             $scope.selectRunner = function (runner) {
                 var n = $scope.selectedRunners.indexOf(runner);

@@ -36,6 +36,9 @@
     cursor: pointer;
     outline: 0;
 }
+.dropdown-filter__current-value:first-letter {
+    text-transform: uppercase;
+}
 
 .dropdown-filter__current-value .dropdown-filter__count{
     display: none;

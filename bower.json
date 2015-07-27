@@ -21,6 +21,7 @@
     "bootstrap": "~3.3.5",
     "moment": "~2.10.3",
     "lodash": "~3.10.0",
-    "normalize.css": "~3.0.3"
+    "normalize.css": "~3.0.3",
+    "angular-translate": "~2.7.2"
   }
 }

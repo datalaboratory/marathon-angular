@@ -1,9 +1,9 @@
-angular.module('marathon').directive('mapContainer', function (mapHelper, track) {
-    return {
-        restrict: 'E',
-        templateUrl: 'directives/mapContainer.html',
-        replace: true,
-        link: function link($scope, $element) {
+    angular.module('marathon').directive('mapContainer', function (mapHelper, track) {
+        return {
+            restrict: 'E',
+            templateUrl: 'directives/mapContainer.html',
+            replace: true,
+            link: function link($scope, $element) {
             var width = $element.width();
             var height = $element.height();
 
@@ -38,6 +38,7 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
 
                     var runnerGroups = runners.runners_groups.slice().reverse();
                     runnerGroups.forEach(function (el) {
+                        if (!el) console.log(runnerGroups);
                         $scope.ageAreas[el.key] = {color: $scope.genderGradients[el.gender](el.num)}
                     });
 
