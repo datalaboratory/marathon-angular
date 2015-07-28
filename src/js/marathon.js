@@ -1,5 +1,7 @@
-angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $q, numberDeclension, multifilter) {
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $q, $parse, numberDeclension, multifilter) {
+    $rootScope.language = 'ru';
     $scope.setLanguage = function (lang) {
+        $rootScope.language = lang;
         $translate.use(lang);
     };
 
@@ -86,6 +88,17 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         $scope.limitedFilteredRunners = $scope.filteredRunners.slice(0, $scope.limit);
     }
 
+    var othersTeam = '"TEAMS_OTHER" | translate';
+
+    function teamSort(counts) {
+        var keys = Object.keys(counts);
+        keys.sort(function (a, b) {
+            if (a == othersTeam) return 1;
+            if (b == othersTeam) return -1;
+            return counts[b] - counts[a];
+        });
+        return keys;
+    }
     function countSort(counts) {
         var keys = Object.keys(counts);
         keys.sort(function (a, b) {
@@ -116,7 +129,9 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         Object.keys(counts).forEach(function (item) {
             filter[key] = item;
             var count = multifilter(filteredItems, filter).length;
-            result[item] = item + '<span class="dropdown-filter__count">' + count + '</span>';
+            var name = item;
+            if (-1 != name.indexOf('|')) name = $parse(name)($scope);
+            result[item] = name + '<span class="dropdown-filter__count">' + count + '</span>';
         });
         return result;
     }
@@ -206,8 +221,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
                 return [
                     runner.full_name,
-                    runner.num.toString(),
-                    String(runner.pos)
+                    runner.num.toString()
                 ].some(found);
             });
         } else {
@@ -261,12 +275,26 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.$watch('runnersData', function (runnersData) {
         if (!runnersData) return;
+
+        var smallTeams = _.countBy(runnersData.items, 'team');
+        smallTeams = Object.keys(smallTeams).filter(function (team) {
+            return smallTeams[team] < 3;
+        });
+        runnersData.items.forEach(function (runner) {
+            runner.realTeam = runner.team;
+            if (-1 != smallTeams.indexOf(runner.team) || runner.team == '')
+                runner.team = othersTeam;
+        });
         updateFilters();
     });
     $rootScope.$on('$translateChangeSuccess', function () {
-        console.log('translate change start');
         updateFilters();
     });
+
+    function translate(word) {
+        return $parse("'" + word + "'" + " | translate")($scope);
+    }
+
     function updateFilters() {
         if (!$scope.runnersData) return;
         if (activatingWinners) {
@@ -276,49 +304,31 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         }
         $scope.limit = 100;
         applyFilters();
-        $q.all([
-            $translate('WOMEN'),
-            $translate('MEN'),
-            $translate('ALL_RUNNERS')
-        ]).then(function (results) {
-            var women = results[0];
-            var men = results[1];
-            var all = results[2];
-            $scope.filterGender.values = {
-                0: '<span class="gender-filter__item-female">' + women + '</span>',
-                1: '<span class="gender-filter__item-male">' + men + '</span>'
-            };
-            $scope.filterGender.allValues = '<span class="gender-filter__item-all">' + all + '</span>';
-        });
+
+        $scope.filterGender.values = {
+            0: '<span class="gender-filter__item-female">' + translate('WOMEN') + '</span>',
+            1: '<span class="gender-filter__item-male">' + translate('MEN') + '</span>'
+        };
+        $scope.filterGender.allValues = '<span class="gender-filter__item-all">' + translate('ALL_RUNNERS') + '</span>';
 
         var prefilteredTeams = prefilter('team');
-        $scope.filters.team.values = formatItems(prefilteredTeams, 'team', countSort);
+        $scope.filters.team.values = formatItems(prefilteredTeams, 'team', teamSort);
         var teamCount = Object.keys($scope.filters.team.values);
+        $scope.filters.team.allValues = (teamCount.length - 1) + ' ' + numberDeclension(teamCount.length - 1, translate('TEAMS_DECLENSION'));
 
         var prefilteredCities = prefilter('city');
         $scope.filters.city.values = formatItems(prefilteredCities, 'city', countSort);
         var cityCount = Object.keys($scope.filters.city.values);
+        $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, translate('CITIES_DECLENSION'));
 
         var prefilteredAgeGroups = prefilter('ageGroup');
         $scope.filters.age.values = formatItems(prefilteredAgeGroups, 'ageGroup', nameSort);
         var minMaxAges = d3.extent(prefilteredAgeGroups, function (runner) {
             return runner.age;
         });
+        minMaxAges = translate('ALL') + ' ' + translate('FROM') + ' ' + minMaxAges.join(' ' + translate('TO') + ' ');
+        $scope.filters.age.allValues = minMaxAges;
 
-
-        $q.all({
-            team: $translate('TEAMS'),
-            city: $translate('CITIES'),
-            all: $translate('ALL'),
-            from: $translate('FROM'),
-            to: $translate('TO')
-        }).then(function (result) {
-            $scope.filters.team.allValues = teamCount.length + ' ' + numberDeclension(teamCount.length, result.team);
-            $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, result.city);
-            minMaxAges = result.all + ' ' + result.from + ' ' + minMaxAges.join(' ' + result.to + ' ');
-            $scope.filters.age.allValues = minMaxAges;
-
-        })
     }
 
     $scope.$watch('filterValues', updateFilters, true);

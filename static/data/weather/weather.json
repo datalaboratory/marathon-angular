@@ -1,30 +1,14 @@
-{
-  "10": [
-    {
-      "time": "09:30",
-      "temperature": "+10°",
-      "sky": "w-small-rain",
-      "wind": "→ 2 м/c"
-    },
-    {
-      "time": "10:30",
-      "temperature": "+11°",
-      "sky": "w-small-rain",
-      "wind": "→ 3 м/c"
-    }
-  ],
-  "21": [
-    {
-      "time": "09:30",
-      "temperature": "+10°",
-      "sky": "w-small-rain",
-      "wind": "→ 2 м/c"
-    },
-    {
-      "time": "10:30",
-      "temperature": "+11°",
-      "sky": "w-small-rain",
-      "wind": "→ 3 м/c"
-    }
-  ]
-}
+[
+  {
+    "time": "09:30",
+    "temperature": "+10°",
+    "sky": "w-small-rain",
+    "wind": "→ 2"
+  },
+  {
+    "time": "10:30",
+    "temperature": "+11°",
+    "sky": "w-small-rain",
+    "wind": "→ 3"
+  }
+]

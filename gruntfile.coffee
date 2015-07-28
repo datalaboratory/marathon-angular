@@ -11,6 +11,7 @@ module.exports = (grunt) ->
           'bower_components/d3/d3.js'
           'bower_components/angular/angular.js'
           'bower_components/angular-translate/angular-translate.js'
+          'vendor/js/**/*.js'
 
           'dataLab/js/app.js'
           'dataLab/**/*.js'
@@ -27,6 +28,7 @@ module.exports = (grunt) ->
         src: [
           'bower_components/normalize.css/normalize.css'
           'dataLab/blocks/**/*.css'
+          'vendor/css/**/*.css'
           'src/css/**/*.css'
         ]
         dest: 'static/css/style.css'

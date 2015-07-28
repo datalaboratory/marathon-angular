@@ -42,6 +42,7 @@ angular.module('marathon').directive('genderAgeLegend', function () {
                     $scope.generateGradient('#FFCBD5', '#EE2046', 10),
                     $scope.generateGradient('#B8E8FF', '#1D56DF', 10)
                 ];
+                var genderConstants = ['WOMEN_DECLENSION', 'MEN_DECLENSION'];
                 genderGroups.forEach(function (genderGroup, genderNumber) {
                     var el_top = 0;
                     genderGroup.age_groups.forEach(function (ageGroup, i) {
@@ -56,6 +57,7 @@ angular.module('marathon').directive('genderAgeLegend', function () {
                             color: genderGradients[genderNumber](i + 1),
                             count: ageGroup.length,
                             gender: genderNumber,
+                            genderString: genderConstants[genderNumber],
                             start: ageGroupsData[i].start,
                             end: ageGroupsData[i].end
                         });

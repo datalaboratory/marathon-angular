@@ -13,7 +13,7 @@
             class="snake-rise-legend__counter"
             data-ng-attr-y="{{snake.maxHeight + 20}}">
             <tspan class="snake-rise-legend__numbers-current">{{snake.count.all}}</tspan>
-            <tspan class="snake-rise-legend__text-current"> бегунов на км</tspan>
+            <tspan class="snake-rise-legend__text-current">{{'RUNNERS_PER_KM' | translate}}</tspan>
         </text>
     </g>
     <g data-ng-attr-transform="translate({{snake.width + 5}},15)">
@@ -21,7 +21,7 @@
             class="snake-rise-legend__counter-max"
             x="0"
             y="0">
-            <tspan class="snake-rise-legend__text-max" x="0">макс.</tspan>
+            <tspan class="snake-rise-legend__text-max" x="0">{{'MAX' | translate}}</tspan>
             <tspan class="snake-rise-legend__numbers-max" x="0" dy="10">
                 {{snake.count.max}}
             </tspan>

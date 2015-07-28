@@ -7,7 +7,7 @@ angular.module('marathon').directive('weather', function ($http) {
             $http.get('data/weather/weather.json').then(function (data) {
                 var weatherStates = data.data;
                 $scope.$watch('time.current', function (currentTime) {
-                    $scope.currentWeather = weatherStates[$scope.currentTrackName].reduce(function (a, b) {
+                    $scope.currentWeather = weatherStates.reduce(function (a, b) {
                         var dayTime = b.time.split(':');
                         var hour = dayTime[0];
                         var minute = dayTime[1];

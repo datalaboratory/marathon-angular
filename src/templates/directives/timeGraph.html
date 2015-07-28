@@ -2,17 +2,17 @@
      data-ng-mouseleave="selectedRunnerOnGraph = null">
     <div class="time-graph__runners-count">
         <span class="time-graph__bold-text" data-ng-show="runnersCount.male">
-            {{runnersCount.male}} {{runnersCount.male | numberDeclension:genderWords[1]}}</span>
+            {{runnersCount.male}} {{runnersCount.male | numberDeclension:( 'MEN_DECLENSION' | translate)}}</span>
         <span class="time-graph__bold-text" data-ng-show="runnersCount.male && runnersCount.female">
-            <br> и </span>
+            <br> {{'AND' | translate}} </span>
         <span class="time-graph__bold-text" data-ng-show="runnersCount.female">
-            {{runnersCount.female}} {{runnersCount.female | numberDeclension:genderWords[0]}}</span>
+            {{runnersCount.female}} {{runnersCount.female | numberDeclension:( 'WOMEN_DECLENSION' | translate)}}</span>
         <span class="time-graph__text" data-ng-show="runnersCount.male || runnersCount.female">
             <span data-ng-show="runnersCount.minAge != runnersCount.maxAge">
-                <br>от {{runnersCount.minAge}} до </span>
-            {{runnersCount.maxAge}} {{runnersCount.maxAge | numberDeclension:ageWords}}</span>
+                <br>{{'FROM' | translate}} {{runnersCount.minAge}} {{'TO' | translate}} </span>
+            {{runnersCount.maxAge}} {{runnersCount.maxAge | numberDeclension:('YEAR_DECLENSION' | translate)}}</span>
         <span class="time-graph__text" data-ng-show="runnersCount.male || runnersCount.female">
-            <br>по времени финиша</span>
+            <br>{{'FINISH_TIME' | translate}}</span>
     </div>
     <time-marks></time-marks>
     <svg

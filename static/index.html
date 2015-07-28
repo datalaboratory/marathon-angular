@@ -44,12 +44,21 @@
                         </div>
                     </div>
                 </div>
+                <div class='map-overlay__social-buttons'>
+                    <div class="likely">
+                        <div class="facebook"></div>
+                        <div class="twitter" data-via="moscowmarathon"></div>
+                        <div class="vkontakte"></div>
+                        <div class="gplus"></div>
+                    </div>
+                </div>
                 <div class="map-overlay__copyright">
                     <a href="http://datalaboratory.ru/"><img class="map-overlay__copyright-logo" src="img/dl-logo.png"/></a>
                     <span class="map-overlay__copyright-text">
-                        Визуализация
-                        <a href="http://datalaboratory.ru/" class="map-overlay__copyright-link">
-                            Лаборатории&nbsp;данных
+                        {{'VIZUALIZATION' | translate}}
+                        <a href="http://datalaboratory.ru/"
+                           class="map-overlay__copyright-link"
+                            data-ng-bind-html="'BY_DATA_LABORATORY' | translate | trust">
                         </a>
                     </span>
                 </div>

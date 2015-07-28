@@ -4,12 +4,18 @@
     box-sizing: border-box;
     padding-right: 15px;
 }
+
 .search__input {
     border-radius: 3px;
     border: 1px solid #ccc;
     display: inline-block;
     width: 100%;
-    padding: 0px 0px 2px 5px;
+    padding: 2px 0 2px 5px;
     height: 23px;
-    font-size: 14px;
+    box-sizing: border-box !important;
+    line-height: 1.5;
+}
+
+.search__input::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button !important;
 }

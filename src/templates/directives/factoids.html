@@ -1,16 +1,22 @@
 <div class="factoids">
-    <div data-ng-show="currentTrackName == 10 ">
+    <div data-ng-show="currentTrackName == 21 ">
         <div
             style="
             top:   95px;
             left:  50px;
             width: 190px;
             "
-            data-ng-show="showFactoid(0, 60)"
+            data-ng-show="showFactoid('09:00', '14:00')"
             class="factoids__factoid">
-            <img class="factoids__img" style="margin-top: -10px; height: 75px;" src="img/time.png" />
-            <h5 class="factoids__bold">На 3 мин 10 сек</h5>
-            <div class="factoid__text">улучшен прошлогодний рекорд трассы&nbsp;—&nbsp;1:09:32</div>
+            <img class="factoids__img" style="margin-top: -10px; height: 75px;" src="img/time.png"/>
+            <div data-ng-show="language == 'ru'">
+                <h5 class="factoids__bold">На 3 мин 10 сек</h5>
+                <div class="factoid__text">улучшен прошлогодний рекорд трассы&nbsp;—&nbsp;1:09:32</div>
+            </div>
+            <div data-ng-show="language == 'en'">
+                <h5 class="factoids__bold">By 3 min 10 s</h5>
+                <div class="factoid__text">improved the previous record of 1:09:32<br>set in 2014</div>
+            </div>
         </div>
     </div>
 

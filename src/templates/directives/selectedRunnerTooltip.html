@@ -2,13 +2,14 @@
         class="selected-runner-tooltip">
     <div class="selected-runner-tooltip__text"
          style="{{position}}">
-        <div class="selected-runner-tooltip__black">{{runner.full_name}},<br>{{runner|ageString}}
+        <div class="selected-runner-tooltip__black">{{runner.full_name}},
+            <br>{{runner.age}} {{runner.age | numberDeclension:( 'YEARS_OLD_DECLENSION' | translate)}}
         </div>
         <div class="selected-runner-tooltip__white">
             <div class="selected-runner-tooltip__result-time">{{runner.result_time_string}}</div>
             <div class="selected-runner-tooltip__result-position">
                <!-- в локализацию -->
-                {{runner|finishedPosition}}</div>
+                {{runner | finishedPosition}}</div>
         </div>
         <div class="selected-runner-tooltip__yellow">
             <div class="selected-runner-tooltip__logo-number">

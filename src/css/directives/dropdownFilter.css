@@ -118,6 +118,10 @@
 .team-filter.dropdown-filter {
     width: 20%
 }
+.team-filter.dropdown-filter .dropdown-filter__item:last-child{
+    color: #7f7f7f;
+}
+
 .city-filter.dropdown-filter {
     width: 18%
 }

@@ -79,12 +79,12 @@
             "
             data-ng-if="tooltipData">
         <span data-ng-hide="isLast">
-            {{tooltipData.count}} {{tooltipData.count | numberDeclension:genderWords[tooltipData.gender] }} <br>
-            от {{tooltipData.start}} до {{tooltipData.end}} лет
+            {{tooltipData.count}} {{tooltipData.count | numberDeclension:(tooltipData.genderString | translate) }} <br>
+            {{'FROM' | translate}} {{tooltipData.start}} {{'TO' | translate}} {{tooltipData.end}} {{10 | numberDeclension:('YEAR_DECLENSION' | translate)}}
         </span>
         <span data-ng-show="isLast">
-            {{tooltipData.count}} {{tooltipData.count | numberDeclension:genderWords[tooltipData.gender] }} <br>
-            старше {{tooltipData.start}} лет
+            {{tooltipData.count}} {{tooltipData.count | numberDeclension:(tooltipData.genderString | translate) }} <br>
+            {{'OLDER' | translate}} {{tooltipData.start}} {{10 | numberDeclension:('YEAR_DECLENSION' | translate)}}
         </span>
     </div>
 </div>

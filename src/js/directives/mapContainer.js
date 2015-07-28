@@ -1,9 +1,9 @@
-    angular.module('marathon').directive('mapContainer', function (mapHelper, track) {
-        return {
-            restrict: 'E',
-            templateUrl: 'directives/mapContainer.html',
-            replace: true,
-            link: function link($scope, $element) {
+angular.module('marathon').directive('mapContainer', function (mapHelper, track) {
+    return {
+        restrict: 'E',
+        templateUrl: 'directives/mapContainer.html',
+        replace: true,
+        link: function link($scope, $element) {
             var width = $element.width();
             var height = $element.height();
 
@@ -19,17 +19,33 @@
                     height: '85%',
                     x: -205,
                     y: 110
-                }
+                } //todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {
                 runner: null,
                 position: null
             };
+
             $scope.$watch('selectedTrack', function (selectedTrack) {
                 selectedTrack.then(function (data) {
                     var geodata = data.data;
                     track.updateContainerSize(width, height);
                     track.updateGeodata(geodata);
+                    var start = track.getProjectedPoint(geodata.geometry.coordinates[0]);
+                    var finish = track.getProjectedPoint(geodata.geometry.coordinates[geodata.geometry.coordinates.length - 1]);
+                    console.log(start, finish);
+                    $scope.flags = {
+                        start: {
+                            x: start[0],
+                            y: start[1]
+                        },
+                        finish: {
+                            x: finish[0],
+                            y: finish[1]
+                        },
+                        width: 14,
+                        height: 19
+                    };
 
                     $scope.pathData = track.getPathData();
 

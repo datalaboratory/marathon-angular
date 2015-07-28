@@ -17,7 +17,7 @@ table {
 
 .big-wrap {
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 960px;
     position: relative;
 }
 
@@ -53,6 +53,11 @@ table {
     float: right;
     width: 260px;
 }
+.map-overlay__social-buttons {
+    float: left;
+    margin-top: 17px;
+}
+
 .map-overlay__copyright {
     float: left;
     margin-top: 20px;
@@ -172,4 +177,5 @@ table {
     margin-top: 1em;
     text-align: center;
     background-image: linear-gradient(#fafafa,#f2f2f2);
+    margin-bottom: 20px;
 }

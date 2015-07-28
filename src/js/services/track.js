@@ -54,6 +54,9 @@ angular.module('marathon').factory('track', function ($rootScope) {
     function getPathData() {
         return pathData;
     }
+    function getProjectedPoint(latlon) {
+        return projection(latlon)
+    }
 
     return {
         earth_radius: 6371000,
@@ -61,6 +64,7 @@ angular.module('marathon').factory('track', function ($rootScope) {
         getTrackLength: getTrackLength,
         getPointAtLength: getPointAtLength,
         getPathData: getPathData,
+        getProjectedPoint: getProjectedPoint,
         updateContainerSize: updateContainerSize,
         updateGeodata: updateGeodata
     };

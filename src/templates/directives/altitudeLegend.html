@@ -14,7 +14,8 @@
                 data-ng-attr-y="{{altGraph.min.y + 10 }}"
                 dy="9.5"
                 class="legend-altitude__mark-text"
-                >{{mark.toString().replace('.', ',')}}км</text>
+                >{{mark.toString().replace('.', ',')}}<tspan
+            data-ng-show="$first">{{'KILOMETER' | translate}}</tspan></text>
         <circle
                 data-ng-attr-cx="{{altGraph.max.x}}"
                 data-ng-attr-cy="{{altGraph.max.y}}"
@@ -26,12 +27,12 @@
         <text
                 data-ng-attr-x="{{altGraph.max.x}}"
                 data-ng-attr-y="{{altGraph.max.y - 5}}"
-                class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.max.num]}}м</text>
+                class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.max.num]}}{{'METER' | translate}}</text>
         <!--TODO: локализация-->
         <text
                 data-ng-attr-x="{{altGraph.min.x}}"
                 data-ng-attr-y="{{altGraph.min.y + 12}}"
-                class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.min.num]}}м</text>
+                class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.min.num]}}{{'METER' | translate}}</text>
         <image xlink:href="img/mark-yel.png"
                data-ng-attr-x="{{sizeScales.x(0) - altGraph.imgSize / 2}}"
                data-ng-attr-y="{{sizeScales.y(altGraph.altitudes[0]) - altGraph.imgSize}}"
