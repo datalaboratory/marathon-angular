@@ -19,10 +19,10 @@ angular.module('marathon').directive('finishTimeLine', function () {
                 var timeMarksCount = Math.ceil($scope.time.maxTime / 1200);
                 var tickTimes = [];
                 for (var i = 0; i < timeMarksCount; i++) {
-                    var mark = moment($scope.time.start).add(20 * i, 'm').toDate();
-                    tickTimes.push($scope.timeScale(mark));
+                    var mark = moment($scope.time.start).add(20 * i, 'm');
+                    tickTimes.push(mark);
                 }
-                tickTimes.push(width);
+                tickTimes.push(moment($scope.time.start + $scope.time.maxTime * 1000));
                 $scope.tickTimes = tickTimes;
             }, true);
 

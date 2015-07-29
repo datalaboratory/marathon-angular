@@ -1,10 +1,31 @@
-angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $q, $parse, numberDeclension, multifilter) {
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $q, $parse, $timeout, numberDeclension, multifilter) {
     $rootScope.language = 'ru';
     $scope.setLanguage = function (lang) {
         $rootScope.language = lang;
         $translate.use(lang);
     };
 
+    $(window).on('resize', function () {
+        $scope.$emit('renderRequired');
+    });
+
+    var renderRequired = false;
+    var render = {
+        margin: {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+        }
+    };
+    $rootScope.$on('renderRequired', function () {
+        renderRequired = true;
+        $timeout(function () {
+            if (!renderRequired) return;
+            renderRequired = false;
+            $rootScope.$broadcast('render', render);
+        });
+    });
     $scope.externalData = {
         track: {
             10: $http.get('data/geo/mm2015_17may-10km-geo.json'),
@@ -43,10 +64,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     $scope.genderGradients = [
         $scope.generateGradient('#FFCBD5', '#EE2046', 5),
         $scope.generateGradient('#B8E8FF', '#1D56DF', 5)
-    ];
-    $scope.genderWords = [
-        ['женщинa', 'женщины', 'женщин'],
-        ['мужчинa', 'мужчины', 'мужчин']
     ];
     $scope.limit = 100;
     $scope.filterValues = {};
@@ -240,10 +257,14 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     $scope.$watch('selectedRunnersData', function (selectedRunnersData) {
         selectedRunnersData.then(function (data) {
             data = $scope.runnersData = data.data;
+            var timePercent = 0.2;
+            if ($scope.time) {
+                timePercent = ($scope.time.current - $scope.time.start ) / ($scope.time.maxTime * 1000)
+            }
 
             $scope.time = {
                 start: moment(data.start_time),
-                current: moment(data.start_time + 0.2 * data.max_time * 1000),
+                current: moment(data.start_time + timePercent * data.max_time * 1000),
                 maxTime: data.max_time
             };
 
@@ -328,7 +349,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         });
         minMaxAges = translate('ALL') + ' ' + translate('FROM') + ' ' + minMaxAges.join(' ' + translate('TO') + ' ');
         $scope.filters.age.allValues = minMaxAges;
-
+        $scope.$emit('renderRequired');
     }
 
     $scope.$watch('filterValues', updateFilters, true);

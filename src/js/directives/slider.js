@@ -9,6 +9,11 @@ angular.module('marathon').directive('slider', function ($document) {
                 startX = $scope.timeScale($scope.time.current); x = startX;
                 setTime(startX);
             }, true);
+            $scope.$watch('timeScale.range()', function () {
+                maxX = $element.parent().width();
+                startX = $scope.timeScale($scope.time.current); x = startX;
+                setTime(startX);
+            }, true);
             $element.on('mousedown', function (event) {
                 event.preventDefault();
                 startX = event.screenX - x;

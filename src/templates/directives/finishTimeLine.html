@@ -7,8 +7,8 @@
           y2="4"
           stroke="#000"
           data-ng-repeat="x in tickTimes"
-          data-ng-attr-x1="{{x}}"
-          data-ng-attr-x2="{{x}}"></line>
+          data-ng-attr-x1="{{timeScale(x)}}"
+          data-ng-attr-x2="{{timeScale(x)}}"></line>
     <defs>
         <linearGradient
                 id="timeline_gradient"

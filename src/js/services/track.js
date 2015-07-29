@@ -1,7 +1,7 @@
 angular.module('marathon').factory('track', function ($rootScope) {
     var earth_radius = 6371000;
-    var projection = d3.geo.mercator().scale(1).translate([0, 0]);
-    var path = d3.geo.path().projection(projection);
+    var projection;
+    var path;
     var geodata;
     var START = 0;
     var END = 1;
@@ -22,6 +22,8 @@ angular.module('marathon').factory('track', function ($rootScope) {
     function updateAll() {
         if (!width || !height || !geodata) return;
         trackLength = d3.geo.length(geodata) * earth_radius;
+        projection = d3.geo.mercator().scale(1).translate([0, 0]);
+        path = d3.geo.path().projection(projection);
         var b = path.bounds(geodata);
         var s = magicNumbers.scale / Math.max((b[END][X] - b[START][X]) / width, (b[END][Y] - b[START][Y]) / height);
         var t = [

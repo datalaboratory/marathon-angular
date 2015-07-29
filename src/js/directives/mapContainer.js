@@ -1,4 +1,4 @@
-angular.module('marathon').directive('mapContainer', function (mapHelper, track) {
+angular.module('marathon').directive('mapContainer', function (mapHelper, track, $timeout) {
     return {
         restrict: 'E',
         templateUrl: 'directives/mapContainer.html',
@@ -43,6 +43,7 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                         var width = $element.width();
                         var height = $element.height();
                         track.updateContainerSize(width, height);
+
                         var start = track.getProjectedPoint(geodata.geometry.coordinates[0]);
                         var finish = track.getProjectedPoint(geodata.geometry.coordinates[geodata.geometry.coordinates.length - 1]);
                         $scope.flags = {
@@ -79,6 +80,12 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                         drawSnake($scope.time.current);
                     }, true);
                     $scope.$watch('time.current', drawSnake);
+                    $scope.$on('render', function() {
+                            updateTrack();
+                    });
+                    $scope.$on('trackUpdated', function () {
+                        drawSnake($scope.time.current);
+                    })
 
                 })
             });

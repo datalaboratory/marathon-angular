@@ -72,7 +72,6 @@
 
 .runners-list__name {
     width: 25%;
-    min-width: 100px;
 }
 
 .runners-list__number {
@@ -81,7 +80,7 @@
 }
 
 .runners-list__age {
-    width: 16.5%;
+    width: 19.5%;
     padding-left: 10px;
     box-sizing: border-box;
 }
@@ -91,7 +90,7 @@
 }
 
 .runners-list__city {
-    width: 18%;
+    width: 16%;
 }
 
 .runners-list__result {

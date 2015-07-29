@@ -17,7 +17,8 @@
     <time-marks></time-marks>
     <svg
         class="time-graph__svg"
-        data-ng-mousemove="selectRunnerOnGraph($event)">
+        data-ng-mousemove="selectRunnerOnGraph($event)"
+        data-lab-size-to-scales="timeGraphScales">
         <g
             data-ng-repeat="area in ageAreas">
             <path

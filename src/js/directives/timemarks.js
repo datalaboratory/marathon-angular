@@ -9,16 +9,10 @@ angular.module('marathon').directive('timeMarks', function () {
                 var timeMarksCount = Math.ceil($scope.time.maxTime / 3600);
                 for (var i = 0; i < timeMarksCount; i++) {
                     var mark = moment($scope.time.start).add(i, 'h').toDate();
-                    $scope.timeMarks.push({
-                        date: mark,
-                        x: $scope.timeScale(mark)
-                    });
+                    $scope.timeMarks.push(mark);
                 }
                 var lastMark = moment($scope.time.start).add($scope.time.maxTime, 's').toDate();
-                $scope.timeMarks.push({
-                    date: lastMark,
-                    x: $scope.timeScale(lastMark)
-                });
+                $scope.timeMarks.push(lastMark);
             }, true);
         }
     }
