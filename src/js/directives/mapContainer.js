@@ -4,9 +4,6 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
         templateUrl: 'directives/mapContainer.html',
         replace: true,
         link: function link($scope, $element) {
-            var width = $element.width();
-            var height = $element.height();
-
             $scope.mapParams = {
                 10: {
                     width: '78%',
@@ -19,35 +16,19 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                     height: '85%',
                     x: -205,
                     y: 110
-                } //todo: в отдельный json
+                }//todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {
                 runner: null,
                 position: null
             };
 
+
             $scope.$watch('selectedTrack', function (selectedTrack) {
                 selectedTrack.then(function (data) {
                     var geodata = data.data;
-                    track.updateContainerSize(width, height);
                     track.updateGeodata(geodata);
-                    var start = track.getProjectedPoint(geodata.geometry.coordinates[0]);
-                    var finish = track.getProjectedPoint(geodata.geometry.coordinates[geodata.geometry.coordinates.length - 1]);
-                    console.log(start, finish);
-                    $scope.flags = {
-                        start: {
-                            x: start[0],
-                            y: start[1]
-                        },
-                        finish: {
-                            x: finish[0],
-                            y: finish[1]
-                        },
-                        width: 14,
-                        height: 19
-                    };
-
-                    $scope.pathData = track.getPathData();
+                    updateTrack();
 
                     $scope.ageAreas = {};
                     var runners = checkData($scope.filteredRunners);
@@ -58,6 +39,26 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                         $scope.ageAreas[el.key] = {color: $scope.genderGradients[el.gender](el.num)}
                     });
 
+                    function updateTrack() {
+                        var width = $element.width();
+                        var height = $element.height();
+                        track.updateContainerSize(width, height);
+                        var start = track.getProjectedPoint(geodata.geometry.coordinates[0]);
+                        var finish = track.getProjectedPoint(geodata.geometry.coordinates[geodata.geometry.coordinates.length - 1]);
+                        $scope.flags = {
+                            start: {
+                                x: start[0],
+                                y: start[1]
+                            },
+                            finish: {
+                                x: finish[0],
+                                y: finish[1]
+                            },
+                            width: 14,
+                            height: 19
+                        };
+                        $scope.pathData = track.getPathData();
+                    }
                     function drawSnake(time) {
                         if (!time) return;
                         time *= 1;
@@ -78,7 +79,7 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                         drawSnake($scope.time.current);
                     }, true);
                     $scope.$watch('time.current', drawSnake);
-                    return true;
+
                 })
             });
         }

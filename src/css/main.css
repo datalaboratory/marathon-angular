@@ -26,7 +26,7 @@ table {
     top: 0;
     left: 0;
     right: 0;
-    pointer-events: none;
+    height: 0;
 }
 .map-overlay__weather {
     float: left;
@@ -178,4 +178,45 @@ table {
     text-align: center;
     background-image: linear-gradient(#fafafa,#f2f2f2);
     margin-bottom: 20px;
+}
+.loader-container__cover {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff;
+    z-index: 200;
+    display: none;
+}
+.loader-container__image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #fff url(../img/mm-logo.png) 50% 264px / 62px no-repeat;
+    -webkit-animation:spin 2s linear infinite;
+    -moz-animation:spin 2s linear infinite;
+    animation:spin 2s linear infinite;
+}
+.loader-container--active {
+
+}
+
+@-moz-keyframes spin {
+    50% { -moz-transform: scaleX(-1); }
+    100% { -moz-transform: scaleX(1); }
+}
+@-webkit-keyframes spin {
+    50% { -webkit-transform: scaleX(-1); }
+    100% { -webkit-transform: scaleX(1); }
+}
+@keyframes spin {
+    50% { -webkit-transform: scaleX(-1); transform:scaleX(-1); }
+    100% { -webkit-transform: scaleX(1); transform:scaleX(1); }
+}
+
+.hidden {
+    visibility: hidden;
 }

@@ -1,6 +1,4 @@
 .runners-list {
-    width: 100%;
-    clear: left;
     margin-bottom: 10px;
     margin-top: 20px;
     min-height: 1em;
@@ -10,24 +8,50 @@
     font-size: 14px;
     line-height: 1.5;
 }
+
 .runners-list__item {
+    clear: both;
+    position: relative;
     cursor: pointer;
+    margin: 3px 0;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    padding-top: 1px;
+}
+
+.runners-list__item::after {
+    visibility: hidden;
+    display: block;
+    content: "";
+    clear: both;
+    height: 0;
+}
+
+.runners-list__item > * {
+    float: left;
+    min-height: 1em;
 }
 
 .runners-list__item.male:hover, .runners-list__item--selected.male {
-    background-color: #e7e9fd;
+    background: #e7e9fd;
+    background: linear-gradient(to right, #e7e9fd 90%, #fff 100%);
 }
+
 .runners-list__item--selected.male .runners-list__mark {
     background-color: #acf;
 }
+
 .runners-list__item.female:hover, .runners-list__item--selected.female {
-    background-color: #fce4ec;
+    background: #fce4ec;
+    background: linear-gradient(to right, #fce4ec 90%, #fff 100%);
 }
+
 .runners-list__item--selected.female .runners-list__mark {
     background-color: #fab;
 }
+
 .runners-list__item--selected .runners-list__mark {
-    padding: 0.3em 0.49em 0.1em;
+    padding: 0.3em 0.5em 0.2em;
     border-radius: 10px;
     margin-left: -0.49em;
 }
@@ -35,31 +59,41 @@
 .winner.male .runners-list__name {
     color: #4285e9;
 }
+
 .winner.female .runners-list__name {
     color: #f14b6b;
 }
 
 .runners-list__position {
+    padding-left: 0.49em;
     width: 5%;
     min-width: 20px;
 }
+
 .runners-list__name {
     width: 25%;
     min-width: 100px;
 }
+
 .runners-list__number {
-    width: 15%;
+    width: 8.1%;
     min-width: 20px;
 }
+
 .runners-list__age {
-    width: 20%;
+    width: 16.5%;
+    padding-left: 10px;
+    box-sizing: border-box;
 }
+
 .runners-list__team {
     width: 20%;
 }
+
 .runners-list__city {
-    width: 20%;
+    width: 18%;
 }
+
 .runners-list__result {
     font-family: Bold, Arial, Helvetica, sans-serif;
 }

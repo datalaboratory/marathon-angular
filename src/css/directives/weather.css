@@ -10,13 +10,16 @@
     margin-top: 19px;
     font-family: Bold, Arial, Helvetica, sans-serif;
 }
+
 .weather__sky {
     float: left;
     margin-left: 5px;
 }
+
 .weather__sky-img {
     width: 150px;
 }
+
 .weather__wind {
     font-size: 14px;
     text-align: right;

@@ -1,6 +1,7 @@
 .dropdown-filter {
     width: 20%;
 }
+
 .dropdown-filter__list {
     max-height: 300px;
     width: 200px;
@@ -9,12 +10,15 @@
     border: 1px solid #DCDCDC;
     margin-top: -1px;
     background: #fff;
+    z-index: 10;
 }
+
 .dropdown-filter__item {
     padding: 2px 10px;
     cursor: pointer;
     font-size: 13px;
 }
+
 .dropdown-filter__item:hover {
     background-color: #F5F5F5;
 }
@@ -22,6 +26,7 @@
 .dropdown-filter__item--active, .dropdown-filter__item--active:hover {
     background-color: #CCC;
 }
+
 .dropdown-filter__current-value {
     width: 100%;
     color: #333;
@@ -36,11 +41,12 @@
     cursor: pointer;
     outline: 0;
 }
+
 .dropdown-filter__current-value:first-letter {
     text-transform: uppercase;
 }
 
-.dropdown-filter__current-value .dropdown-filter__count{
+.dropdown-filter__current-value .dropdown-filter__count {
     display: none;
 }
 
@@ -53,6 +59,7 @@
     width: auto;
     margin: 0;
 }
+
 .team-filter.dropdown-filter, .city-filter.dropdown-filter, .age-group-filter.dropdown-filter {
     padding-right: 15px;
 }
@@ -60,9 +67,11 @@
 .gender-filter .dropdown-filter__item {
     float: left;
 }
+
 .gender-filter .dropdown-filter__item:first-child {
     float: right;
 }
+
 .gender-filter .dropdown-filter__list {
     display: block;
     position: static;
@@ -72,53 +81,66 @@
     border: none;
     border-radius: 0;
 }
+
 .gender-filter .dropdown-filter__current-value {
     display: none;
 }
+
 .gender-filter .dropdown-filter__item {
     background: none;
     border: none;
     padding: 1px 0;
 }
+
 .gender-filter .dropdown-filter__item:hover {
     background: none;
 }
+
 .gender-filter .dropdown-filter__item--active .gender-filter__item-female {
     background: #f14b6b;
     color: #fff;
 }
+
 .gender-filter .dropdown-filter__item--active .gender-filter__item-male {
     background: #4285e9;
     color: #fff;
 }
+
 .gender-filter .dropdown-filter__item--active .gender-filter__item-all {
     background-image: url(../img/all-runners-bg.png);
     background-size: 100%;
     color: #fff;
 }
+
 .gender-filter__item-male, .gender-filter__item-female, .gender-filter__item-all {
     font-size: 14px;
     padding: 4px 10px 4px 10px;
     border: 1px solid #ccc;
 }
+
 .disable-gender .gender-filter__item-male, .disable-gender .gender-filter__item-female, .disable-gender .gender-filter__item-all {
     background: none !important;
     color: #333 !important;
 }
+
 .gender-filter__item-all {
     border-radius: 0 3px 3px 0;
 }
+
 .gender-filter__item-male {
     border-left: none;
     border-right: none;
 }
+
 .age-group-filter.dropdown-filter {
     width: 16.5%;
 }
+
 .team-filter.dropdown-filter {
     width: 20%
 }
-.team-filter.dropdown-filter .dropdown-filter__item:last-child{
+
+.team-filter.dropdown-filter .dropdown-filter__item:last-child {
     color: #7f7f7f;
 }
 

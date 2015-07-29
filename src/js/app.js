@@ -35,8 +35,9 @@ app.config(function ($translateProvider) {
             METER_PER_SECOND: 'м/с',
             NAME_OR_NUMBER: 'Имя или номер',
             SHOW_MORE_RESULTS: 'Показать еще 100 результатов',
-            VIZUALIZATION: 'Визуализация',
-            BY_DATA_LABORATORY: 'Лаборатории&nbsp;данных'
+            VISUALIZATION: 'Визуализация',
+            BY_DATA_LABORATORY: 'Лаборатории&nbsp;данных',
+            MAP_SRC: 'img/half-marathon-map.png'
         })
         .translations('en', {
             MAIN_TITLE: 'MOSCOW HALF MARATHON',
@@ -69,8 +70,9 @@ app.config(function ($translateProvider) {
             METER_PER_SECOND: 'm/s',
             NAME_OR_NUMBER: 'Name or number',
             SHOW_MORE_RESULTS: 'Show more 100 results',
-            VIZUALIZATION: 'Vizualization',
-            BY_DATA_LABORATORY: 'by&nbsp;   Data&nbsp;laboratory'
+            VISUALIZATION: 'Visualization',
+            BY_DATA_LABORATORY: 'by&nbsp;Data&nbsp;laboratory',
+            MAP_SRC: 'img/half-marathon-map.png'
         });
     $translateProvider.preferredLanguage('ru');
 });

@@ -1,5 +1,5 @@
-<table class="runners-list">
-    <tr
+<div class="runners-list">
+    <div
             data-ng-repeat="runner in runnersList track by runner.id"
             data-ng-click="selectRunner(runner)"
             data-ng-class="{
@@ -9,16 +9,16 @@
             'winner': runner.winner}"
             class="runners-list__item"
             >
-        <td class="runners-list__position">
+        <div class="runners-list__position">
             <span class="runners-list__mark">
                 <span data-ng-show="!filterValues.gender && !states.winnersInTable">{{runner.pos}}</span>
                 <span data-ng-show="filterValues.gender || states.winnersInTable">{{runner.gender_pos}}</span>
-            </span></td>
-        <td class="runners-list__name">{{runner.full_name}}</td>
-        <td class="runners-list__number">{{runner.num}}</td>
-        <td class="runners-list__age">{{runner.age}}</td>
-        <td class="runners-list__team">{{runner.realTeam}}</td>
-        <td class="runners-list__city">{{runner.city}}</td>
-        <td class="runners-list__result">{{runner.result_time_string}}</td>
-    </tr>
-</table>
+            </span></div>
+        <div class="runners-list__name">{{runner.full_name}}</div>
+        <div class="runners-list__number">{{runner.num}}</div>
+        <div class="runners-list__age">{{runner.age}}</div>
+        <div class="runners-list__team">{{runner.realTeam}}</div>
+        <div class="runners-list__city">{{runner.city}}</div>
+        <div class="runners-list__result">{{runner.result_time_string}}</div>
+    </div>
+</div>

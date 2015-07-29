@@ -9,9 +9,11 @@
     cursor: default;
     pointer-events: none;
 }
+
 .selected-runners__rect-male {
     fill: rgb(68, 136, 238);
 }
+
 .selected-runners__rect-female {
     fill: rgb(255, 68, 102);
 }

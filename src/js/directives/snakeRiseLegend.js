@@ -75,7 +75,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                         male: malePosition,
                         female: heightScale(countFemale / 2)
                     }
-                }
+                };
             }
 
             function formatSnakePath(width, height, factor) {

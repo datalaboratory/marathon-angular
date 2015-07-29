@@ -15,19 +15,23 @@
     height: 20px;
     float: left;
 }
+
 .track-switch__text {
     font-size: 24px;
     padding: 4px 11px 4px 0px;
     float: left;
     height: 20px;
 }
+
 .track-switch__item {
     float: left;
     cursor: pointer;
 }
+
 .track-switch__item:last-child {
     border-left: 1px solid #ccc;
 }
+
 .track-switch__item--active {
     background-color: #ffdd00;
     cursor: default;
