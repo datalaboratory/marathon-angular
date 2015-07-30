@@ -1,9 +1,15 @@
-angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $q, $parse, $timeout, numberDeclension, multifilter) {
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $q, $parse, $timeout, $location, numberDeclension, multifilter) {
     $rootScope.language = 'ru';
     $scope.setLanguage = function (lang) {
         $rootScope.language = lang;
         $translate.use(lang);
     };
+    $rootScope.$on('$locationChangeSuccess', function () {
+        var lang = $location.path().slice(1);
+        $rootScope.language = lang;
+        $translate.use(lang);
+    });
+
 
     $(window).on('resize', function () {
         $scope.$emit('renderRequired');

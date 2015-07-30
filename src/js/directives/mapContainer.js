@@ -60,6 +60,7 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track,
                         };
                         $scope.pathData = track.getPathData();
                     }
+
                     function drawSnake(time) {
                         if (!time) return;
                         time *= 1;
@@ -80,8 +81,8 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track,
                         drawSnake($scope.time.current);
                     }, true);
                     $scope.$watch('time.current', drawSnake);
-                    $scope.$on('render', function() {
-                            updateTrack();
+                    $scope.$on('render', function () {
+                        updateTrack();
                     });
                     $scope.$on('trackUpdated', function () {
                         drawSnake($scope.time.current);
