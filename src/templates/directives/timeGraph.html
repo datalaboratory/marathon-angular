@@ -9,7 +9,7 @@
             {{runnersCount.female}} {{runnersCount.female | numberDeclension:( 'WOMEN_DECLENSION' | translate)}}</span>
         <span class="time-graph__text" data-ng-show="runnersCount.male || runnersCount.female">
             <span data-ng-show="runnersCount.minAge != runnersCount.maxAge">
-                <br>{{'FROM' | translate}} {{runnersCount.minAge}} {{'TO' | translate}} </span>
+                <br><span data-ng-show="language == 'ru'">{{'FROM' | translate}}</span> {{runnersCount.minAge}} {{'TO' | translate}} </span>
             {{runnersCount.maxAge}} {{runnersCount.maxAge | numberDeclension:('YEAR_DECLENSION' | translate)}}</span>
         <span class="time-graph__text" data-ng-show="runnersCount.male || runnersCount.female">
             <br>{{'FINISH_TIME' | translate}}</span>

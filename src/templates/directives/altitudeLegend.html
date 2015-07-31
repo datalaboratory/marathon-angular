@@ -1,56 +1,60 @@
-<svg data-lab-size-to-scales="sizeScales" class="legend-altitude">
-    <g data-ng-if="altGraph">
+<svg data-lab-size-to-scales="altitudeSizeScales" class="legend-altitude">
+    <g data-ng-if="altGraph" data-lab-margin>
         <path class="legend-altitude__path" data-ng-attr-d="{{altGraph.pathData}}"></path>
         <line
-                data-ng-repeat="mark in altGraph.distanceMarks"
-                data-ng-attr-x1="{{altGraph.xFromDistance(mark)}}"
-                data-ng-attr-x2="{{altGraph.xFromDistance(mark)}}"
-                data-ng-attr-y1="{{altGraph.min.y + 10 }}"
-                data-ng-attr-y2="{{altGraph.max.y - 5 }}"
-                class="legend-altitude__mark"></line>
+            data-ng-repeat="mark in altGraph.distanceMarks"
+            data-ng-attr-x1="{{scaleXFromDistance(mark)}}"
+            data-ng-attr-x2="{{scaleXFromDistance(mark)}}"
+            data-ng-attr-y1="{{altGraph.min.y + 10 }}"
+            data-ng-attr-y2="{{altGraph.max.y - 5 }}"
+            class="legend-altitude__mark"></line>
         <text
-                data-ng-repeat="mark in altGraph.distanceMarks"
-                data-ng-attr-x="{{altGraph.xFromDistance(mark)}}"
-                data-ng-attr-y="{{altGraph.min.y + 10 }}"
-                dy="9.5"
-                class="legend-altitude__mark-text"
-                >{{mark.toString().replace('.', ',')}}<tspan
-            data-ng-show="$first">{{'KILOMETER' | translate}}</tspan></text>
+            data-ng-repeat="mark in altGraph.distanceMarks"
+            data-ng-attr-x="{{scaleXFromDistance(mark)}}"
+            data-ng-attr-y="{{altGraph.min.y + 10 }}"
+            dy="9.5"
+            class="legend-altitude__mark-text"
+            >{{mark.toString().replace('.', ',')}}
+            <tspan
+                data-ng-show="$first">{{'KILOMETER' | translate}}
+            </tspan>
+        </text>
         <circle
-                data-ng-attr-cx="{{altGraph.max.x}}"
-                data-ng-attr-cy="{{altGraph.max.y}}"
-                data-ng-attr-r="{{altGraph.pointRadius}}"></circle>
+            data-ng-attr-cx="{{altGraph.max.x}}"
+            data-ng-attr-cy="{{altGraph.max.y}}"
+            data-ng-attr-r="{{altGraph.pointRadius}}"></circle>
         <circle
-                data-ng-attr-cx="{{altGraph.min.x}}"
-                data-ng-attr-cy="{{altGraph.min.y}}"
-                data-ng-attr-r="{{altGraph.pointRadius}}"></circle>
+            data-ng-attr-cx="{{altGraph.min.x}}"
+            data-ng-attr-cy="{{altGraph.min.y}}"
+            data-ng-attr-r="{{altGraph.pointRadius}}"></circle>
         <text
-                data-ng-attr-x="{{altGraph.max.x}}"
-                data-ng-attr-y="{{altGraph.max.y - 5}}"
-                class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.max.num]}}{{'METER' | translate}}</text>
-        <!--TODO: локализация-->
+            data-ng-attr-x="{{altGraph.max.x}}"
+            data-ng-attr-y="{{altGraph.max.y - 5}}"
+            class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.max.num]}}{{'METER' | translate}}
+        </text>
         <text
-                data-ng-attr-x="{{altGraph.min.x}}"
-                data-ng-attr-y="{{altGraph.min.y + 12}}"
-                class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.min.num]}}{{'METER' | translate}}</text>
+            data-ng-attr-x="{{altGraph.min.x}}"
+            data-ng-attr-y="{{altGraph.min.y + 12}}"
+            class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.min.num]}}{{'METER' | translate}}
+        </text>
         <image xlink:href="img/mark-yel.png"
-               data-ng-attr-x="{{sizeScales.x(0) - altGraph.imgSize / 2}}"
-               data-ng-attr-y="{{sizeScales.y(altGraph.altitudes[0]) - altGraph.imgSize}}"
-               data-ng-attr-width="{{altGraph.imgSize}}px"
-               data-ng-attr-height="{{altGraph.imgSize}}px"></image>
+               data-ng-attr-x="{{(scaleX(0) - altGraph.imgSize / 2) | preventNaN }}"
+               data-ng-attr-y="{{(scaleY(altGraph.altitudes[0]) - altGraph.imgSize) | preventNaN }}"
+               data-ng-attr-width="{{altGraph.imgSize}}"
+               data-ng-attr-height="{{altGraph.imgSize}}"></image>
         <image xlink:href="img/mark-red.png"
-               data-ng-attr-x="{{sizeScales.x(altGraph.altitudes.length) - altGraph.imgSize / 2}}"
-               data-ng-attr-y="{{sizeScales.y(altGraph.altitudes[altGraph.altitudes.length - 1]) - altGraph.imgSize}}"
-               data-ng-attr-width="{{altGraph.imgSize}}px"
-               data-ng-attr-height="{{altGraph.imgSize}}px"></image>
+               data-ng-attr-x="{{(scaleX(altGraph.altitudes.length) - altGraph.imgSize / 2) | preventNaN }}"
+               data-ng-attr-y="{{(scaleY(altGraph.altitudes[altGraph.altitudes.length - 1]) - altGraph.imgSize) | preventNaN }}"
+               data-ng-attr-width="{{altGraph.imgSize}}"
+               data-ng-attr-height="{{altGraph.imgSize}}"></image>
         <linearGradient
-                id="altitudeGradient"
-                gradientUnits="userSpaceOnUse"
-                data-ng-attr-x1="{{altGraph.min.x}}"
-                data-ng-attr-y1="{{altGraph.min.y}}"
-                data-ng-attr-x2="{{altGraph.min.x}}"
-                data-ng-attr-y2="{{altGraph.max.y}}"
-                >
+            id="altitudeGradient"
+            gradientUnits="userSpaceOnUse"
+            data-ng-attr-x1="{{altGraph.min.x}}"
+            data-ng-attr-y1="{{altGraph.min.y}}"
+            data-ng-attr-x2="{{altGraph.min.x}}"
+            data-ng-attr-y2="{{altGraph.max.y}}"
+            >
             <stop offset="0%" stop-color="#fc0"></stop>
             <stop offset="100%" stop-color="#f03"></stop>
         </linearGradient>

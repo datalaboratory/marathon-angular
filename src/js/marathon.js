@@ -1,9 +1,6 @@
-angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $q, $parse, $timeout, $location, numberDeclension, multifilter) {
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, $location, numberDeclension, multifilter) {
     $rootScope.language = 'ru';
-    $scope.setLanguage = function (lang) {
-        $rootScope.language = lang;
-        $translate.use(lang);
-    };
+
     $rootScope.$on('$locationChangeSuccess', function () {
         var lang = $location.path().slice(1);
         $rootScope.language = lang;
@@ -16,20 +13,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     });
 
     var renderRequired = false;
-    var render = {
-        margin: {
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0
-        }
-    };
     $rootScope.$on('renderRequired', function () {
         renderRequired = true;
         $timeout(function () {
             if (!renderRequired) return;
             renderRequired = false;
-            $rootScope.$broadcast('render', render);
+            $rootScope.$broadcast('startRender');
         });
     });
     $scope.externalData = {
@@ -44,12 +33,15 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     };
 
     $scope.$watch('currentTrackName', function (name) {
-        $scope.selectedTrack = $scope.externalData.track[name];
-        $scope.selectedRunnersData = $scope.externalData.runners[name];
+        $rootScope.$broadcast('showCover:map');
+        $timeout(function () {
+            $scope.selectedTrack = $scope.externalData.track[name];
+            $scope.selectedRunnersData = $scope.externalData.runners[name];
 
-        $scope.selectedRunners = [];
-        $scope.filteredRunners = null;
-        $scope.filterValues = {};
+            $scope.selectedRunners = [];
+            $scope.filteredRunners = null;
+            $scope.filterValues = {};
+        });
     });
 
     $scope.clearFilters = function () {
@@ -153,7 +145,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             filter[key] = item;
             var count = multifilter(filteredItems, filter).length;
             var name = item;
-            if (-1 != name.indexOf('|')) name = $parse(name)($scope);
+            if (-1 != name.indexOf('|')) name = translate(name);
             result[item] = name + '<span class="dropdown-filter__count">' + count + '</span>';
         });
         return result;
@@ -261,6 +253,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     }
 
     $scope.$watch('selectedRunnersData', function (selectedRunnersData) {
+        if (!selectedRunnersData) return;
         selectedRunnersData.then(function (data) {
             data = $scope.runnersData = data.data;
             var timePercent = 0.2;
@@ -308,7 +301,9 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             return smallTeams[team] < 3;
         });
         runnersData.items.forEach(function (runner) {
-            runner.realTeam = runner.team;
+            if (!angular.isDefined(runner.realTeam)) {
+                runner.realTeam = runner.team;
+            }
             if (-1 != smallTeams.indexOf(runner.team) || runner.team == '')
                 runner.team = othersTeam;
         });

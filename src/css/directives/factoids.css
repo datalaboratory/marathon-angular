@@ -2,6 +2,7 @@
     height: 0;
     position: absolute;
     letter-spacing: 0.03em;
+    z-index: -1;
 }
 
 .factoids__factoid {

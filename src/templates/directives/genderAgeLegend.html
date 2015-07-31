@@ -80,7 +80,7 @@
             data-ng-if="tooltipData">
         <span data-ng-hide="isLast">
             {{tooltipData.count}} {{tooltipData.count | numberDeclension:(tooltipData.genderString | translate) }} <br>
-            {{'FROM' | translate}} {{tooltipData.start}} {{'TO' | translate}} {{tooltipData.end}} {{10 | numberDeclension:('YEAR_DECLENSION' | translate)}}
+            <span data-ng-show="language == 'ru'">{{'FROM' | translate}}</span> {{tooltipData.start}} {{'TO' | translate}} {{tooltipData.end}} {{10 | numberDeclension:('YEAR_DECLENSION' | translate)}}
         </span>
         <span data-ng-show="isLast">
             {{tooltipData.count}} {{tooltipData.count | numberDeclension:(tooltipData.genderString | translate) }} <br>

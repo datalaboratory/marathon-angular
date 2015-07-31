@@ -1,0 +1,119 @@
+<div class="big-wrap">
+    <div data-ng-controller="MarathonController">
+        <div class="loader-container loader-container--active" loading-cover="marathon">
+            <div class="loader-container__cover">
+                <div class="loader-container__image"></div>
+            </div>
+            <div class="map-container-container loader-container loader-container--inactive" loading-cover="map">
+                <map-container data-ng-if="filteredRunners"></map-container>
+                <div class="loader-container__cover">
+                    <div class="loader-container__image"></div>
+                </div>
+            </div>
+            <div class="map-overlay">
+                <factoids data-ng-if="time.start"></factoids>
+                <div class="map-overlay__header">
+                    <span class="map-overlay__title">{{ 'MAIN_TITLE' | translate }}</span>
+
+                    <div class="track-switch-container">
+                        <track-switch></track-switch>
+                    </div>
+                    <div class="language-buttons">
+                        <a href="#/en">EN</a>
+                        <a href="#/ru">RU</a>
+                    </div>
+                </div>
+                <div class="map-overlay__right-column">
+                    <div class="map-overlay__weather">
+                        <weather data-ng-if="time.start"></weather>
+                    </div>
+                    <div class="map-overlay__legend">
+                        <div class="legend">
+                            <div class="legend__altitude">
+                                <span class="legend__header">{{ 'ALTITUDE_TITLE' | translate }}</span>
+                                <div class="legend__altitude-container">
+                                    <altitude-legend></altitude-legend>
+                                </div>
+                            <span class="legend__altitude-text"
+                                  data-ng-bind-html="'ALTITUDE_TEXT' | translate | trust "></span>
+                            </div>
+                            <div class="legend__gender-age">
+                                <span class="legend__header">{{ 'GENDER_AGE_TITLE' | translate }}</span>
+
+                                <div class="legend__gender-age-container">
+                                    <gender-age-legend data-ng-if="runnersData"></gender-age-legend>
+                                </div>
+                            </div>
+                            <div class="legend__snake-rise">
+                                <span class="legend__header">{{ 'SNAKE_WIDTH_TITLE' | translate }}</span>
+                                <snake-rise-legend data-ng-if="filteredRunners"></snake-rise-legend>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='map-overlay__social-buttons'>
+                        <div class="likely">
+                            <div class="facebook"></div>
+                            <div class="twitter" data-via="moscowmarathon"></div>
+                            <div class="vkontakte"></div>
+                            <div class="gplus"></div>
+                        </div>
+                    </div>
+                    <div class="map-overlay__copyright">
+                        <a href="http://datalaboratory.ru/"><img class="map-overlay__copyright-logo"
+                                                                 src="img/dl-logo.png"/></a>
+                    <span class="map-overlay__copyright-text">
+                        {{'VISUALIZATION' | translate}}
+                        <a href="http://datalaboratory.ru/"
+                           class="map-overlay__copyright-link"
+                           data-ng-bind-html="'BY_DATA_LABORATORY' | translate | trust">
+                        </a>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <div class="time-graph-container">
+                <time-graph data-ng-if="filteredRunners"></time-graph>
+            </div>
+            <sticky-header>
+                <div class="filters-container">
+                    <div>
+                        <h2 class="filters-container__h2">{{ 'RESULTS' | translate }}</h2>
+
+                        <div
+                            class="filters-container__gender-filter"
+                            data-ng-class="{'disable-gender': states.winnersInTable}"
+                            data-ng-hide="storage.search.length">
+                    <span
+                        class="filters-container__winners-filter"
+                        data-ng-click="showWinners()"
+                        data-ng-class="{'filters-container__winners-filter--active': states.winnersInTable}">{{'WINNERS' | translate}}</span>
+                            <data-lab-dropdown-filter
+                                config="filterGender"
+                                class="{{filterGender.filterClass}}"
+                                data-ng-if="filterGender"
+                                data-ng-click="states.winnersInTable = false"></data-lab-dropdown-filter>
+                        </div>
+                    </div>
+                    <div class="filters-container__filters">
+                        <search data-storage="storage.search"></search>
+                        <data-lab-dropdown-filter
+                            data-ng-hide="storage.search.length"
+                            config="filter"
+                            class="{{filter.filterClass}}"
+                            data-ng-repeat="filter in filters"></data-lab-dropdown-filter>
+                        <div
+                            class="filters-container__clear"
+                            data-ng-show="(filterValues.ageGroup || filterValues.team || filterValues.city) && !storage.search.length"
+                            data-ng-click="clearFilters()"></div>
+                    </div>
+                </div>
+            </sticky-header>
+            <runners-list data-ng-if="limitedFilteredRunners"></runners-list>
+            <div
+                class="add-runners"
+                data-ng-click="limit = limit + 100"
+                data-ng-show="limitedFilteredRunners && !states.winnersInTable && (filteredRunners.length - limitedFilteredRunners.length > 0)">{{'SHOW_MORE_RESULTS' | translate}}
+            </div>
+        </div>
+    </div>
+</div>

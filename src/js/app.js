@@ -5,6 +5,8 @@ var app = angular.module('marathon', [
 app.config(function ($translateProvider) {
     $translateProvider
         .translations('ru', {
+            HEAD_TITLE: 'Результаты Московского полумарафона 17 мая 2015 года',
+            SHARED_IMG: '/img/screenshot.png',
             MAIN_TITLE: 'МОСКОВСКИЙ ПОЛУМАРАФОН',
             ALTITUDE_TITLE: 'Высотный профиль',
             GENDER_AGE_TITLE: 'Пол и возраст',
@@ -40,6 +42,8 @@ app.config(function ($translateProvider) {
             MAP_SRC: 'img/half-marathon-map.png'
         })
         .translations('en', {
+            HEAD_TITLE: 'Results Moscow half marathon May 17, 2015',
+            SHARED_IMG: '/img/screenshot_eng.png',
             MAIN_TITLE: 'MOSCOW HALF MARATHON',
             ALTITUDE_TITLE: 'Altitude',
             GENDER_AGE_TITLE: 'Age and sex',

@@ -1,4 +1,12 @@
 angular.module('marathon').directive('timeGraph', function (mapHelper, toGrayscale, $timeout) {
+    var render = {
+        margin: {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+        }
+    };
     return {
         restrict: 'E',
         templateUrl: 'directives/timeGraph.html',
@@ -230,6 +238,10 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                     updatePaths();
                 }, true);
 
+
+                $scope.$on('startRender', function () {
+                    $scope.$broadcast('render', render);
+                });
                 $scope.$on('render', function() {
                     $timeout(function () {
                         width = $element.width();

@@ -33,29 +33,42 @@ angular.module('marathon').factory('track', function ($rootScope) {
         projection.scale(s).translate(t);
         pathData = path(geodata);
         pathElement.attr('d', pathData);
-        $rootScope.$broadcast('trackUpdated');
     }
-    function updateContainerSize(w, h){
+
+    function updateContainerSize(w, h) {
         width = w;
         height = h;
         updateAll();
     }
+
     function updateGeodata(data) {
         geodata = data;
         updateAll();
+        $rootScope.$broadcast('trackUpdated');
     }
+
+    function getAltitudes() {
+        return geodata.geometry.coordinates.map(function (point) {
+            return point[2]
+        })
+    }
+
     function getTotalLength() {
         return pathElement[0].getTotalLength();
     }
+
     function getTrackLength() {
         return trackLength;
     }
+
     function getPointAtLength(length) {
         return pathElement[0].getPointAtLength(length);
     }
+
     function getPathData() {
         return pathData;
     }
+
     function getProjectedPoint(latlon) {
         return projection(latlon)
     }
@@ -67,6 +80,7 @@ angular.module('marathon').factory('track', function ($rootScope) {
         getPointAtLength: getPointAtLength,
         getPathData: getPathData,
         getProjectedPoint: getProjectedPoint,
+        getAltitudes: getAltitudes,
         updateContainerSize: updateContainerSize,
         updateGeodata: updateGeodata
     };

@@ -1,51 +1,52 @@
 <div class="map-container">
-    <selected-runner-tooltip
-        runner="selectedRunnerOnMap.runner"
-        position="selectedRunnerOnMap.position"
-        data-ng-show="selectedRunnerOnMap.runner"></selected-runner-tooltip>
-    <svg class="map-container__svg">
-        <image
-            class="map-container__background-map"
-            xlink:href="{{'MAP_SRC' | translate}}"
-            data-ng-attr-width="{{mapParams[currentTrackName].width}}"
-            data-ng-attr-height="{{mapParams[currentTrackName].height}}"
-            data-ng-attr-x="{{mapParams[currentTrackName].x}}"
-            data-ng-attr-y="{{mapParams[currentTrackName].y}}"/>
-        <g class="snakeGroup">
-            <path
-                data-ng-attr-d="{{pathData}}"
-                class="snake-group__track"></path>
-            <path
-                data-ng-repeat="area in ageAreas"
-                data-ng-attr-d="{{area.d}}"
-                data-ng-attr-fill="{{area.color}}"
-                class="snake-group__snake"></path>
+    <div>
+        <selected-runner-tooltip
+            runner="selectedRunnerOnMap.runner"
+            position="selectedRunnerOnMap.position"
+            data-ng-show="selectedRunnerOnMap.runner"></selected-runner-tooltip>
+        <svg class="map-container__svg">
+            <image
+                class="map-container__background-map"
+                xlink:href="{{'MAP_SRC' | translate}}"
+                data-ng-attr-width="{{mapParams[currentTrackName].width}}"
+                data-ng-attr-height="{{mapParams[currentTrackName].height}}"
+                data-ng-attr-x="{{mapParams[currentTrackName].x}}"
+                data-ng-attr-y="{{mapParams[currentTrackName].y}}"/>
+            <g class="snakeGroup">
+                <path
+                    data-ng-attr-d="{{pathData}}"
+                    class="snake-group__track"></path>
+                <path
+                    data-ng-repeat="area in ageAreas"
+                    data-ng-attr-d="{{area.d}}"
+                    data-ng-attr-fill="{{area.color}}"
+                    class="snake-group__snake"></path>
 
-            <circle
-                data-ng-repeat="circle in circles"
-                data-ng-attr-cx="{{circle.cx}}"
-                data-ng-attr-cy="{{circle.cy}}"
-                data-ng-attr-r="{{circle.r}}"
-                data-ng-attr-fill="{{circle.fill}}"
-                data-distance="{{circle.distance}}"></circle>
-        </g>
-        <g data-ng-if="flags">
-            <image class="map-container__start-finish"
-                   xlink:href="img/mark-yel.png"
-                   data-ng-attr-width="{{flags.width}}"
-                   data-ng-attr-height="{{flags.height}}"
-                   data-ng-attr-x="{{flags.start.x - flags.width / 2}}"
-                   data-ng-attr-y="{{flags.start.y - flags.height}}"/>
-            <image/>
-            <image class="map-container__start-finish"
-                   xlink:href="img/mark-red.png"
-                   data-ng-attr-width="{{flags.width}}"
-                   data-ng-attr-height="{{flags.height}}"
-                   data-ng-attr-x="{{flags.finish.x - flags.width / 2}}"
-                   data-ng-attr-y="{{flags.finish.y - flags.height}}"/>
-            <image/>
-        </g>
-        <selected-runners></selected-runners>
-    </svg>
-
+                <circle
+                    data-ng-repeat="circle in circles"
+                    data-ng-attr-cx="{{circle.cx}}"
+                    data-ng-attr-cy="{{circle.cy}}"
+                    data-ng-attr-r="{{circle.r}}"
+                    data-ng-attr-fill="{{circle.fill}}"
+                    data-distance="{{circle.distance}}"></circle>
+            </g>
+            <g data-ng-if="flags">
+                <image class="map-container__start-finish"
+                       xlink:href="img/mark-yel.png"
+                       data-ng-attr-width="{{flags.width}}"
+                       data-ng-attr-height="{{flags.height}}"
+                       data-ng-attr-x="{{flags.start.x - flags.width / 2}}"
+                       data-ng-attr-y="{{flags.start.y - flags.height}}"/>
+                <image/>
+                <image class="map-container__start-finish"
+                       xlink:href="img/mark-red.png"
+                       data-ng-attr-width="{{flags.width}}"
+                       data-ng-attr-height="{{flags.height}}"
+                       data-ng-attr-x="{{flags.finish.x - flags.width / 2}}"
+                       data-ng-attr-y="{{flags.finish.y - flags.height}}"/>
+                <image/>
+            </g>
+            <selected-runners></selected-runners>
+        </svg>
+    </div>
 </div>
