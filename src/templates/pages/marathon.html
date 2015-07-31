@@ -81,12 +81,11 @@
 
                         <div
                             class="filters-container__gender-filter"
-                            data-ng-class="{'disable-gender': states.winnersInTable}"
-                            data-ng-hide="storage.search.length">
-                    <span
-                        class="filters-container__winners-filter"
-                        data-ng-click="showWinners()"
-                        data-ng-class="{'filters-container__winners-filter--active': states.winnersInTable}">{{'WINNERS' | translate}}</span>
+                            data-ng-class="{'disable-gender': states.winnersInTable}">
+                            <span
+                                class="filters-container__winners-filter"
+                                data-ng-click="showWinners()"
+                                data-ng-class="{'filters-container__winners-filter--active': states.winnersInTable}">{{'WINNERS' | translate}}</span>
                             <data-lab-dropdown-filter
                                 config="filterGender"
                                 class="{{filterGender.filterClass}}"

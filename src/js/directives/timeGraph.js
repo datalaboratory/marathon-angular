@@ -138,7 +138,6 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                         male: {
                             runner: winnerMale,
                             position: {
-                                x: $scope.timeScale(winnerMale.end_time),
                                 y: height - 90
                             },
                             color: $scope.genderGradients[1]($scope.colorNumberScale(winnerMale.age)),
@@ -148,7 +147,6 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                         female: {
                             runner: winnerFemale,
                             position: {
-                                x: $scope.timeScale(winnerFemale.end_time),
                                 y: height - 160
                             },
                             color: $scope.genderGradients[0]($scope.colorNumberScale(winnerFemale.age)),

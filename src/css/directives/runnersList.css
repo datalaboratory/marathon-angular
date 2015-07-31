@@ -56,6 +56,11 @@
     margin-left: -0.49em;
 }
 
+.runners-list__item.off:hover {
+    background: #f3f3f3;
+    background: linear-gradient(to right, #f3f3f3 90%, #fff 100%);
+}
+
 .winner.male .runners-list__name {
     color: #4285e9;
 }

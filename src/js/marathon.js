@@ -15,7 +15,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     var renderRequired = false;
     $rootScope.$on('renderRequired', function () {
         renderRequired = true;
-        $timeout(function () {
+        $timeout(function startRender() {
             if (!renderRequired) return;
             renderRequired = false;
             $rootScope.$broadcast('startRender');
@@ -47,7 +47,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     $scope.clearFilters = function () {
         Object.keys($scope.filterValues).forEach(function (key) {
             if (key == 'gender') return;
-            $scope.filterValues[key] = null;
+            delete $scope.filterValues[key];
         })
     };
 
@@ -99,8 +99,8 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     };
 
     function updateLimit() {
-        if (!$scope.filteredRunners) return;
-        $scope.limitedFilteredRunners = $scope.filteredRunners.slice(0, $scope.limit);
+        if (!$scope.filteredRunnersForTable) return;
+        $scope.limitedFilteredRunners = $scope.filteredRunnersForTable.slice(0, $scope.limit);
     }
 
     var othersTeam = '"TEAMS_OTHER" | translate';
@@ -223,11 +223,20 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         .domain(ageGroupStarts)
         .range(d3.range(1, 6));
 
-    function applyFilters() {
+    function filterRunners() {
         var runners = $scope.runnersData.items;
         var query = $scope.storage.search;
         if (angular.isString(query) && query.length) {
-            $scope.filteredRunners = runners.filter(function (runner) {
+            var searchRunners = runners;
+            Object.keys($scope.filterValues).forEach(function (key) {
+                if (key == 'gender') return;
+                console.log('delete', key);
+                delete $scope.filterValues[key]
+            });
+            if (angular.isDefined($scope.filterValues.gender)) {
+                searchRunners = multifilter(searchRunners, $scope.filterValues)
+            }
+            $scope.filteredRunnersForTable = searchRunners.filter(function (runner) {
                 var q = query.toLowerCase();
 
                 function found(where) {
@@ -240,9 +249,13 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 ].some(found);
             });
         } else {
-            $scope.filteredRunners = multifilter(runners, $scope.filterValues);
+            $scope.filteredRunnersForTable = multifilter(runners, $scope.filterValues);
         }
+        $scope.filteredRunners = $scope.filteredRunnersForTable.filter(function (runner) {
+           return runner.gender != 2
+        });
         updateLimit();
+        $scope.$emit('renderRequired');
     }
 
     function prefilter(key) {
@@ -290,7 +303,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     $scope.$watch('storage.search', function () {
         if (!$scope.runnersData) return;
         $scope.states.winnersInTable = false;
-        applyFilters()
+        filterRunners()
     });
 
     $scope.$watch('runnersData', function (runnersData) {
@@ -325,7 +338,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             $scope.states.winnersInTable = false;
         }
         $scope.limit = 100;
-        applyFilters();
+        filterRunners();
 
         $scope.filterGender.values = {
             0: '<span class="gender-filter__item-female">' + translate('WOMEN') + '</span>',
@@ -350,7 +363,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         });
         minMaxAges = translate('ALL') + ' ' + translate('FROM') + ' ' + minMaxAges.join(' ' + translate('TO') + ' ');
         $scope.filters.age.allValues = minMaxAges;
-        $scope.$emit('renderRequired');
     }
 
     $scope.$watch('filterValues', updateFilters, true);

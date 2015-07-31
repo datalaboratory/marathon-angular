@@ -15,6 +15,7 @@ angular.module('marathon').directive('runnersList', function () {
             $scope.$watch('limitedFilteredRunners', updateRunnersList);
 
             $scope.selectRunner = function (runner) {
+                if (runner.gender == 2) return;
                 var n = $scope.selectedRunners.indexOf(runner);
                 if (n >= 0) {
                     $scope.selectedRunners.splice(n,1);

@@ -31,7 +31,7 @@
         <g data-ng-if="winners">
             <g
                 data-ng-repeat="winner in [winners.female, winners.male]"
-                data-ng-attr-transform="translate({{winner.position.x}},{{winner.position.y}})"
+                data-ng-attr-transform="translate({{timeScale(winner.runner.end_time)}},{{winner.position.y}})"
                 >
                 <bottom-line
                     stroke="color=(time.current > winner.runner.end_time)? winner.color : winner.gray"
