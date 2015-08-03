@@ -16,5 +16,6 @@
     top: 0;
     left: 11%;
     right: 11%;
+    min-width: 1000px;
     z-index: 10;
 }

@@ -1,10 +1,10 @@
 <div class="big-wrap">
     <div data-ng-controller="MarathonController">
-        <div class="loader-container loader-container--active" loading-cover="marathon">
+        <div class="loader-container--active" loading-cover="marathon">
             <div class="loader-container__cover">
                 <div class="loader-container__image"></div>
             </div>
-            <div class="map-container-container loader-container loader-container--inactive" loading-cover="map">
+            <div class="map-container-container loader-container--inactive" loading-cover="map">
                 <map-container data-ng-if="filteredRunners"></map-container>
                 <div class="loader-container__cover">
                     <div class="loader-container__image"></div>
@@ -85,7 +85,7 @@
                             <span
                                 class="filters-container__winners-filter"
                                 data-ng-click="showWinners()"
-                                data-ng-class="{'filters-container__winners-filter--active': states.winnersInTable}">{{'WINNERS' | translate}}</span>
+                        data-ng-class="{'filters-container__winners-filter--active': states.winnersInTable}">{{'WINNERS' | translate}}</span>
                             <data-lab-dropdown-filter
                                 config="filterGender"
                                 class="{{filterGender.filterClass}}"

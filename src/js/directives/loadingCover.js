@@ -6,27 +6,24 @@ angular.module('marathon').directive('loadingCover', function () {
     return {
         restrict: 'A',
         link: function ($scope, $element, $attrs) {
-            if (state[$attrs.loadingCover] == true) {
-                $element
-                    .removeClass('loader-container--inactive')
-                    .addClass('loader-container--active');
-            } else {
-                $element
-                    .removeClass('loader-container--active')
-                    .addClass('loader-container--inactive');
-            }
-            $scope.$on('showCover:' + $attrs.loadingCover, function () {
+            function showCover() {
                 state[$attrs.loadingCover] = true;
                 $element
                     .removeClass('loader-container--inactive')
                     .addClass('loader-container--active');
-            });
-            $scope.$on('hideCover:' + $attrs.loadingCover, function () {
+            }
+            function hideCover() {
                 state[$attrs.loadingCover] = false;
                 $element
                     .removeClass('loader-container--active')
                     .addClass('loader-container--inactive');
-            });
+            }
+            if (state[$attrs.loadingCover])
+                showCover();
+            else
+                hideCover();
+            $scope.$on('showCover:' + $attrs.loadingCover, showCover);
+            $scope.$on('hideCover:' + $attrs.loadingCover, hideCover);
         }
     }
 });

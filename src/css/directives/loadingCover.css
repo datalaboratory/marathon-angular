@@ -6,7 +6,6 @@
     left: 0;
     background: #fff;
     z-index: 300;
-    overflow: hidden;
 }
 .map-container-container .loader-container__cover {
     position: absolute;

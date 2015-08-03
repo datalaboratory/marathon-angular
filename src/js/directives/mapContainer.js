@@ -1,4 +1,4 @@
-angular.module('marathon').directive('mapContainer', function (mapHelper, track, $timeout) {
+angular.module('marathon').directive('mapContainer', function (mapHelper, track) {
     var render = {
         margin: {
             left: 0,
@@ -67,7 +67,6 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track,
                     $scope.filteredRunners,
                     time);
             }
-
 
             var firstTime = true;
             $scope.$watch('selectedTrack', function (selectedTrack) {
