@@ -1,5 +1,6 @@
-.selected-runners__rect {
-
+.selected-runners__rect rect {
+    rx: 10;
+    ry: 10;
 }
 
 .selected-runners__text {
@@ -10,10 +11,10 @@
     pointer-events: none;
 }
 
-.selected-runners__rect-male {
+.selected-runners__rect-male rect {
     fill: rgb(68, 136, 238);
 }
 
-.selected-runners__rect-female {
+.selected-runners__rect-female rect {
     fill: rgb(255, 68, 102);
 }

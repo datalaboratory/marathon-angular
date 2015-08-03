@@ -49,8 +49,8 @@ angular.module('marathon').directive('altitudeLegend', function (mapHelper, trac
 
             function distanceMarks(distance_in_km) {
                 return {
-                    10: [2, distance_in_km / 2, 7],
-                    21: [5, distance_in_km / 2, 15]
+                    '10km': [2, distance_in_km / 2, 7],
+                    '21km': [5, distance_in_km / 2, 15]
                 }
             }
 

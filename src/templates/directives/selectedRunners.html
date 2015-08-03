@@ -4,14 +4,15 @@
         data-ng-attr-transform="translate({{getRunnerPosition(runner).x}},{{getRunnerPosition(runner).y}})"
         data-ng-mousemove="showTooltip($event, runner)"
         data-ng-mouseleave="selectedRunnerOnMap.runner = null">
-    <rect
-            class="selected-runners__rect"
-            data-ng-class="{
+    <selected-runner-dot
+        padding-x="6"
+        padding-top="4"
+        padding-bottom="2"
+        class="selected-runners__rect"
+        data-ng-class="{
             'selected-runners__rect-male': runner.gender == 1,
-            'selected-runners__rect-female': runner.gender == 0}"
-            data-ng-attr-width="{{20 + (runner.pos.toString().length - 1) * 6}}"
-            data-ng-attr-x="{{-(20 + (runner.pos.toString().length - 1) * 6)/2}}"
-            y="-10" rx="10" ry="10" height="20"></rect>
-    <text class="selected-runners__text" data-ng-show="!filterValues.gender">{{runner.pos}}</text>
-    <text class="selected-runners__text" data-ng-show="filterValues.gender">{{runner.gender_pos}}</text>
+            'selected-runners__rect-female': runner.gender == 0}">
+        <text class="selected-runners__text" data-ng-show="!filterValues.gender && !states.winnersInTable">{{runner.pos}}</text>
+        <text class="selected-runners__text" data-ng-show="filterValues.gender || states.winnersInTable">{{runner.gender_pos}}</text>
+    </selected-runner-dot>
 </g>

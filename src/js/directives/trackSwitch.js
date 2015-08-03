@@ -4,7 +4,7 @@ angular.module('marathon').directive('trackSwitch', function () {
         templateUrl: 'directives/trackSwitch.html',
         replace: true,
         link: function link($scope) {
-            $scope.currentTrackName = '10';
+            $scope.currentTrackName = '10km';
         }
     }
 });

@@ -23,12 +23,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     });
     $scope.externalData = {
         track: {
-            10: $http.get('data/geo/mm2015_17may-10km-geo.json'),
-            21: $http.get('data/geo/mm2015_17may-21km-geo.json')
+            '10km': $http.get('data/geo/mm2015_17may-10km-geo.json'),
+            '21km': $http.get('data/geo/mm2015_17may-21km-geo.json')
         },
         runners: {
-            10: $http.get('data/runners/data10.json'),
-            21: $http.get('data/runners/data21.json')
+            '10km': $http.get('data/runners/data10.json'),
+            '21km': $http.get('data/runners/data21.json')
         }
     };
 

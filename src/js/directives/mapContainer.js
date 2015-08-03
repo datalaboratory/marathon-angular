@@ -13,13 +13,13 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track,
         replace: true,
         link: function link($scope, $element) {
             $scope.mapParams = {
-                10: {
+                '10km': {
                     width: '78%',
                     height: '89%',
                     x: -36,
                     y: 85
                 },
-                21: {
+                '21km': {
                     width: '100%',
                     height: '85%',
                     x: -205,
