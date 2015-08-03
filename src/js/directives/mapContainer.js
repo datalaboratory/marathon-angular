@@ -81,7 +81,6 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track,
 
                     var runnerGroups = runners.runners_groups.slice().reverse();
                     runnerGroups.forEach(function (el) {
-                        if (!el) console.log(runnerGroups);
                         $scope.ageAreas[el.key] = {color: $scope.genderGradients[el.gender](el.num)}
                     });
                     if (firstTime) {

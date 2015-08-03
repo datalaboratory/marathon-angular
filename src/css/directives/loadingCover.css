@@ -10,7 +10,8 @@
 }
 .map-container-container .loader-container__cover {
     position: absolute;
-    z-index: 0;
+    top: 75px;
+    z-index: 1000;
 }
 .loader-container__image {
     position: absolute;
