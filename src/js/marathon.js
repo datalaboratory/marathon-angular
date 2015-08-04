@@ -87,7 +87,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     $scope.storage = {};
 
     $scope.states = {
-        winnersInTable: false
+        winnersInTable: true
     };
     var activatingWinners;
     $scope.showWinners = function () {
@@ -297,11 +297,13 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     $scope.winnersForTable.push(runner)
                 }
             });
+            $scope.states.winnersInTable = true;
         });
     });
 
     $scope.$watch('storage.search', function () {
         if (!$scope.runnersData) return;
+        console.log('search');
         $scope.states.winnersInTable = false;
         filterRunners()
     });
@@ -335,6 +337,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         if (activatingWinners) {
             activatingWinners = false;
         } else {
+            console.log('update filters');
             $scope.states.winnersInTable = false;
         }
         $scope.limit = 100;

@@ -7,6 +7,8 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
             bottom: 0
         }
     };
+    var originalWidth = 1000;
+    var originalHeight;
     return {
         restrict: 'E',
         templateUrl: 'directives/mapContainer.html',
@@ -14,14 +16,14 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
         link: function link($scope, $element) {
             $scope.mapParams = {
                 '10km': {
-                    width: '78%',
-                    height: '89%',
+                    width: 780,
+                    height: 570,
                     x: -36,
                     y: 85
                 },
                 '21km': {
-                    width: '100%',
-                    height: '85%',
+                    width: 1000,
+                    height: 544,
                     x: -205,
                     y: 110
                 }//todo: в отдельный json
@@ -30,11 +32,11 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                 runner: null,
                 position: null
             };
+            $scope.scale = 1;
+            if (!originalHeight) originalHeight = $element.height();
             var geoData;
             function updateTrack(geoData) {
-                var width = $element.width();
-                var height = $element.height();
-                track.updateContainerSize(width, height);
+                track.updateContainerSize(originalWidth, originalHeight);
 
                 var start = track.getProjectedPoint(geoData.geometry.coordinates[0]);
                 var finish = track.getProjectedPoint(geoData.geometry.coordinates[geoData.geometry.coordinates.length - 1]);
@@ -93,7 +95,12 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                             $scope.$broadcast('render', render);
                         });
                         $scope.$on('render', function () {
-                            updateTrack(geoData);
+                            var currentWidth = $element.width();
+                            var scale = currentWidth / originalWidth;
+                            $scope.scale = scale;
+                            $element.parent().css({
+                                height: originalHeight * scale
+                            });
                             drawSnake($scope.time.current);
                         });
                     }

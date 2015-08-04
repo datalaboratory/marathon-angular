@@ -39,6 +39,7 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                 };
 
                 var stepsCount = Math.floor(width / px_step);
+                var prevStepsCount;
 
                 var time_step = 1000 * $scope.time.maxTime / stepsCount;
                 $scope.$watch('time.maxTime', function (time) {
@@ -197,11 +198,12 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                     }
                     graphHeight = Math.max(height, max_runners_in_step * y_scale);
 
-                    if (!height_factor) {
+                    if (!height_factor || prevStepsCount != stepsCount) {
                         height_factor = height / (max_runners_in_step * y_scale);
 
                         $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
                     }
+                    prevStepsCount = stepsCount;
                     points_byd = {};
                     current_step = Math.floor($scope.time.current / $scope.time.maxTime * stepsCount);
                 }
