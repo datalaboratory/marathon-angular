@@ -98,6 +98,7 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                             var currentWidth = $element.width();
                             var scale = currentWidth / originalWidth;
                             $scope.scale = scale;
+                            mapHelper.setMapScale(scale);
                             $element.parent().css({
                                 height: originalHeight * scale
                             });

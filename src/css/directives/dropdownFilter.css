@@ -12,6 +12,7 @@
     margin-top: -1px;
     background: #fff;
     z-index: 10;
+    box-sizing: border-box;
 }
 
 .dropdown-filter__item {

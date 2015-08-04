@@ -420,7 +420,13 @@ angular.module('marathon').factory('mapHelper', function (track) {
         return data;
 
     };
-
+    var mapScale = 1;
+    function setMapScale(scale) {
+        mapScale = scale;
+    }
+    function getMapScale() {
+        return mapScale;
+    }
     return {
         earth_radius: 6371000,
         getPoints: getPoints,
@@ -438,6 +444,8 @@ angular.module('marathon').factory('mapHelper', function (track) {
         },
         getDistance: getDistance,
         drawRunnersPoints: drawRunnersPoints,
-        getDistanceByRangesAndTime: getDistanceByTime
+        getDistanceByRangesAndTime: getDistanceByTime,
+        setMapScale: setMapScale,
+        getMapScale: getMapScale
     };
 });

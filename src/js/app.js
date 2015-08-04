@@ -36,7 +36,7 @@ app.config(function ($translateProvider) {
             KILOMETER: 'км',
             METER_PER_SECOND: 'м/с',
             NAME_OR_NUMBER: 'Имя или номер',
-            SHOW_MORE_RESULTS: 'Показать еще 100 результатов',
+            SHOW_MORE_RESULTS: 'Показать ещё 100 результатов',
             VISUALIZATION: 'Визуализация',
             BY_DATA_LABORATORY: 'Лаборатории&nbsp;данных',
             MAP_SRC: 'img/half-marathon-map.png'

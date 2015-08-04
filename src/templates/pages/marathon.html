@@ -46,7 +46,9 @@
                             </div>
                             <div class="legend__snake-rise">
                                 <span class="legend__header">{{ 'SNAKE_WIDTH_TITLE' | translate }}</span>
-                                <snake-rise-legend data-ng-if="filteredRunners"></snake-rise-legend>
+                                <div class="legend__snake-rise-container">
+                                    <snake-rise-legend data-ng-if="filteredRunners"></snake-rise-legend>
+                                </div>
                             </div>
                         </div>
                     </div>

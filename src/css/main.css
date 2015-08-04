@@ -116,6 +116,8 @@ svg {
 .legend__snake-rise {
     width: 50%;
     float: left;
+}
+.legend__snake-rise-container {
     height: 150px;
 }
 
@@ -138,7 +140,7 @@ svg {
 .filters-container__gender-filter {
     float: left;
     margin-left: 20px;
-    padding-top: 10px;
+    padding-top: 11px;
 }
 .filters-container__winners-filter {
     float: left;
@@ -184,8 +186,4 @@ svg {
     text-align: center;
     background-image: linear-gradient(#fafafa,#f2f2f2);
     margin-bottom: 20px;
-}
-
-.hidden {
-    visibility: hidden;
 }

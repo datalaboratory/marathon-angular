@@ -5,12 +5,15 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
         restrict: 'E',
         templateUrl: 'directives/snakeRiseLegend.html',
         replace: true,
-        link: function ($scope) {
+        link: function ($scope, $element) {
             var width = 77;
+            var originalHeight = 150;
             var ratio = 2;
             var step_for_dots = ratio * 1000; // шаг на дистанции с которым смотрим высоту змея
             var maxHeight;
             var maxCount;
+            var currentScale = 1;
+            var realMaxHeight;
             var heightScale = d3.scale.linear();
 
             function updateMaxHeight() {
@@ -34,8 +37,8 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                     };
                 }
                 heightScale
-                    .domain([0, maxCount])
-                    .range([maxHeight, 0]);
+                    .domain([0, maxCount]);
+                updateContainerHeight();
                 updateSnakes();
                 $rootScope.$broadcast('legendReady');
             }
@@ -45,6 +48,23 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             });
             $scope.$watch('time.current', updateSnakes);
             $scope.$watch('filterValues', updateSnakes, true);
+
+            function updateContainerHeight() {
+                currentScale = mapHelper.getMapScale();
+                realMaxHeight = maxHeight * currentScale;
+                heightScale
+                    .range([realMaxHeight, 0]);
+                var elementContainer = $element.parent();
+                var newHeight = Math.max(realMaxHeight + 45, originalHeight);
+                elementContainer.css({
+                    height: newHeight + 'px'
+                });
+            }
+
+            $scope.$on('render', function () {
+                updateContainerHeight();
+                updateSnakes();
+            });
 
             function getMaxSnakeHeight(time, runners) {
                 var dots_on_distance = d3.range(0, track.getTrackLength(), step_for_dots);
@@ -74,11 +94,11 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 if (!femalePercent) femalePercent = 0;
                 $scope.snake = {
                     path: {
-                        male: formatSnakePath(width, maxHeightSection.height, 1),
-                        female: formatSnakePath(width, maxHeightSection.height, femalePercent),
-                        all: formatSnakePath(width, maxHeight, 1)
+                        male: formatSnakePath(width, maxHeightSection.height * currentScale, 1),
+                        female: formatSnakePath(width, maxHeightSection.height * currentScale, femalePercent),
+                        all: formatSnakePath(width, maxHeight * currentScale, 1)
                     },
-                    maxHeight: maxHeight,
+                    maxHeight: maxHeight * currentScale,
                     width: width,
                     count: {
                         male: countMale,
@@ -94,12 +114,13 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             }
 
             function formatSnakePath(width, height, factor) {
-                return 'M0 ' + maxHeight +
-                    'L' + width + ' ' + maxHeight +
-                    'L' + width + ' ' + (maxHeight - height * factor) +
-                    ' C' + width / 2 + ' ' + (maxHeight - height * factor * .8) + ' ' +
-                    (width / 2) + ' ' + (maxHeight - height * factor / 20) +
-                    ' 0 ' + maxHeight + ' Z'
+                var realHeight = maxHeight * mapHelper.getMapScale();
+                return 'M0 ' + realHeight +
+                    'L' + width + ' ' + realHeight +
+                    'L' + width + ' ' + (realHeight - height * factor) +
+                    ' C' + width / 2 + ' ' + (realHeight - height * factor * .8) + ' ' +
+                    (width / 2) + ' ' + (realHeight - height * factor / 20) +
+                    ' 0 ' + realHeight + ' Z'
             }
         }
     }
