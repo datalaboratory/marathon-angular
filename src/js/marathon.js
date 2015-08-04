@@ -41,6 +41,8 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             $scope.selectedRunners = [];
             $scope.filteredRunners = null;
             $scope.filterValues = {};
+            $scope.states.winnersInTable = true;
+            delete $scope.states.activatingWinners
         });
     });
 
@@ -92,8 +94,11 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     var activatingWinners;
     $scope.showWinners = function () {
         if (!$scope.states.winnersInTable) {
-            activatingWinners = true;
+            $scope.states.activatingWinners = true;
             $scope.filterValues = {};
+            $timeout(function () {
+                $scope.states.activatingWinners = false;
+            })
         }
         $scope.states.winnersInTable = !$scope.states.winnersInTable;
     };
@@ -230,7 +235,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             var searchRunners = runners;
             Object.keys($scope.filterValues).forEach(function (key) {
                 if (key == 'gender') return;
-                console.log('delete', key);
                 delete $scope.filterValues[key]
             });
             if (angular.isDefined($scope.filterValues.gender)) {
@@ -296,14 +300,15 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 if (runner.winner) {
                     $scope.winnersForTable.push(runner)
                 }
+                if (runner.gender_pos == 1) {
+                    $scope.selectedRunners.push(runner);
+                }
             });
-            $scope.states.winnersInTable = true;
         });
     });
 
     $scope.$watch('storage.search', function () {
         if (!$scope.runnersData) return;
-        console.log('search');
         $scope.states.winnersInTable = false;
         filterRunners()
     });
@@ -334,10 +339,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     function updateFilters() {
         if (!$scope.runnersData) return;
-        if (activatingWinners) {
-            activatingWinners = false;
-        } else {
-            console.log('update filters');
+        if (angular.isDefined($scope.states.activatingWinners) && !$scope.states.activatingWinners) {
             $scope.states.winnersInTable = false;
         }
         $scope.limit = 100;

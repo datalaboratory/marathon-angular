@@ -6,6 +6,7 @@ angular.module('marathon').directive('selectedRunners', function (mapHelper, tra
         templateNamespace: 'svg',
         link: function link($scope) {
             $scope.getRunnerPosition = function (runner) {
+                if (!track.getTotalLength()) return;
                 var px_total_length = track.getTotalLength();
                 var current_distance = mapHelper.getDistanceByRangesAndTime(runner, $scope.time.current * 1);
                 current_distance = Math.max(0, current_distance);

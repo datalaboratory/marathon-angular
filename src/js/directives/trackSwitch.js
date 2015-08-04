@@ -15,8 +15,12 @@ angular.module('marathon').directive('trackSwitch', function ($timeout, $rootSco
                 } else {
                     $rootScope.$broadcast('hideCover:map');
                     $timeout(function () {
+                        $scope.states.activatingWinners = true;
+                        $timeout(function () {
+                            $scope.states.activatingWinners = false;
+                        });
                         $rootScope.$broadcast('hideCover:marathon');
-                    }, 1000);
+                    }, 500);
                 }
             });
         }
