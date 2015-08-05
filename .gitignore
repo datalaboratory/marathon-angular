@@ -3,3 +3,4 @@
 static/js
 static/css
 bower_components
+*.DS_Store
