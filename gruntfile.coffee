@@ -11,23 +11,21 @@ module.exports = (grunt) ->
           'bower_components/d3/d3.js'
           'bower_components/angular/angular.js'
           'bower_components/angular-translate/angular-translate.js'
+          'bower_components/data-lab-blocks/dist/js/script.js'
+
           'vendor/js/**/*.js'
 
-          'dataLab/js/app.js'
-          'dataLab/**/*.js'
           'src/js/app.js'
           'src/js/marathon.js'
           'src/js/**/*.js'
 
-          'static/js/datalab-templates.js'
           'static/js/templates.js'
-
         ]
         dest: 'static/js/script.js'
       css:
         src: [
           'bower_components/normalize.css/normalize.css'
-          'dataLab/blocks/**/*.css'
+          'bower_components/data-lab-blocks/dist/css/style.css'
           'vendor/css/**/*.css'
           'src/css/**/*.css'
         ]
@@ -52,9 +50,6 @@ module.exports = (grunt) ->
     watch:
       js:
         files: [
-          'dataLab/js/**/*.js'
-          'dataLab/blocks/**/*.js'
-          'dataLab/blocks/**/*.html'
           'src/js/**/*.js'
           'src/templates/**/*.html'
         ]
@@ -71,12 +66,6 @@ module.exports = (grunt) ->
           nospawn: true
 
     ngtemplates:
-      dataLab:
-        cwd: 'dataLab/blocks'
-        src: '**/*.html'
-        dest: 'static/js/datalab-templates.js'
-        options:
-          module: 'dataLab'
       marathon:
         cwd: 'src/templates'
         src: '**/*.html'
@@ -86,7 +75,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', ['js-full', 'css-full']
   grunt.registerTask 'dev', ['js', 'css']
-  grunt.registerTask 'templates', ['ngtemplates:dataLab', 'ngtemplates:marathon']
+  grunt.registerTask 'templates', ['ngtemplates:marathon']
   grunt.registerTask 'js', ['templates', 'concat:js']
   grunt.registerTask 'js-full', ['js', 'uglify']
   grunt.registerTask 'css', ['concat:css']

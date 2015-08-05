@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
+    "data-lab-blocks": "git@github.com:datalaboratory/data-lab-blocks.git",
     "angular": "~1.4.1",
     "d3": "~3.5.5",
     "bootstrap": "~3.3.5",
