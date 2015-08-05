@@ -127,19 +127,19 @@
 
 .gender-filter__item-all {
     border-radius: 0 3px 3px 0;
+    margin-left: -1px;
 }
 
 .gender-filter__item-male {
-    border-left: none;
-    border-right: none;
+    margin-left: -1px;
 }
 
 .age-group-filter.dropdown-filter {
-    width: 17.5%;
+    width: 14%;
 }
 
 .team-filter.dropdown-filter {
-    width: 20%
+    width: 23%
 }
 
 .team-filter.dropdown-filter .dropdown-filter__item:last-child {
@@ -147,5 +147,5 @@
 }
 
 .city-filter.dropdown-filter {
-    width: 18%
+    width: 16.5%
 }

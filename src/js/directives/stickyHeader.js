@@ -21,8 +21,13 @@ angular.module('marathon').directive('stickyHeader', function ($document) {
                 $inner.css({
                     left: -window.scrollX + elementLeft
                 });
-            
             });
+            $scope.$on('startRender', function () {
+                var elementLeft = element.offsetParent.offsetLeft;
+                $inner.css({
+                    left: -window.scrollX + elementLeft
+                });
+            })
         }
     }
 });

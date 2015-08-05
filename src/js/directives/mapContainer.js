@@ -40,6 +40,12 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
 
                 var start = track.getProjectedPoint(geoData.geometry.coordinates[0]);
                 var finish = track.getProjectedPoint(geoData.geometry.coordinates[geoData.geometry.coordinates.length - 1]);
+                /*if (start[0] - finish[0] < 2 && start[1] - finish[1] < 2) {
+                    start[0] -= 2;
+                    start[1] -= 2;
+                    finish[0] += 2;
+                    finish[1] += 2;
+                }*/
                 $scope.flags = {
                     start: {
                         x: start[0],

@@ -7,6 +7,27 @@ angular.module('marathon').directive('altitudeLegend', function (mapHelper, trac
             bottom: 22
         }
     };
+
+    function distanceParams() {
+        var distance_in_km = Math.round(track.getTrackLength() / 1000);
+        return {
+            '10km': {
+                marks: [2, distance_in_km / 2, 7],
+                maxPoint: {
+                    alt: 169,
+                    x: 0.75
+                }
+            },
+            '21km': {
+                marks: [5, distance_in_km / 2, 15],
+                maxPoint: {
+                    alt: 169,
+                    x: 0.75
+                }
+            }
+        }
+    }
+
     return {
         restrict: 'E',
         templateUrl: 'directives/altitudeLegend.html',
@@ -37,21 +58,24 @@ angular.module('marathon').directive('altitudeLegend', function (mapHelper, trac
                     if (b.alt < a.alt) return b;
                     return a
                 });
+
                 var maxAlt = altObjects.reduce(function (a, b) {
                     if (b.alt > a.alt) return b;
                     return a
                 });
-
+                var customMaxPoint = distanceParams()[$scope.currentTrackName].maxPoint;
+                if (customMaxPoint) {
+                    $scope.altGraph.customMaxAlt = {
+                        x: $scope.scaleXFromDistance(customMaxPoint.x * track.getTrackLength() / 1000),
+                        y: $scope.scaleY(customMaxPoint.alt),
+                        alt: customMaxPoint.alt
+                    }
+                } else {
+                    delete $scope.altGraph.customMaxAlt
+                }
                 $scope.altGraph.pathData = mapHelper.formatPathPoints(altObjects);
                 $scope.altGraph.min = minAlt;
                 $scope.altGraph.max = maxAlt;
-            }
-
-            function distanceMarks(distance_in_km) {
-                return {
-                    '10km': [2, distance_in_km / 2, 7],
-                    '21km': [5, distance_in_km / 2, 15]
-                }
             }
 
             $scope.$on('startRender', function () {
@@ -62,15 +86,21 @@ angular.module('marathon').directive('altitudeLegend', function (mapHelper, trac
                     var altitudes = track.getAltitudes();
                     var distance_in_km = Math.round(track.getTrackLength() / 1000); // 21\42\10 и т.п. для рисок на графике
 
+                    var customMaxPoint = distanceParams()[$scope.currentTrackName].maxPoint;
+                    if (customMaxPoint) {
+                        $scope.scaleY
+                            .domain([d3.extent(altitudes)[0], customMaxPoint.alt]);
+                    } else {
+                        $scope.scaleY
+                            .domain(d3.extent(altitudes));
+                    }
                     $scope.scaleXFromDistance
                         .domain([0, distance_in_km]);
-                    $scope.scaleY
-                        .domain(d3.extent(altitudes));
                     $scope.scaleX
                         .domain([0, altitudes.length]);
                     $scope.altGraph.altitudes = altitudes;
                     $scope.altGraph.distanceInKm = distance_in_km;
-                    $scope.altGraph.distanceMarks = distanceMarks(distance_in_km)[$scope.currentTrackName];
+                    $scope.altGraph.distanceMarks = distanceParams()[$scope.currentTrackName]['marks'];
                     formatAltitudePath(altitudes);
                 });
             });

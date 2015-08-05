@@ -80,24 +80,25 @@
 }
 
 .runners-list__number {
-    width: 8.1%;
-    min-width: 20px;
+    width: 6%;
 }
 
 .runners-list__age {
-    width: 19.5%;
+    width: 14.5%;
     padding-left: 10px;
-    box-sizing: border-box;
 }
 
 .runners-list__team {
-    width: 20%;
+    width: 23.5%;
+    padding-left: 10px;
 }
 
 .runners-list__city {
     width: 16%;
+    padding-left: 10px;
 }
 
 .runners-list__result {
+    padding-left: 5px;
     font-family: Bold, Arial, Helvetica, sans-serif;
 }

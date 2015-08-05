@@ -27,6 +27,11 @@
             data-ng-attr-cx="{{altGraph.min.x}}"
             data-ng-attr-cy="{{altGraph.min.y}}"
             data-ng-attr-r="{{altGraph.pointRadius}}"></circle>
+        <circle
+            data-ng-if="altGraph.customMaxAlt"
+            data-ng-attr-cx="{{altGraph.customMaxAlt.x}}"
+            data-ng-attr-cy="{{altGraph.customMaxAlt.y}}"
+            data-ng-attr-r="{{altGraph.pointRadius}}"></circle>
         <text
             data-ng-attr-x="{{altGraph.max.x}}"
             data-ng-attr-y="{{altGraph.max.y - 5}}"
@@ -37,13 +42,19 @@
             data-ng-attr-y="{{altGraph.min.y + 12}}"
             class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.min.num]}}{{'METER' | translate}}
         </text>
+        <text
+            data-ng-if="altGraph.customMaxAlt"
+            data-ng-attr-x="{{altGraph.customMaxAlt.x}}"
+            data-ng-attr-y="{{altGraph.customMaxAlt.y - 5}}"
+            class="legend-altitude__min-max-text">{{altGraph.customMaxAlt.alt}}{{'METER' | translate}}
+        </text>
         <image xlink:href="img/mark-yel.png"
                data-ng-attr-x="{{(scaleX(0) - altGraph.imgSize / 2) | preventNaN }}"
                data-ng-attr-y="{{(scaleY(altGraph.altitudes[0]) - altGraph.imgSize) | preventNaN }}"
                data-ng-attr-width="{{altGraph.imgSize}}"
                data-ng-attr-height="{{altGraph.imgSize}}"></image>
         <image xlink:href="img/mark-red.png"
-               data-ng-attr-x="{{(scaleX(altGraph.altitudes.length) - altGraph.imgSize / 2) | preventNaN }}"
+               data-ng-attr-x="{{(scaleX(altGraph.altitudes.length - 1) - altGraph.imgSize / 2) | preventNaN }}"
                data-ng-attr-y="{{(scaleY(altGraph.altitudes[altGraph.altitudes.length - 1]) - altGraph.imgSize) | preventNaN }}"
                data-ng-attr-width="{{altGraph.imgSize}}"
                data-ng-attr-height="{{altGraph.imgSize}}"></image>
@@ -53,7 +64,7 @@
             data-ng-attr-x1="{{altGraph.min.x}}"
             data-ng-attr-y1="{{altGraph.min.y}}"
             data-ng-attr-x2="{{altGraph.min.x}}"
-            data-ng-attr-y2="{{altGraph.max.y}}"
+            y2="0"
             >
             <stop offset="0%" stop-color="#fc0"></stop>
             <stop offset="100%" stop-color="#f03"></stop>

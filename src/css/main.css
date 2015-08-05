@@ -12,14 +12,20 @@ svg {
 }
 
 .big-wrap {
-    min-width: 1000px;
-    margin: 0 11%;
+    min-width: 960px;
+    width: 80%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+.big-wrap__inner {
     position: relative;
 }
 
 .map-container-container {
     width: 100%;
     height: 640px;
+    min-height: 620px;
     position: relative;
 }
 

@@ -8,12 +8,12 @@
 .slider__handle {
     width: 50px;
     margin-left: -25px;
-    margin-top: -33px;
+    margin-top: -37px;
     cursor: pointer;
 }
 
 .slider__line {
-    height: 178px;
+    height: 182px;
     cursor: pointer;
 }
 
@@ -21,7 +21,7 @@
     position: absolute;
     width: 50px;
     text-align: center;
-    top: -30px;
+    top: -32px;
     left: -25px;
     color: #fd0f3a;
     cursor: pointer;
