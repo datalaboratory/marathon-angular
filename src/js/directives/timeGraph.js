@@ -181,26 +181,24 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                     });
                     steps_data = [];
                     var getMaxInStep = function (step_num) {
-                        var summ = 0;
                         var all_runners_in_step = [];
                         reversed_groups.forEach(function (el) {
-                            summ += runners_byd[el.key][step_num].length;
                             all_runners_in_step.push.apply(all_runners_in_step, runners_byd[el.key][step_num]);
                         });
 
                         steps_data.push(all_runners_in_step);
-                        return summ;
                     };
 
-                    var max_runners_in_step = 0;
                     for (var i = 0; i < stepsCount; i++) {
-                        max_runners_in_step = Math.max(max_runners_in_step, getMaxInStep(i));
+                        getMaxInStep(i)
                     }
+                    var max_runners_in_step = d3.extent(getRunnersByTime($scope.runnersData.items), function (stepArray) {
+                        return stepArray.length;
+                    })[1];
                     graphHeight = Math.max(height, max_runners_in_step * y_scale);
 
-                    if (!height_factor || prevStepsCount != stepsCount) {
+                    if (!height_factor || prevStepsCount != stepsCount ) {
                         height_factor = height / (max_runners_in_step * y_scale);
-
                         $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
                     }
                     prevStepsCount = stepsCount;

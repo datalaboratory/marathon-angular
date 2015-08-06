@@ -32,19 +32,12 @@
                         data-distance="{{circle.distance}}"></circle>
                 </g>
                 <g data-ng-if="flags">
-                    <!--<image class="map-container__start-finish"
-                           xlink:href="img/mm-logo-small.png"
-                           data-ng-attr-width="{{25 / scale}}"
-                           data-ng-attr-height="{{19 / scale}}"
-                           data-ng-attr-x="{{flags.start.x - 25 / 2 / scale}}"
-                           data-ng-attr-y="{{flags.start.y - 19 / scale}}"/>
-                    <image/>-->
                     <image class="map-container__start-finish"
                            xlink:href="img/mark-yel.png"
                            data-ng-attr-width="{{flags.width / scale}}"
                            data-ng-attr-height="{{flags.height / scale}}"
                            x="0" y="0"
-                           data-ng-attr-transform="translate({{flags.start.x - flags.width / 2 / scale}},{{flags.start.y - flags.height / scale}}) rotate(-25,{{flags.width / 2 / scale}},{{flags.height / scale}})"
+                           data-ng-attr-transform="translate({{flags.start.x - flags.width / 2 / scale}},{{flags.start.y - flags.height / scale}}) rotate({{flags.start.deg}},{{flags.width / 2 / scale}},{{flags.height / scale}})"
                         />
                     <image/>
                     <image class="map-container__start-finish"
@@ -52,7 +45,7 @@
                            data-ng-attr-width="{{flags.width / scale}}"
                            data-ng-attr-height="{{flags.height / scale}}"
                            x="0" y="0"
-                           data-ng-attr-transform="translate({{flags.start.x - flags.width / 2 / scale}},{{flags.start.y - flags.height / scale}}) rotate(25,{{flags.width / 2 / scale}},{{flags.height / scale}})"
+                           data-ng-attr-transform="translate({{flags.start.x - flags.width / 2 / scale}},{{flags.start.y - flags.height / scale}}) rotate({{flags.finish.deg}},{{flags.width / 2 / scale}},{{flags.height / scale}})"
                         />
                     <image/>
 

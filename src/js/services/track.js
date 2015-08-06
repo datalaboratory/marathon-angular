@@ -14,9 +14,11 @@ angular.module('marathon').factory('track', function ($rootScope) {
 
     var magicNumbers = {
         scale: 0.6,
-        x: -130,
-        y: 80
+        x: -100,
+        y: 70
     };
+    var calculatedMagicNumbers = {};
+
     var pathElement = $('<svg><path d="" /></svg>').find('path');
 
     function updateAll() {
@@ -24,13 +26,18 @@ angular.module('marathon').factory('track', function ($rootScope) {
         trackLength = d3.geo.length(geodata) * earth_radius;
         projection = d3.geo.mercator().scale(1).translate([0, 0]);
         path = d3.geo.path().projection(projection);
-        var b = path.bounds(geodata);
-        var s = magicNumbers.scale / Math.max((b[END][X] - b[START][X]) / width, (b[END][Y] - b[START][Y]) / height);
-        var t = [
-            (width - s * (b[END][X] + b[START][X])) / 2 + magicNumbers.x,
-            (height - s * (b[END][Y] + b[START][Y])) / 2 + magicNumbers.y
-        ];
-        projection.scale(s).translate(t);
+        if (!calculatedMagicNumbers.s) {
+            var b = path.bounds(geodata);
+            var s = magicNumbers.scale / Math.max((b[END][X] - b[START][X]) / width, (b[END][Y] - b[START][Y]) / height);
+            var t = [
+                (width - s * (b[END][X] + b[START][X])) / 2 + magicNumbers.x,
+                (height - s * (b[END][Y] + b[START][Y])) / 2 + magicNumbers.y
+            ];
+            calculatedMagicNumbers.s = s;
+            calculatedMagicNumbers.t = t;
+        }
+
+        projection.scale(calculatedMagicNumbers.s).translate(calculatedMagicNumbers.t);
         pathData = path(geodata);
         pathElement.attr('d', pathData);
     }

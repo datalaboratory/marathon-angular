@@ -16,16 +16,16 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
         link: function link($scope, $element) {
             $scope.mapParams = {
                 '10km': {
-                    width: 780,
-                    height: 570,
-                    x: -36,
-                    y: 85
+                    width: 610,
+                    height: 540,
+                    x: 26,
+                    y: 100
                 },
                 '21km': {
-                    width: 1000,
-                    height: 544,
-                    x: -205,
-                    y: 110
+                    width: 610,
+                    height: 540,
+                    x: 26,
+                    y: 100
                 }//todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {
@@ -40,20 +40,17 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
 
                 var start = track.getProjectedPoint(geoData.geometry.coordinates[0]);
                 var finish = track.getProjectedPoint(geoData.geometry.coordinates[geoData.geometry.coordinates.length - 1]);
-                /*if (start[0] - finish[0] < 2 && start[1] - finish[1] < 2) {
-                    start[0] -= 2;
-                    start[1] -= 2;
-                    finish[0] += 2;
-                    finish[1] += 2;
-                }*/
+
                 $scope.flags = {
                     start: {
                         x: start[0],
-                        y: start[1]
+                        y: start[1],
+                        deg: -25
                     },
                     finish: {
                         x: finish[0],
-                        y: finish[1]
+                        y: finish[1],
+                        deg: 25
                     },
                     width: 14,
                     height: 19
