@@ -7,7 +7,7 @@
   "moduleType": [
     "amd"
   ],
-  "license": "MIT",
+  "license": "private",
   "ignore": [
     "**/.*",
     "node_modules",
