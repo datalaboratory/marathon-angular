@@ -1,4 +1,4 @@
-angular.module('marathon').directive('timeGraph', function (mapHelper, toGrayscale, $timeout) {
+angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout, mapHelper, toGrayscale) {
     var render = {
         margin: {
             left: 0,
@@ -237,7 +237,7 @@ angular.module('marathon').directive('timeGraph', function (mapHelper, toGraysca
                 }, true);
 
 
-                $scope.$on('startRender', function () {
+                $rootScope.$on('startRender', function () {
                     $scope.$broadcast('render', render);
                 });
                 $scope.$on('render', function() {

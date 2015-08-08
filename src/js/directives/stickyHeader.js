@@ -1,4 +1,4 @@
-angular.module('marathon').directive('stickyHeader', function ($document) {
+angular.module('marathon').directive('stickyHeader', function ($rootScope, $document) {
     return {
         restrict: 'E',
         templateUrl: 'directives/stickyHeader.html',
@@ -22,7 +22,7 @@ angular.module('marathon').directive('stickyHeader', function ($document) {
                     left: -window.scrollX + elementLeft
                 });
             });
-            $scope.$on('startRender', function () {
+            $rootScope.$on('startRender', function () {
                 var elementLeft = element.offsetParent.offsetLeft;
                 $inner.css({
                     left: -window.scrollX + elementLeft

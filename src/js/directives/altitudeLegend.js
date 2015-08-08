@@ -1,4 +1,4 @@
-angular.module('marathon').directive('altitudeLegend', function (mapHelper, track, $timeout) {
+angular.module('marathon').directive('altitudeLegend', function ($timeout, $rootScope, mapHelper, track) {
     var render = {
         margin: {
             left: 7,
@@ -78,7 +78,7 @@ angular.module('marathon').directive('altitudeLegend', function (mapHelper, trac
                 $scope.altGraph.max = maxAlt;
             }
 
-            $scope.$on('startRender', function () {
+            $rootScope.$on('startRender', function () {
                 $scope.$broadcast('render', render);
             });
             $scope.$on('trackUpdated', function () {

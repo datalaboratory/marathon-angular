@@ -1,4 +1,4 @@
-angular.module('marathon').directive('mapContainer', function (mapHelper, track) {
+angular.module('marathon').directive('mapContainer', function ($rootScope, mapHelper, track) {
     var render = {
         margin: {
             left: 0,
@@ -94,7 +94,7 @@ angular.module('marathon').directive('mapContainer', function (mapHelper, track)
                         }, true);
                         $scope.$watch('time.current', drawSnake);
 
-                        $scope.$on('startRender', function () {
+                        $rootScope.$on('startRender', function () {
                             $scope.$broadcast('render', render);
                         });
                         $scope.$on('render', function () {
