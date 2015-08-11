@@ -1,4 +1,4 @@
-angular.module('marathon').directive('mapContainer', function ($rootScope, mapHelper, track) {
+angular.module('marathon').directive('mapContainer', function ($rootScope, mapHelper, track, runnerClassificator, genderColors) {
     var render = {
         margin: {
             left: 0,
@@ -60,17 +60,17 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             function drawSnake(time) {
                 if (!time) return;
                 time *= 1;
-                var runners = checkData($scope.filteredRunners);
-                var d = mapHelper.getPoints(
+                var step = 500;
+                var runners = runnerClassificator.checkData($scope.filteredRunners);
+                mapHelper.getPoints(
                     runners.runners_groups,
                     $scope.ageAreas,
                     time,
-                    500);
+                    step);
                 $scope.circles = mapHelper.drawRunnersPoints(
-                    $scope.genderGradients,
-                    d,
                     $scope.filteredRunners,
-                    time);
+                    time,
+                    step);
             }
 
             var firstTime = true;
@@ -81,11 +81,11 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     updateTrack(geoData);
 
                     $scope.ageAreas = {};
-                    var runners = checkData($scope.filteredRunners);
+                    var runners = runnerClassificator.checkData($scope.filteredRunners);
 
                     var runnerGroups = runners.runners_groups.slice().reverse();
                     runnerGroups.forEach(function (el) {
-                        $scope.ageAreas[el.key] = {color: $scope.genderGradients[el.gender](el.num)}
+                        $scope.ageAreas[el.key] = {color: genderColors.genderGradients[el.gender](el.num)}
                     });
                     if (firstTime) {
                         firstTime = false;

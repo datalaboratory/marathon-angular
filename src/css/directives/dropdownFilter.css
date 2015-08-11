@@ -1,6 +1,7 @@
 .dropdown-filter {
     width: 20%;
     position: relative;
+    box-sizing: border-box;
 }
 
 .dropdown-filter__list {
@@ -29,7 +30,7 @@
     background-color: #CCC;
 }
 
-.dropdown-filter__current-value {
+.dropdown-filter .dropdown-filter__current-value {
     width: 100%;
     color: #333;
     border: 1px solid #acacac;
@@ -60,6 +61,7 @@
 .gender-filter.dropdown-filter {
     width: auto;
     margin: 0;
+    box-sizing: content-box;
 }
 
 .team-filter.dropdown-filter, .city-filter.dropdown-filter, .age-group-filter.dropdown-filter {

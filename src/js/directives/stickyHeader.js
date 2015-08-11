@@ -9,7 +9,8 @@ angular.module('marathon').directive('stickyHeader', function ($rootScope, $docu
             var $inner = $element.find('.sticky-header__inner');
             var sticked = false;
             $document.on('scroll', function(){
-                var elementTop = element.offsetTop;
+
+                var elementTop = $element.offset().top;
                 var elementLeft = element.offsetParent.offsetLeft;
                 if (window.scrollY >= elementTop) {
                     if (!sticked) $inner.addClass('sticky-header__inner--sticked');

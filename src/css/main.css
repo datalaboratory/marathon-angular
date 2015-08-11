@@ -18,6 +18,14 @@ svg {
     box-sizing: border-box;
     margin: 0 auto;
 }
+
+.big-wrap * {
+    box-sizing: content-box;
+}
+.big-wrap img {
+    max-width: none;
+}
+
 .big-wrap__inner {
     position: relative;
 }

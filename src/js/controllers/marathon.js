@@ -1,11 +1,13 @@
-angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, $location, numberDeclension, multifilter) {
-    $rootScope.language = 'ru';
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, $location, numberDeclension, multifilter, ageGroups) {
 
-    $rootScope.$on('$locationChangeSuccess', function () {
-        var lang = $location.path().slice(1);
+    function changeLanguage() {
+        $rootScope.location = document.location.href;
+        var lang = ($rootScope.location.indexOf('/ru/') > -1) ? 'ru' : 'en';
         $rootScope.language = lang;
         $translate.use(lang);
-    });
+    }
+    changeLanguage();
+    $rootScope.$on('$locationChangeSuccess', changeLanguage);
 
     $(window).on('resize', function () {
         $scope.$emit('renderRequired');
@@ -43,18 +45,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         })
     };
 
-    $scope.generateGradient = function (beginColor, endColor, stepsCount) {
-        return d3.scale.linear()
-            .domain([1, stepsCount])
-            .range([beginColor, endColor])
-            .clamp(true)
-            .interpolate(d3.interpolateHcl);
-    };
-
-    $scope.genderGradients = [
-        $scope.generateGradient('#FFCBD5', '#EE2046', 5),
-        $scope.generateGradient('#B8E8FF', '#1D56DF', 5)
-    ];
     $scope.limit = 100;
     $scope.filterValues = {};
     $scope.filterGender = {
@@ -147,78 +137,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         return result;
     }
 
-    var ageGroups = [
-        {
-            start: 15,
-            end: 19,
-            label: '15–19'
-        }, {
-            start: 20,
-            end: 22,
-            label: '20–22'
-        }, {
-            start: 23,
-            end: 34,
-            label: '23–34'
-        }, {
-            start: 35,
-            end: 39,
-            label: '35–39'
-        }, {
-            start: 40,
-            end: 44,
-            label: '40–44'
-        }, {
-            start: 45,
-            end: 49,
-            label: '45–49'
-        }, {
-            start: 50,
-            end: 54,
-            label: '50–54'
-        }, {
-            start: 55,
-            end: 59,
-            label: '55–59'
-        }, {
-            start: 60,
-            end: 64,
-            label: '60–64'
-        }, {
-            start: 65,
-            end: 90,
-            label: '65+'
-        }
-    ];
-    var ageGroupsForSnake = [
-        {
-            start: 15,
-            end: 22,
-            label: '16–22'
-        }, {
-            start: 23,
-            end: 34,
-            label: '23–34'
-        }, {
-            start: 35,
-            end: 49,
-            label: '35–49'
-        }, {
-            start: 50,
-            end: 65,
-            label: '50–65'
-        }, {
-            start: 65,
-            end: 90,
-            label: '65+'
-        }
-    ];
-    var ageGroupStarts = _.pluck(ageGroupsForSnake, 'start');
-    ageGroupStarts.shift();
-    $scope.colorNumberScale = d3.scale.threshold()
-        .domain(ageGroupStarts)
-        .range(d3.range(1, 6));
-
     function filterRunners() {
         var runners = $scope.runnersData.items;
         var query = $scope.storage.search;
@@ -278,13 +196,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             var currentYear = new Date(data.start_time).getFullYear();
             $scope.winnersForTable = [];
             var runners = data.items;
-            runners.forEach(function (runner, i) {
-                runner.id = i;
+            runners.forEach(function (runner) {
                 runner.age = currentYear - runner.birthyear;
-                runner.ageGroup = ageGroups.filter(function (group) {
+                runner.ageGroup = ageGroups.small.filter(function (group) {
                     return group.start <= runner.age && runner.age <= group.end;
                 })[0].label;
-                runner.ageGroupForSnake = ageGroupsForSnake.filter(function (group) {
+                runner.ageGroupForSnake = ageGroups.big.filter(function (group) {
                     return group.start <= runner.age && runner.age <= group.end;
                 })[0].label;
                 runner.winner = (runner.gender_pos && runner.gender_pos < 7);

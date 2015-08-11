@@ -1,6 +1,9 @@
 <svg data-lab-size-to-scales="altitudeSizeScales" class="legend-altitude">
     <g data-ng-if="altGraph" data-lab-margin>
-        <path class="legend-altitude__path" data-ng-attr-d="{{altGraph.pathData}}"></path>
+        <path
+            class="legend-altitude__path"
+            style="stroke: url({{location}}#altitudeGradient)"
+            data-ng-attr-d="{{altGraph.pathData}}"></path>
         <line
             data-ng-repeat="mark in altGraph.distanceMarks"
             data-ng-attr-x1="{{scaleXFromDistance(mark)}}"

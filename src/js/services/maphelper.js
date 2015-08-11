@@ -1,4 +1,4 @@
-angular.module('marathon').factory('mapHelper', function (track) {
+angular.module('marathon').factory('mapHelper', function (track, genderColors) {
     var x_axis_points = {
         p1: {
             x: 0,
@@ -190,13 +190,12 @@ angular.module('marathon').factory('mapHelper', function (track) {
     var getAreaByData = function (runners_array, base_districts, prev_districts, seconds, step) {
         var steps_runners = getStepsRunners(runners_array, base_districts, seconds);
 
-        return (base_districts.map(function (district, i) {
-            var prev_di = prev_districts[i];
+        return (prev_districts.map(function (prev_di, i) {
             var obj = {};
-            var runners = steps_runners[i];
+            var runnersCount = steps_runners[i];
 
-            obj.height = getHeightByRunners(runners, step);
-            obj.runners = runners;
+            obj.height = getHeightByRunners(runnersCount, step);
+            obj.runners = runnersCount;
 
             var spcurv1 = getPointOnPerpendicularM(prev_di.pcurv1, prev_di.pcurv2, prev_di.pcurv1, obj.height);
             var spcurv2 = getPointOnPerpendicularM(prev_di.pcurv1, prev_di.pcurv2, prev_di.pcurv2, obj.height);
@@ -318,7 +317,6 @@ angular.module('marathon').factory('mapHelper', function (track) {
 
         var result = {
             complects: complects,
-            points: steps,
             step: step
         };
         return result;
@@ -352,7 +350,9 @@ angular.module('marathon').factory('mapHelper', function (track) {
         };
     };
 
-    var drawRunnersPoints = function (grads, data, runners, timestamp) {
+    var drawRunnersPoints = function (runners, timestamp, step) {
+        var data = getBasePoints(step);
+        var complects = data.complects;
         var point_radius = 2;
         var prevPosition;
 
@@ -368,7 +368,6 @@ angular.module('marathon').factory('mapHelper', function (track) {
         var getSQPoints = function (runner) {
             var d = runner.distance;
             runner = runner.runner;
-            var el = runner.big_genderage_group_full;
             var position = getRunnerPosition(runner, timestamp, prevPosition);
             prevPosition = position;
             return {
@@ -376,13 +375,13 @@ angular.module('marathon').factory('mapHelper', function (track) {
                 cx: position.x,
                 cy: position.y,
                 r: point_radius,
-                fill: grads[el.gender](el.num)
+                fill: genderColors.genderGradients[runner.gender](genderColors.colorNumberScale(runner.age))
             }
         };
 
         var limit = 5;
 
-        var steps_runners = getStepsRunners(runners, data.complects, timestamp, true);
+        var steps_runners = getStepsRunners(runners, complects, timestamp, true);
 
         var singleRunnersGroups = steps_runners.filter(function (step) {
             return step.length <= limit;
@@ -399,26 +398,18 @@ angular.module('marathon').factory('mapHelper', function (track) {
 
     var getPoints = function (runners_groups, age_areas, seconds, step) {
         var data = getBasePoints(step);
-
         var complects = data.complects;
 
-        var areas_data = {};
-        var areas = {};
-
         var prev;
-        runners_groups.forEach(function (el, i) {
-            var prev_districts = (i == 0) ? complects : prev;
-            areas_data[el.key] = getAreaByData(el.runners, complects, prev_districts, seconds, data.step);
-            prev = areas_data[el.key];
-        });
-        runners_groups.forEach(function (el) {
-            areas[el.key] = getAreaPathData(areas_data[el.key], complects);
-        });
-        runners_groups.forEach(function (el) {
-            age_areas[el.key].d = areas[el.key];
-        });
-        return data;
 
+        runners_groups.forEach(function (el) {
+            var prev_districts = (prev) ? prev : complects;
+            var areas_data = getAreaByData(el.runners, complects, prev_districts, seconds, data.step);
+            prev = areas_data;
+            age_areas[el.key].d = getAreaPathData(areas_data, complects);
+        });
+
+        return complects;
     };
     var mapScale = 1;
     function setMapScale(scale) {
@@ -428,7 +419,6 @@ angular.module('marathon').factory('mapHelper', function (track) {
         return mapScale;
     }
     return {
-        earth_radius: 6371000,
         getPoints: getPoints,
         format: format,
         getStepValueByHeight: getStepValueByHeight,

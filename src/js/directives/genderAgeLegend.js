@@ -1,4 +1,4 @@
-angular.module('marathon').directive('genderAgeLegend', function () {
+angular.module('marathon').directive('genderAgeLegend', function (runnerClassificator, ageGroups, genderColors) {
     return {
         restrict: 'E',
         templateUrl: 'directives/genderAgeLegend.html',
@@ -14,11 +14,11 @@ angular.module('marathon').directive('genderAgeLegend', function () {
             $scope.ageGraphData = {};
             $scope.ageGraphData.space = space;
             function updateData () {
-                var runners = checkData($scope.runnersData.items);
+                var runners = runnerClassificator.checkData($scope.runnersData.items);
                 var genderGroups = [runners.big_genders_groups[0], runners.big_genders_groups[1]];
                 var genderGroupsMale = genderGroups[1];
                 var genderGroupsFemale = genderGroups[0];
-                var ageGroupsData = runners.big_ages_ranges;
+                var ageGroupsData = ageGroups.small;
 
                 var maxMale = genderGroupsMale.age_groups.max;
                 var maxFemale = genderGroupsFemale.age_groups.max;
@@ -39,8 +39,8 @@ angular.module('marathon').directive('genderAgeLegend', function () {
 
                 $scope.ageGraphData.genderItems = [[],[]];
                 var genderGradients = [
-                    $scope.generateGradient('#FFCBD5', '#EE2046', 10),
-                    $scope.generateGradient('#B8E8FF', '#1D56DF', 10)
+                    genderColors.generateGradient('#FFCBD5', '#EE2046', 10),
+                    genderColors.generateGradient('#B8E8FF', '#1D56DF', 10)
                 ];
                 var genderConstants = ['WOMEN_DECLENSION', 'MEN_DECLENSION'];
                 genderGroups.forEach(function (genderGroup, genderNumber) {

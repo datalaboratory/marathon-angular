@@ -1,6 +1,5 @@
 .legend-altitude__path {
     fill: none;
-    stroke: url(#altitudeGradient);
 }
 
 .legend-altitude__mark {
