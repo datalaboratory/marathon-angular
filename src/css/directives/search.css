@@ -5,7 +5,7 @@
     padding-right: 15px;
 }
 
-.search__input {
+.search .search__input {
     border-radius: 3px;
     border: 1px solid #ccc;
     display: inline-block;

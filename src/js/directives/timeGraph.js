@@ -1,4 +1,4 @@
-angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout, mapHelper, toGrayscale, runnerClassificator, genderColors) {
+angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout, mapHelper, runnerClassificator, genderColors) {
     var render = {
         margin: {
             left: 0,
@@ -48,7 +48,6 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
 
                 var height_factor;
                 var graphHeight;
-                var current_step;
                 var points_byd;
                 var runners_byd;
                 var reversed_groups;
@@ -57,78 +56,52 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                 var runners = runnerClassificator.checkData($scope.filteredRunners);
 
                 var runnersGroups = runners.runners_groups.slice();
-                runnersGroups.forEach(function (el) {
-                    var color = genderColors.genderGradients[el.gender](el.num);
-                    var gray = toGrayscale(color);
-                    $scope.ageAreas[el.key] = {
-                        left: {
-                            color: color
-                        },
-                        right: {
-                            color: gray
-                        }
+                runnersGroups.forEach(function (group) {
+                    var color = genderColors.genderGradients[group.gender](group.num);
+                    $scope.ageAreas[group.key] = {
+                        color: color
                     };
                 });
 
-                function makeStep(step_num, runners, time_step) {
-                    var range_start = $scope.time.start + step_num * time_step;
-                    var range_end = range_start + time_step;
-                    return runners.filter(function (runner) {
-                        return range_start < runner.end_time && runner.end_time <= range_end
-                    });
-                }
-
                 function getRunnersByTime(runners) {
                     return d3.range(0, stepsCount).map(function (stepNumber) {
-                        return makeStep(stepNumber, runners, time_step);
+                        var range_start = $scope.time.start + stepNumber * time_step;
+                        var range_end = range_start + time_step;
+                        return runners.filter(function (runner) {
+                            return range_start < runner.end_time && runner.end_time <= range_end
+                        });
                     });
                 }
 
                 function getRunByDPoints(runnersByTime, prev_array) {
                     var result = [];
-                    var resultLeft = [];
-                    var resultRight = [];
                     for (var stepNumber = 0; stepNumber < stepsCount; stepNumber++) {
                         var x1 = stepNumber * px_step;
                         var x2 = x1 + px_step;
                         var y = graphHeight - height_factor * runnersByTime[stepNumber].length;
 
-                        function addPoint(array, x1, x2, y) {
-                            array.push({
-                                x: x1,
-                                y: y
-                            }, {
-                                x: x2,
-                                y: y
-                            })
-                        }
-
                         if (prev_array) {
                             var prev_v = prev_array[stepNumber * 2];
                             y = y - (graphHeight - prev_v.y);
                         }
-                        addPoint(result, x1, x2, y);
-                        if (stepNumber <= current_step) {
-                            addPoint(resultLeft, x1, x2, y);
-                        } else {
-                            addPoint(resultRight, x1, x2, y);
-                        }
+                        result.push({
+                            x: x1,
+                            y: y
+                        }, {
+                            x: x2,
+                            y: y
+                        })
                     }
-                    if (!resultRight.length) addPoint(resultRight, x2, x2, y);
-                    return {
-                        allPoints: result,
-                        left: resultLeft,
-                        right: resultRight
-                    };
+                    return result;
                 }
 
                 function getRunByDPathData(array) {
                     if (!array.length) return;
                     var result = '';
                     result += 'M' + mapHelper.format({x: array[0].x, y: graphHeight});
-                    for (var i = 0; i < array.length; i++) {
-                        result += ' L' + mapHelper.format(array[i]);
-                    }
+                    array.forEach(function (item) {
+                        result += ' L' + mapHelper.format(item);
+                    });
                     result += ' L' + mapHelper.format({x: (array[array.length - 1]).x, y: graphHeight});
                     result += ' Z';
                     return result;
@@ -147,17 +120,14 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                             position: {
                                 y: height - 90
                             },
-                            color: genderColors.genderGradients[1](genderColors.colorNumberScale(winnerMale.age)),
-                            gray: toGrayscale(genderColors.genderGradients[1](genderColors.colorNumberScale(winnerMale.age)))
-
+                            color: genderColors.genderGradients[1](genderColors.colorNumberScale(winnerMale.age))
                         },
                         female: {
                             runner: winnerFemale,
                             position: {
                                 y: height - 160
                             },
-                            color: genderColors.genderGradients[0](genderColors.colorNumberScale(winnerFemale.age)),
-                            gray: toGrayscale(genderColors.genderGradients[0](genderColors.colorNumberScale(winnerFemale.age)))
+                            color: genderColors.genderGradients[0](genderColors.colorNumberScale(winnerFemale.age))
                         }
                     };
                 }
@@ -182,22 +152,16 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
 
                     runners_byd = {};
 
-                    runnersGroups.forEach(function (el) {
-                        runners_byd[el.key] = getRunnersByTime(el.runners);
+                    runnersGroups.forEach(function (group) {
+                        runners_byd[group.key] = getRunnersByTime(group.runners);
                     });
-                    steps_data = [];
-                    var getMaxInStep = function (step_num) {
-                        var all_runners_in_step = [];
-                        reversed_groups.forEach(function (el) {
-                            all_runners_in_step.push.apply(all_runners_in_step, runners_byd[el.key][step_num]);
-                        });
 
-                        steps_data.push(all_runners_in_step);
-                    };
+                    steps_data = d3.range(0, stepsCount).map(function (step) {
+                        return d3.merge(reversed_groups.map(function (group) {
+                            return runners_byd[group.key][step];
+                        }));
+                    });
 
-                    for (var i = 0; i < stepsCount; i++) {
-                        getMaxInStep(i)
-                    }
                     var max_runners_in_step = d3.extent(getRunnersByTime($scope.runnersData.items), function (stepArray) {
                         return stepArray.length;
                     })[1];
@@ -208,12 +172,12 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                         $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
                     }
                     prevStepsCount = stepsCount;
-                    points_byd = {};
-                    current_step = Math.floor($scope.time.current / $scope.time.maxTime * stepsCount);
+
                 }
 
                 function updatePaths() {
                     if (!reversed_groups) return;
+                    points_byd = {};
                     stepsCount = Math.floor(width / px_step);
 
                     time_step = 1000 * $scope.time.maxTime / stepsCount;
@@ -221,24 +185,15 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                     reversed_groups.forEach(function (el, i) {
                         var prev = reversed_groups[i - 1];
                         if (prev) prev = points_byd[prev.key];
-                        points_byd[el.key] = getRunByDPoints(runners_byd[el.key], prev).allPoints;
-
-                        var leftPoints = getRunByDPoints(runners_byd[el.key], prev).left;
-                        var rightPoints = getRunByDPoints(runners_byd[el.key], prev).right;
-                        $scope.ageAreas[el.key].left.d = getRunByDPathData(leftPoints);
-                        $scope.ageAreas[el.key].right.d = getRunByDPathData(rightPoints);
+                        points_byd[el.key] = getRunByDPoints(runners_byd[el.key], prev);
+                        $scope.ageAreas[el.key].d = getRunByDPathData(points_byd[el.key]);
                     });
                 }
 
-                $scope.$watch('time.current', function (time) {
-                    current_step = $scope.timeScale(time) / width * stepsCount;
-                    updatePaths();
-                });
                 $scope.$watch('timeScale.domain()', function () {
                     height_factor = null;
                     updateRunnersData();
                     updateWinnersData();
-                    current_step = $scope.timeScale($scope.time.current) / width * stepsCount;
                     updatePaths();
                 }, true);
 
@@ -253,7 +208,6 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                         time_step = 1000 * $scope.time.maxTime / stepsCount;
                         updateRunnersData();
                         updateWinnersData();
-                        current_step = $scope.timeScale($scope.time.current) / width * stepsCount;
                         updatePaths();
                     });
                 });

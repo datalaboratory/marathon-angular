@@ -60,12 +60,16 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
         return ((timestamp - startTime) * (endDistance - startDistance)) / (endTime - startTime) + startDistance;
     };
 
-    var getDistanceByTime = function (el, miliseconds) {
+    var getDistanceByTime = function (runner, miliseconds) {
         var start, end;
         var done = false;
-        for (var i = 0; i < el.result_steps.length; i++) {
-            var cur = el.result_steps[i];
-            var next = el.result_steps[i + 1];
+        var resultSteps = runner.result_steps;
+        if (resultSteps.length < Math.round(track.getTrackLength() / 5000) + 1) {
+            resultSteps.push({distance: Math.round(track.getTrackLength()), time: runner.end_time});
+        }
+        for (var i = 0; i < resultSteps.length; i++) {
+            var cur = resultSteps[i];
+            var next = resultSteps[i + 1];
             if (!cur || !next) {
                 break;
             }
@@ -79,15 +83,15 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
             }
         }
         if (!done) {
-            start = el.result_steps[0];
-            end = el.result_steps[el.result_steps.length - 1];
+            start = resultSteps[0];
+            end = resultSteps[runner.result_steps.length - 1];
         }
-
-        return getDistance(
+        var d = getDistance(
             start.time, start.distance,
             end.time, end.distance,
             miliseconds
         );
+        return d;
     };
 
 
@@ -351,11 +355,10 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
     };
 
     var drawRunnersPoints = function (runners, timestamp, step) {
-        var data = getBasePoints(step);
-        var complects = data.complects;
         var point_radius = 2;
         var prevPosition;
 
+        var complects = getBasePoints(step).complects;
         var prepareRunner = function (runner) {
             var current_distance = getDistanceByTime(runner, timestamp * 1);
             current_distance = Math.max(0, current_distance);

@@ -13,6 +13,7 @@ svg {
 
 .big-wrap {
     min-width: 960px;
+    min-height: 1300px;
     width: 80%;
     padding: 0 10px;
     box-sizing: border-box;

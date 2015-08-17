@@ -21,3 +21,12 @@
     margin-left: -10px;
     box-sizing: border-box;
 }
+
+.sticky-header .sticky-header__inner--sticked-to-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    padding: 5px 0;
+    box-sizing: border-box;
+    z-index: 10;
+}

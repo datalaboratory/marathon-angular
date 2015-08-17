@@ -25,6 +25,7 @@ angular.module('marathon').factory('runnerClassificator', function (ageGroups) {
 
         runners.forEach(function (runner) {
             if (runner.gender > 1) return;
+            if (!genders_groups[runner.gender]) debugger
             genders_groups[runner.gender].push(runner);
         });
 

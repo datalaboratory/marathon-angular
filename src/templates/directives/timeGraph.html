@@ -19,34 +19,39 @@
         class="time-graph__svg"
         data-ng-mousemove="selectRunnerOnGraph($event)"
         data-lab-size-to-scales="timeGraphScales">
-        <g
-            data-ng-repeat="area in ageAreas">
-            <path
-                data-ng-attr-d="{{area.left.d}}"
-                data-ng-attr-fill="{{area.left.color}}"></path>
-            <path
-                data-ng-attr-d="{{area.right.d}}"
-                data-ng-attr-fill="{{area.right.color}}"></path>
-        </g>
-        <g data-ng-if="winners">
+        <symbol id="graph">
             <g
-                data-ng-repeat="winner in [winners.female, winners.male]"
-                data-ng-attr-transform="translate({{timeScale(winner.runner.end_time)}},{{winner.position.y}})"
-                >
-                <bottom-line
-                    stroke="color=(time.current > winner.runner.end_time)? winner.color : winner.gray"
-                    padding="10">
-                    <backed-text>
-                        <text y="0" class="time-graph__winners-text">
-                            <tspan x="0">{{winner.runner.full_name.split(' ')[0]}}</tspan>
-                            <tspan x="0" dy="16">{{winner.runner.full_name.split(' ')[1]}}</tspan>
-                            <tspan x="0" dy="16">{{winner.runner.result_time_string}}</tspan>
-                        </text>
-                    </backed-text>
-                </bottom-line>
+                data-ng-repeat="area in ageAreas">
+                <path
+                    data-ng-attr-d="{{area.d}}"
+                    data-ng-attr-fill="{{area.color}}"></path>
             </g>
-        </g>
-
+            <g data-ng-if="winners">
+                <g
+                    data-ng-repeat="winner in [winners.female, winners.male]"
+                    data-ng-attr-transform="translate({{timeScale(winner.runner.end_time)}},{{winner.position.y}})"
+                    >
+                    <bottom-line
+                        stroke="winner.color"
+                        padding="10">
+                        <backed-text>
+                            <text y="0" class="time-graph__winners-text">
+                                <tspan x="0">{{winner.runner.full_name.split(' ')[0]}}</tspan>
+                                <tspan x="0" dy="16">{{winner.runner.full_name.split(' ')[1]}}</tspan>
+                                <tspan x="0" dy="16">{{winner.runner.result_time_string}}</tspan>
+                            </text>
+                        </backed-text>
+                    </bottom-line>
+                </g>
+            </g>
+        </symbol>
+        <filter id='grayscale'>
+            <feColorMatrix
+                type='matrix'
+                values='0.2125 0.7154 0.0721 0 0, 0.2125 0.7154 0.0721 0 0, 0.2125 0.7154 0.0721 0 0, 0 0 0 1 0'/>
+        </filter>
+        <use xlink:href="#graph" filter="url(#grayscale)" />
+        <use xlink:href="#graph" data-ng-attr-width="{{timeScale(time.current)}}" />
 
         <finish-time-line></finish-time-line>
     </svg>
