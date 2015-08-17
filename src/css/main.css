@@ -82,6 +82,7 @@ svg {
 }
 .map-overlay__copyright-logo {
     width: 35px;
+    vertical-align: baseline;
 }
 .map-overlay__copyright-link {
     color: inherit;
@@ -125,8 +126,9 @@ svg {
     width: 50%;
     float: left;
 }
-.legend__gender-age-container {
+.big-wrap .legend__gender-age-container {
     height: 150px;
+    box-sizing: border-box;
 }
 .legend__snake-rise {
     width: 50%;

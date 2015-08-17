@@ -7,6 +7,7 @@ angular.module('marathon').directive('genderAgeLegend', function (runnerClassifi
             var container = $element;
             var width = container.width();
             var height = container.height();
+            console.log(height, 'height');
             $scope.width = width;
             $scope.height = height;
             var space = 1;
