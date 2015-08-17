@@ -1,7 +1,7 @@
 angular.module('marathon').constant('translationRu', {
-    HEAD_TITLE: 'Результаты Московского полумарафона 17 мая 2015 года',
+    HEAD_TITLE: 'Результаты Музыкального полумарафона 16 августа 2015 года',
     SHARED_IMG: '/img/screenshot.png',
-    MAIN_TITLE: 'МОСКОВСКИЙ ПОЛУМАРАФОН',
+    MAIN_TITLE: 'МУЗЫКАЛЬНЫЙ ПОЛУМАРАФОН',
     ALTITUDE_TITLE: 'Высотный профиль',
     GENDER_AGE_TITLE: 'Пол и возраст',
     SNAKE_WIDTH_TITLE: 'Толщина змея',

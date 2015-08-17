@@ -4,7 +4,7 @@
     height: 100%;
 }
 
-.snake-group__path {
+.snake-group__track {
     fill: none;
     stroke: #999;
     stroke-width: 1px;

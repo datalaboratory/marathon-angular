@@ -1,7 +1,7 @@
 angular.module('marathon').constant('translationEn', {
-        HEAD_TITLE: 'Results Moscow half marathon May 17, 2015',
+        HEAD_TITLE: 'Results Music half marathon August 16, 2015',
         SHARED_IMG: '/img/screenshot_eng.png',
-        MAIN_TITLE: 'MOSCOW HALF MARATHON',
+        MAIN_TITLE: 'MUSIC HALF MARATHON',
         ALTITUDE_TITLE: 'Altitude',
         GENDER_AGE_TITLE: 'Age and sex',
         SNAKE_WIDTH_TITLE: 'Snake width',

@@ -20,6 +20,13 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         var seconds = time[2];
         return moment(startTime).add(hours, 'hour').add(minutes, 'minute').add(seconds, 'second');
     }
+    function getDateFromDayStart(string, startTime) {
+        var time = string.split(':');
+        var hours = time[0];
+        var minutes = time[1];
+        var seconds = time[2];
+        return moment(startTime).startOf('day').add(hours, 'hour').add(minutes, 'minute').add(seconds, 'second');
+    }
 
     function getSecondsFromString(string) {
         var time = string.split(':');
@@ -38,16 +45,20 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             var fieldNames = results[0].data.meta;
             results.forEach(function (result) {
                 result.data.data.forEach(function (runner) {
-                    runner.gender = result.data.gender
+                    runner.gender = (result.data.gender == 1)? 1 : 0;
                 })
             });
 
             var runners = d3.merge(results.map(function (data) {
                 return data.data.data
             })).map(function (runner) {
-                var processedRunner = {result_steps: [{distance: 0, time: startTime + 500}]};
+
+                var processedRunner = {result_steps: [{
+                    distance: 0,
+                    time: getDateFromDayStart(runner[fieldNames.indexOf('realStartTime')], startTime)
+                }]};
                 fieldNames.forEach(function (field, i) {
-                    if (field == String(parseInt(field))) {
+                    if (field == String(parseInt(field)) && runner[i]) {
                         processedRunner.result_steps.push({distance: +field, time: getDateFromString(runner[i], startTime) * 1})
                     } else {
                         processedRunner[field] = runner[i]
@@ -62,10 +73,11 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 }
                 return {
                     gender: runner.gender,
-                    winner: processedRunner['position'] < 7,
-                    gender_pos: processedRunner['position'],
+                    winner: processedRunner['genderPosition'] < 7,
+                    pos: processedRunner['absolutePosition'],
+                    gender_pos: processedRunner['genderPosition'],
                     num: processedRunner['number'],
-                    full_name: processedRunner['lastName'] + ' ' + processedRunner['firstName'],
+                    full_name: processedRunner['last_name'] + ' ' + processedRunner['first_name'],
                     age: processedRunner['age'],
                     country: processedRunner['country'],
                     city: processedRunner['city'],
@@ -80,14 +92,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 if (a.gender == 2) return 1;
                 if (b.gender == 2) return -1;
                 return a.end_time - b.end_time;
-            });
-            runners.forEach(function (runner, i) {
-                if (runner.gender == 2) return;
-                if (runners[i - 1] && runners[i - 1].result_time_string == runner.result_time_string) {
-                    runner.pos = runners[i - 1].pos;
-                } else {
-                    runner.pos = i + 1
-                }
             });
             var maxTime = d3.extent(runners, function (runner) {
                 return (runner.end_time - startTime) / 1000;
@@ -104,17 +108,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '10km': $http.get('data/geo/mm2015_17may-10km-geo.json'),
-            '21km': $http.get('data/geo/mm2015_17may-21km-geo.json')
+            '21km': $http.get('data/geo/Muz_halfmarathon_16-08-2015.json')
         },
         runners: {
-            '10km': loadRunners([
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/10km-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/10km-women.json'
-            ]),
             '21km': loadRunners([
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/21km-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/21km-women.json'])
+                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-men.json',
+                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-women.json'])
         }
     };
 

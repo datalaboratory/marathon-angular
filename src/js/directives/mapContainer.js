@@ -60,7 +60,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             function drawSnake(time) {
                 if (!time) return;
                 time *= 1;
-                var step = 500;
+                var step = 400;
                 var runners = runnerClassificator.checkData($scope.filteredRunners);
                 mapHelper.getPoints(
                     runners.runners_groups,

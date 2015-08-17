@@ -28,9 +28,9 @@
     cursor: pointer;
 }
 
-.track-switch__item:last-child {
+/*.track-switch__item:last-child {
     border-left: 1px solid #ccc;
-}
+}*/
 
 .track-switch__item--active {
     background-color: #ffdd00;
