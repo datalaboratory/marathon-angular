@@ -11,18 +11,11 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
     function distanceParams() {
         var distance_in_km = Math.round(track.getTrackLength() / 1000);
         return {
-            '10km': {
-                marks: [2, distance_in_km / 2, 7],
-                maxPoint: {
-                    alt: 169,
-                    x: 0.75
-                }
-            },
             '21km': {
                 marks: [5, distance_in_km / 2, 15],
                 maxPoint: {
                     alt: 169,
-                    x: 0.75
+                    x: 0.85
                 }
             }
         }

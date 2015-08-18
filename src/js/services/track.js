@@ -13,8 +13,8 @@ angular.module('marathon').factory('track', function ($rootScope) {
     var trackLength;
 
     var magicNumbers = {
-        scale: 0.6,
-        x: -100,
+        scale: 0.5,
+        x: -130,
         y: 70
     };
     var calculatedMagicNumbers = {};

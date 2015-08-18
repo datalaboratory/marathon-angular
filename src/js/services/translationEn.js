@@ -33,5 +33,5 @@ angular.module('marathon').constant('translationEn', {
         SHOW_MORE_RESULTS: 'Show more 100 results',
         VISUALIZATION: 'Visualization',
         BY_DATA_LABORATORY: 'by&nbsp;Data&nbsp;laboratory',
-        MAP_SRC: 'img/half-marathon-map.png'
+        MAP_SRC: 'img/music-marathon-map.png'
 });

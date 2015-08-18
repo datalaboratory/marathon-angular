@@ -12,8 +12,8 @@
             >
         <div class="runners-list__position">
             <span class="runners-list__mark">
-                <span data-ng-show="!filterValues.gender && !states.winnersInTable">{{::runner.pos}}</span>
-                <span data-ng-show="filterValues.gender || states.winnersInTable">{{::runner.gender_pos}}</span>
+                <span data-ng-show="!filterValues.gender && !states.winnersInTable && runner.gender != 2">{{::runner.pos}}</span>
+                <span data-ng-show="(filterValues.gender || states.winnersInTable) && runner.gender != 2">{{::runner.gender_pos}}</span>
             </span></div>
         <div class="runners-list__name">{{::runner.full_name}}</div>
         <div class="runners-list__number">{{::runner.num}}</div>

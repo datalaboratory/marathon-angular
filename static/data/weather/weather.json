@@ -1,14 +1,8 @@
 [
   {
-    "time": "09:30",
-    "temperature": "+10°",
-    "sky": "w-small-rain",
-    "wind": "→ 2"
-  },
-  {
-    "time": "10:30",
-    "temperature": "+11°",
-    "sky": "w-small-rain",
-    "wind": "→ 3"
+    "time": "10:28",
+    "temperature": "+13°",
+    "sky": "w-littlesun.png",
+    "wind": "↘︎ 2"
   }
 ]

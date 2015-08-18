@@ -15,17 +15,11 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
         replace: true,
         link: function link($scope, $element) {
             $scope.mapParams = {
-                '10km': {
-                    width: 610,
-                    height: 540,
-                    x: 26,
-                    y: 100
-                },
                 '21km': {
-                    width: 610,
-                    height: 540,
-                    x: 26,
-                    y: 100
+                    width: 635,
+                    height: 500,
+                    x: 21,
+                    y: 97
                 }//todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {
@@ -72,6 +66,9 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     time,
                     step);
             }
+            $scope.printRunner = function(runner) {
+                console.log(runner)
+            };
 
             var firstTime = true;
             $scope.$watch('selectedTrack', function (selectedTrack) {

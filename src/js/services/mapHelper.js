@@ -172,7 +172,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
     };
 
     var hclc = {
-        height_scale: 0.8,
+        height_scale: 0.53,
         man_place_square: Math.pow(3, 2)
     };
 
@@ -378,7 +378,8 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
                 cx: position.x,
                 cy: position.y,
                 r: point_radius,
-                fill: genderColors.genderGradients[runner.gender](genderColors.colorNumberScale(runner.age))
+                fill: genderColors.genderGradients[runner.gender](genderColors.colorNumberScale(runner.age)),
+                runner: runner
             }
         };
 

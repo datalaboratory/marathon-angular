@@ -53,10 +53,13 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 return data.data.data
             })).map(function (runner) {
 
+                var realStartTime = runner[fieldNames.indexOf('realStartTime')];
+                realStartTime =  (!realStartTime) ? startTime *1 : getDateFromDayStart(realStartTime, startTime);
                 var processedRunner = {result_steps: [{
                     distance: 0,
-                    time: getDateFromDayStart(runner[fieldNames.indexOf('realStartTime')], startTime)
+                    time: realStartTime
                 }]};
+
                 fieldNames.forEach(function (field, i) {
                     if (field == String(parseInt(field)) && runner[i]) {
                         processedRunner.result_steps.push({distance: +field, time: getDateFromString(runner[i], startTime) * 1})
@@ -67,6 +70,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 if (processedRunner['resultTime'].indexOf(':') < 0) {
                     var result_time_string = 'н/ф';
                     runner.gender = 2;
+
                 } else {
                     result_time_string = processedRunner['resultTime'];
                     var finishTime = getDateFromString(result_time_string, startTime)
