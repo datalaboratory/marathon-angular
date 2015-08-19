@@ -62,9 +62,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 }
                 var city = processedRunner['city'];
                 if (city) {
-                    city = city[0].toUpperCase() + city.slice(1).toLowerCase();
+                    city = capitalize(city);
+                    ['-', '—', ' '].forEach(function (separator) {
+                        if (city.indexOf(separator) == -1) return;
+                        city = city.split(separator).map(capitalize).join(separator);
+                    });
                 }
-
                 return {
                     gender: runner.gender,
                     winner: processedRunner['position'] < 7,
