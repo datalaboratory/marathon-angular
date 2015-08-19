@@ -26,24 +26,6 @@
                     data-ng-attr-d="{{area.d}}"
                     data-ng-attr-fill="{{area.color}}"></path>
             </g>
-            <g data-ng-if="winners">
-                <g
-                    data-ng-repeat="winner in [winners.female, winners.male]"
-                    data-ng-attr-transform="translate({{timeScale(winner.runner.end_time)}},{{winner.position.y}})"
-                    >
-                    <bottom-line
-                        stroke="winner.color"
-                        padding="10">
-                        <backed-text>
-                            <text y="0" class="time-graph__winners-text">
-                                <tspan x="0">{{winner.runner.full_name.split(' ')[0]}}</tspan>
-                                <tspan x="0" dy="16">{{winner.runner.full_name.split(' ')[1]}}</tspan>
-                                <tspan x="0" dy="16">{{winner.runner.result_time_string}}</tspan>
-                            </text>
-                        </backed-text>
-                    </bottom-line>
-                </g>
-            </g>
         </symbol>
         <filter id='grayscale'>
             <feColorMatrix
@@ -52,6 +34,25 @@
         </filter>
         <use xlink:href="#graph" data-ng-attr-filter="url({{location}}#grayscale)" />
         <use xlink:href="#graph" data-ng-attr-width="{{timeScale(time.current)}}" />
+
+        <g data-ng-if="winners">
+            <g
+                data-ng-repeat="winner in [winners.female, winners.male]"
+                data-ng-attr-transform="translate({{timeScale(winner.runner.end_time)}},{{winner.position.y}})"
+                >
+                <bottom-line
+                    stroke="color = (winner.runner.end_time < time.current) ? winner.color : winner.gray"
+                    padding="10">
+                    <backed-text>
+                        <text y="0" class="time-graph__winners-text">
+                            <tspan x="0">{{winner.runner.full_name.split(' ')[0]}}</tspan>
+                            <tspan x="0" dy="16">{{winner.runner.full_name.split(' ')[1]}}</tspan>
+                            <tspan x="0" dy="16">{{winner.runner.result_time_string}}</tspan>
+                        </text>
+                    </backed-text>
+                </bottom-line>
+            </g>
+        </g>
 
         <finish-time-line></finish-time-line>
     </svg>

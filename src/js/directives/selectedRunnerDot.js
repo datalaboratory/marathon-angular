@@ -10,10 +10,10 @@ angular.module('marathon').directive('selectedRunnerDot', function(removePrototy
             'paddingBottom': '='
         },
         transclude: true,
-        link: function($scope, $element) {
+        link: function selectedRunnerDotLink($scope, $element) {
             var $rect = $element.find('rect');
-            var bbox = function() {
-                var $text = $element.find('text:visible');
+            var bbox = function getBBox() {
+                var $text = $element.find('text').not('.ng-hide');
                 var text = $text[0];
                 return removePrototype(text.getBBox());
             };

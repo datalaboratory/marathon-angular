@@ -1,14 +1,14 @@
 <div class="big-wrap" data-lab-render-loop data-scroll-to>
     <div data-ng-controller="MarathonController" class="big-wrap__inner">
         <div class="loader-container--active" loading-cover="marathon">
-            <div class="loader-container__cover">
+            <!--<div class="loader-container__cover">
                 <div class="loader-container__image"></div>
-            </div>
+            </div>-->
             <div class="map-container-container loader-container--inactive" loading-cover="map">
                 <map-container data-ng-if="filteredRunners"></map-container>
-                <div class="loader-container__cover">
+                <!--<div class="loader-container__cover">
                     <div class="loader-container__image"></div>
-                </div>
+                </div>-->
             </div>
             <div class="map-overlay">
                 <factoids data-ng-if="time.start"></factoids>

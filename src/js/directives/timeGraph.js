@@ -1,4 +1,4 @@
-angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout, mapHelper, runnerClassificator, genderColors) {
+angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout, mapHelper, runnerClassificator, genderColors, toGrayscale) {
     var render = {
         margin: {
             left: 0,
@@ -114,20 +114,24 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                     var winnerFemale = _.find($scope.winnersForTable, function (runner) {
                         return runner.gender == 0 && runner.gender_pos == 1;
                     });
+                    var colorMale = genderColors.genderGradients[1](genderColors.colorNumberScale(winnerMale.age));
+                    var colorFemale = genderColors.genderGradients[0](genderColors.colorNumberScale(winnerFemale.age));
                     $scope.winners = {
                         male: {
                             runner: winnerMale,
                             position: {
                                 y: height - 90
                             },
-                            color: genderColors.genderGradients[1](genderColors.colorNumberScale(winnerMale.age))
+                            color: colorMale,
+                            gray: toGrayscale(colorMale)
                         },
                         female: {
                             runner: winnerFemale,
                             position: {
                                 y: height - 160
                             },
-                            color: genderColors.genderGradients[0](genderColors.colorNumberScale(winnerFemale.age))
+                            color: colorFemale,
+                            gray: toGrayscale(colorFemale)
                         }
                     };
                 }
