@@ -20,6 +20,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         var seconds = time[2];
         return moment(startTime).add(hours, 'hour').add(minutes, 'minute').add(seconds, 'second');
     }
+
     function getDateFromDayStart(string, startTime) {
         var time = string.split(':');
         var hours = time[0];
@@ -45,7 +46,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             var fieldNames = results[0].data.meta;
             results.forEach(function (result) {
                 result.data.data.forEach(function (runner) {
-                    runner.gender = (result.data.gender == 1)? 1 : 0;
+                    runner.gender = (result.data.gender == 1) ? 1 : 0;
                 })
             });
 
@@ -54,15 +55,20 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             })).map(function (runner) {
 
                 var realStartTime = runner[fieldNames.indexOf('realStartTime')];
-                realStartTime =  (!realStartTime) ? startTime *1 : getDateFromDayStart(realStartTime, startTime);
-                var processedRunner = {result_steps: [{
-                    distance: 0,
-                    time: realStartTime
-                }]};
+                realStartTime = (!realStartTime) ? startTime * 1 : getDateFromDayStart(realStartTime, startTime);
+                var processedRunner = {
+                    result_steps: [{
+                        distance: 0,
+                        time: realStartTime
+                    }]
+                };
 
                 fieldNames.forEach(function (field, i) {
                     if (field == String(parseInt(field)) && runner[i]) {
-                        processedRunner.result_steps.push({distance: +field, time: getDateFromString(runner[i], startTime) * 1})
+                        processedRunner.result_steps.push({
+                            distance: +field,
+                            time: getDateFromString(runner[i], startTime) * 1
+                        })
                     } else {
                         processedRunner[field] = runner[i]
                     }
@@ -75,6 +81,10 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     result_time_string = processedRunner['resultTime'];
                     var finishTime = getDateFromString(result_time_string, startTime)
                 }
+                var city = processedRunner['city'];
+                if (city) {
+                    city = city[0].toUpperCase() + city.slice(1).toLowerCase();
+                }
                 return {
                     gender: runner.gender,
                     winner: processedRunner['genderPosition'] < 7,
@@ -84,7 +94,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     full_name: processedRunner['last_name'] + ' ' + processedRunner['first_name'],
                     age: processedRunner['age'],
                     country: processedRunner['country'],
-                    city: processedRunner['city'],
+                    city: city,
                     team: processedRunner['team'],
                     end_time: finishTime * 1,
                     result_time_string: result_time_string,
@@ -224,17 +234,13 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     function formatItems(filteredItems, key, sort) {
         var names = _.pluck(filteredItems, key);
         var counts = _.countBy(names);
+        var keys = Object.keys(counts);
         if (sort) {
-            var keys = sort(counts);
-            var newCounts = {};
-            keys.forEach(function (key) {
-                newCounts[key] = counts[key];
-            });
-            counts = newCounts;
+            keys = sort(counts);
         }
         var result = {};
         var filter = {};
-        Object.keys(counts).forEach(function (item) {
+        keys.forEach(function (item) {
             filter[key] = item;
             var count = multifilter(filteredItems, filter).length;
             var name = item;
@@ -290,8 +296,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     $scope.$watch('selectedRunnersData', function (selectedRunnersData) {
         if (!selectedRunnersData) return;
         selectedRunnersData.then(function (data) {
-            console.log('selected runners data', data);
-
             data = $scope.runnersData = data.data;
             var timePercent = 0.2;
             if ($scope.time) {
@@ -339,6 +343,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.$watch('runnersData', function (runnersData) {
         if (!runnersData) return;
+
+        runnersData.items.forEach(function (runner) {
+            if (runner.team == String(parseInt(runner.team))) {
+                runner.team += ' '
+            }
+        });
 
         var smallTeams = _.countBy(runnersData.items, 'team');
         smallTeams = Object.keys(smallTeams).filter(function (team) {
