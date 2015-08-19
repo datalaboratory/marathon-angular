@@ -24,7 +24,9 @@ angular.module('marathon').directive('selectedRunners', function (mapHelper, tra
             };
             $scope.showTooltip = function($event, runner) {
                 $scope.selectedRunnerOnMap.runner = runner;
-                $scope.selectedRunnerOnMap.position = "left:" + ($event.offsetX + 6) + 'px;top:' + ($event.offsetY + 6) + 'px;';
+                var x = $event.originalEvent.layerX || $event.offsetX;
+                var y = $event.originalEvent.layerY || $event.offsetY;
+                $scope.selectedRunnerOnMap.position = "left:" + (x + 6) + 'px;top:' + (y + 6) + 'px;';
             }
         }
     }

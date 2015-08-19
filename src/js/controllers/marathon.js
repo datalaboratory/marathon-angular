@@ -114,12 +114,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             '10km': loadRunners([
-                'data/runners/10km-men.json',
-                'data/runners/10km-women.json'
+                '../../../protocols/2015/half_run/10km-men.json',
+                '../../../protocols/2015/half_run/10km-women.json'
             ]),
             '21km': loadRunners([
-                'data/runners/21km-men.json',
-                'data/runners/21km-women.json'])
+                '../../../protocols/2015/half_run/21km-men.json',
+                '../../../protocols/2015/half_run/21km-women.json'])
         }
     };
 
