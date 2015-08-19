@@ -81,9 +81,16 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     result_time_string = processedRunner['resultTime'];
                     var finishTime = getDateFromString(result_time_string, startTime)
                 }
+                function capitalize(s) {
+                    return s[0].toUpperCase() + s.slice(1).toLowerCase();
+                }
                 var city = processedRunner['city'];
                 if (city) {
-                    city = city[0].toUpperCase() + city.slice(1).toLowerCase();
+                    city = capitalize(city);
+                    ['-', '—', ' '].forEach(function (separator) {
+                        if (city.indexOf(separator) == -1) return;
+                        city = city.split(separator).map(capitalize).join(separator);
+                    });
                 }
                 return {
                     gender: runner.gender,
