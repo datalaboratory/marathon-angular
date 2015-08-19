@@ -9,13 +9,19 @@
     pointer-events: all;
 }
 
-.track-switch__icon {
+.track-switch__runner, .track-switch__handbiker{
+    float: left;
+}
+.track-switch__runner {
     padding: 4px 3px 5px 10px;
     width: 16px;
     height: 20px;
-    float: left;
 }
-
+.track-switch__handbiker {
+    padding: 7px 3px 7px 10px;
+    width: 30px;
+    height: 15px;
+}
 .track-switch__text {
     font-size: 24px;
     padding: 4px 11px 4px 0px;
@@ -28,9 +34,9 @@
     cursor: pointer;
 }
 
-/*.track-switch__item:last-child {
+.track-switch__item:last-child {
     border-left: 1px solid #ccc;
-}*/
+}
 
 .track-switch__item--active {
     background-color: #ffdd00;

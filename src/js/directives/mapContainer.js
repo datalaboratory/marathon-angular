@@ -20,6 +20,12 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     height: 500,
                     x: 21,
                     y: 97
+                },
+                'hb': {
+                    width: 635,
+                    height: 500,
+                    x: 21,
+                    y: 97
                 }//todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {

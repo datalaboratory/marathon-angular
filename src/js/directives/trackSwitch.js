@@ -4,7 +4,7 @@ angular.module('marathon').directive('trackSwitch', function ($timeout, $rootSco
         templateUrl: 'directives/trackSwitch.html',
         replace: true,
         link: function link($scope) {
-            var tracks = ['21km'];
+            var tracks = ['hb', '21km'];
             function nextTrack() {
                 $scope.currentTrackName = tracks.shift();
             }
@@ -15,10 +15,14 @@ angular.module('marathon').directive('trackSwitch', function ($timeout, $rootSco
                 } else {
                     $rootScope.$broadcast('hideCover:map');
                     $timeout(function () {
-                        $scope.states.activatingWinners = true;
-                        $timeout(function () {
-                            $scope.states.activatingWinners = false;
-                        });
+                        if ($scope.currentTrackName != 'hb') {
+                            $scope.states.activatingWinners = true;
+                            $timeout(function () {
+                                $scope.states.activatingWinners = false;
+                            });
+                        } else {
+                            $scope.states.winnersInTable = false;
+                        }
                         $rootScope.$broadcast('hideCover:marathon');
                     }, 500);
                 }

@@ -122,12 +122,18 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '21km': $http.get('data/geo/Muz_halfmarathon_16-08-2015.json')
+            '21km': $http.get('data/geo/Muz_halfmarathon_16-08-2015.json'),
+            'hb': $http.get('data/geo/Muz_halfmarathon_16-08-2015.json')
         },
         runners: {
+            'hb': loadRunners([
+                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-handbiker-men.json',
+                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-handbiker-woman.json'
+            ]),
             '21km': loadRunners([
                 'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-women.json'])
+                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-women.json'
+            ])
         }
     };
 
@@ -349,11 +355,15 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 runner.team += ' '
             }
         });
+        if ($scope.currentTrackName == 'hb') {
+            var smallTeams = []
+        } else {
+            smallTeams = _.countBy(runnersData.items, 'team');
+            smallTeams = Object.keys(smallTeams).filter(function (team) {
+                return smallTeams[team] < 3;
+            });
+        }
 
-        var smallTeams = _.countBy(runnersData.items, 'team');
-        smallTeams = Object.keys(smallTeams).filter(function (team) {
-            return smallTeams[team] < 3;
-        });
         runnersData.items.forEach(function (runner) {
             if (!angular.isDefined(runner.realTeam)) {
                 runner.realTeam = runner.team;

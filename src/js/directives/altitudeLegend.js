@@ -17,6 +17,13 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                     alt: 169,
                     x: 0.85
                 }
+            },
+            'hb': {
+                marks: [5, distance_in_km / 2, 15],
+                maxPoint: {
+                    alt: 169,
+                    x: 0.85
+                }
             }
         }
     }
@@ -26,7 +33,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
         templateUrl: 'directives/altitudeLegend.html',
         replace: true,
         templateNamespace: 'svg',
-        link: function ($scope) {
+        link: function ($scope, $element) {
             $scope.scaleX = d3.scale.linear();
             $scope.scaleY = d3.scale.linear();
             $scope.scaleXFromDistance = d3.scale.linear();

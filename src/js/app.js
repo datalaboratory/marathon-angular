@@ -8,3 +8,10 @@ app.config(function ($translateProvider, translationRu, translationEn) {
         .translations('en', translationEn);
     $translateProvider.preferredLanguage('ru');
 });
+
+app.config( ['$provide', function ($provide){
+    $provide.decorator('$sniffer', ['$delegate', function ($delegate) {
+        $delegate.history = false;
+        return $delegate;
+    }]);
+}])

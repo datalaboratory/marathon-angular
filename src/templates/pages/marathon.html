@@ -79,7 +79,8 @@
 
                         <div
                             class="filters-container__gender-filter"
-                            data-ng-class="{'disable-gender': states.winnersInTable}">
+                            data-ng-class="{'disable-gender': states.winnersInTable}"
+                            data-ng-hide="currentTrackName == 'hb'">
                             <span
                                 class="filters-container__winners-filter"
                                 data-ng-click="showWinners()"

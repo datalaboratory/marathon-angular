@@ -1,7 +1,7 @@
 <div class="time-marks">
     <div class="time-mark"
          data-ng-repeat="mark in timeMarks"
-         data-ng-hide="timeMarks.length - 2 == $index"
+         data-ng-hide="timeMarks.length - 2 == $index && currentTrackName == '21km'"
          style="left: {{timeScale(mark)}}px;">
         <span class="time-mark__from-start">{{mark | formatTimeFromStart:time.start:$last}}</span> <br>
         <span class="time-mark__from-day">{{mark | formatTimeFromDay:$last}}</span>
