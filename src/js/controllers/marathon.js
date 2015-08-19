@@ -287,8 +287,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     $scope.$watch('selectedRunnersData', function (selectedRunnersData) {
         if (!selectedRunnersData) return;
         selectedRunnersData.then(function (data) {
-            console.log('selected runners data', data);
-
             data = $scope.runnersData = data.data;
             var timePercent = 0.2;
             if ($scope.time) {

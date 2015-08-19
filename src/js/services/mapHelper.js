@@ -63,10 +63,9 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
     var getDistanceByTime = function (runner, miliseconds) {
         var start, end;
         var done = false;
-        var resultSteps = runner.result_steps;
-        if (resultSteps.length < Math.round(track.getTrackLength() / 5000) + 1) {
-            resultSteps.push({distance: Math.round(track.getTrackLength()), time: runner.end_time});
-        }
+        var trackLength = track.getTrackLength();
+        var resultSteps = runner.result_steps.slice();
+        resultSteps.push({distance: Math.round(trackLength), time: runner.end_time});
         for (var i = 0; i < resultSteps.length; i++) {
             var cur = resultSteps[i];
             var next = resultSteps[i + 1];
@@ -91,6 +90,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
             end.time, end.distance,
             miliseconds
         );
+
         return d;
     };
 
