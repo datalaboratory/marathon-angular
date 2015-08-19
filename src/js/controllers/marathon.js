@@ -60,6 +60,11 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     result_time_string = processedRunner['resultTime'];
                     var finishTime = getDateFromString(result_time_string, startTime)
                 }
+                var city = processedRunner['city'];
+                if (city) {
+                    city = city[0].toUpperCase() + city.slice(1).toLowerCase();
+                }
+
                 return {
                     gender: runner.gender,
                     winner: processedRunner['position'] < 7,
@@ -68,7 +73,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     full_name: processedRunner['lastName'] + ' ' + processedRunner['firstName'],
                     age: processedRunner['age'],
                     country: processedRunner['country'],
-                    city: processedRunner['city'],
+                    city: city,
                     team: processedRunner['team'],
                     end_time: finishTime * 1,
                     result_time_string: result_time_string,
@@ -109,12 +114,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             '10km': loadRunners([
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/10km-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/10km-women.json'
+                '../../../protocols/2015/half_run/10km-men.json',
+                '../../../protocols/2015/half_run/10km-women.json'
             ]),
             '21km': loadRunners([
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/21km-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/21km-women.json'])
+                '../../../protocols/2015/half_run/21km-men.json',
+                '../../../protocols/2015/half_run/21km-women.json'])
         }
     };
 
@@ -221,17 +226,13 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     function formatItems(filteredItems, key, sort) {
         var names = _.pluck(filteredItems, key);
         var counts = _.countBy(names);
+        var keys = Object.keys(counts);
         if (sort) {
-            var keys = sort(counts);
-            var newCounts = {};
-            keys.forEach(function (key) {
-                newCounts[key] = counts[key];
-            });
-            counts = newCounts;
+            keys = sort(counts);
         }
         var result = {};
         var filter = {};
-        Object.keys(counts).forEach(function (item) {
+        keys.forEach(function (item) {
             filter[key] = item;
             var count = multifilter(filteredItems, filter).length;
             var name = item;
@@ -334,6 +335,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.$watch('runnersData', function (runnersData) {
         if (!runnersData) return;
+
+        runnersData.items.forEach(function (runner) {
+            if (runner.team == String(parseInt(runner.team))) {
+                runner.team += ' '
+            }
+        });
 
         var smallTeams = _.countBy(runnersData.items, 'team');
         smallTeams = Object.keys(smallTeams).filter(function (team) {
