@@ -427,6 +427,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
         format: format,
         getStepValueByHeight: getStepValueByHeight,
         getStepHeight: getStepHeight,
+        getHeightByRunners: getHeightByRunners,
         formatPathPoints: function (array) {
             if (!array.length) return;
             var result = 'M' + format(array[0]);

@@ -134,12 +134,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             'hb': loadRunners([
-                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-handbiker-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-handbiker-woman.json'
+                '../../../protocols/2015/music_half/21km-handbiker-men.json',
+                '../../../protocols/2015/music_half/21km-handbiker-woman.json'
             ]),
             '21km': loadRunners([
-                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/music_half/21km-women.json'
+                '../../../protocols/2015/music_half/21km-men.json',
+                '../../../protocols/2015/music_half/21km-women.json'
             ])
         }
     };

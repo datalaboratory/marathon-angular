@@ -1,4 +1,4 @@
-angular.module('marathon').directive('selectedRunnerDot', function(removePrototype) {
+angular.module('marathon').directive('selectedRunnerDot', function (removePrototype) {
     return {
         restrict: 'E',
         templateNamespace: 'svg',
@@ -10,14 +10,15 @@ angular.module('marathon').directive('selectedRunnerDot', function(removePrototy
             'paddingBottom': '='
         },
         transclude: true,
-        link: function($scope, $element) {
+        link: function ($scope, $element) {
             var $rect = $element.find('rect');
-            var bbox = function() {
-                var $text = $element.find('text:visible');
+
+            var bbox = function getBBox() {
+                var $text = $element.find('text').not('.ng-hide');
                 var text = $text[0];
                 return removePrototype(text.getBBox());
             };
-            $scope.$watch(bbox, function(box) {
+            $scope.$watch(bbox, function (box) {
                 var paddingX, paddingBottom, paddingTop;
                 paddingX = $scope.paddingX || 0;
                 paddingTop = $scope.paddingTop || 0;

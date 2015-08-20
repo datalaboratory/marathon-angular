@@ -86,8 +86,8 @@ angular.module('marathon').directive('genderAgeLegend', function (runnerClassifi
             };
             $scope.tooltipPosition = {};
             $scope.moveTooltip = function ($event) {
-                var y = $event.offsetY;
-                var x = $event.offsetX;
+                var x = $event.originalEvent.layerX || $event.offsetX;
+                var y = $event.originalEvent.layerY || $event.offsetY;
                 $scope.tooltipPosition = {
                     top: y + 'px',
                     left: x + 'px'
