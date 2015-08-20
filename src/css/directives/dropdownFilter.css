@@ -61,7 +61,10 @@
 .gender-filter.dropdown-filter {
     width: auto;
     margin: 0;
-    box-sizing: content-box;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .team-filter.dropdown-filter, .city-filter.dropdown-filter, .age-group-filter.dropdown-filter {
@@ -93,7 +96,8 @@
 .gender-filter .dropdown-filter__item {
     background: none;
     border: none;
-    padding: 1px 0;
+    padding: 0;
+    line-height: 1.5;
 }
 
 .gender-filter .dropdown-filter__item:hover {
@@ -119,21 +123,16 @@
 .gender-filter__item-male, .gender-filter__item-female, .gender-filter__item-all {
     font-size: 14px;
     padding: 4px 10px 4px 10px;
-    border: 1px solid #ccc;
+}
+
+.gender-filter__item-male {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
 }
 
 .disable-gender .gender-filter__item-male, .disable-gender .gender-filter__item-female, .disable-gender .gender-filter__item-all {
     background: none !important;
     color: #333 !important;
-}
-
-.gender-filter__item-all {
-    border-radius: 0 3px 3px 0;
-    margin-left: -1px;
-}
-
-.gender-filter__item-male {
-    margin-left: -1px;
 }
 
 .age-group-filter.dropdown-filter {

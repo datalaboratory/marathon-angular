@@ -4,9 +4,13 @@ angular.module('marathon').directive('trackSwitch', function ($timeout, $rootSco
         templateUrl: 'directives/trackSwitch.html',
         replace: true,
         link: function link($scope) {
-            var tracks = ['hb', '21km'];
+            var tracks = ['21km'];
             function nextTrack() {
                 $scope.currentTrackName = tracks.shift();
+                if (!tracks.length) {
+                    $rootScope.$broadcast('lastTrack');
+                    console.log('broadcast last track');
+                }
             }
             nextTrack();
             $scope.$on('legendReady', function () {
