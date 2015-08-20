@@ -1,7 +1,7 @@
 angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $q, $translate, $parse, $timeout, $location, numberDeclension, multifilter, ageGroups) {
     function changeLanguage() {
         $rootScope.location = document.location.href;
-        var lang = ($rootScope.location.indexOf('/ru/') > -1) ? 'ru' : 'en';
+        var lang = ($rootScope.location.indexOf('/en/') > -1) ? 'en' : 'ru';
         $rootScope.language = lang;
         $translate.use(lang);
     }
@@ -60,6 +60,9 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     result_time_string = processedRunner['resultTime'];
                     var finishTime = getDateFromString(result_time_string, startTime)
                 }
+                function capitalize(s) {
+                    return s[0].toUpperCase() + s.slice(1).toLowerCase();
+                }
                 var city = processedRunner['city'];
                 if (city) {
                     city = capitalize(city);
@@ -117,12 +120,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             '10km': loadRunners([
-                '../../../protocols/2015/half_run/10km-men.json',
-                '../../../protocols/2015/half_run/10km-women.json'
+                'http://reg.newrunners.ru/static/protocols/2015/half_run/10km-men.json',
+                'http://reg.newrunners.ru/static/protocols/2015/half_run/10km-women.json'
             ]),
             '21km': loadRunners([
-                '../../../protocols/2015/half_run/21km-men.json',
-                '../../../protocols/2015/half_run/21km-women.json'])
+                'http://reg.newrunners.ru/static/protocols/2015/half_run/21km-men.json',
+                'http://reg.newrunners.ru/static/protocols/2015/half_run/21km-women.json'])
         }
     };
 

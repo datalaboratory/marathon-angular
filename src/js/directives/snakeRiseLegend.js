@@ -1,6 +1,13 @@
 angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, track, roundTo, $timeout, $rootScope) {
     var round = roundTo(10);
-    var cache = {};
+    var cache = {
+        '21km': {
+            count: 1180
+        },
+        '10km': {
+            count: 970
+        }
+    };
     return {
         restrict: 'E',
         templateUrl: 'directives/snakeRiseLegend.html',
@@ -19,8 +26,16 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             function updateMaxHeight() {
                 var cached = cache[$scope.currentTrackName];
                 if (cached) {
-                    maxHeight = cached.height;
                     maxCount = cached.count;
+                    if (cached.height) {
+                        maxHeight = cached.height;
+                    } else {
+                        var total_distance = track.getTrackLength(),
+                            px_distance = track.getTotalLength(),
+                            px_in_m = px_distance / total_distance;
+                        maxHeight = mapHelper.getHeightByRunners(maxCount, 1000 * px_in_m);
+                        cache[$scope.currentTrackName].height = maxHeight;
+                    }
                 } else {
                     var timeStamps = d3.range($scope.time.start, $scope.time.start + $scope.time.maxTime * 1000, 60000);
                     var section_with_max_height = timeStamps.map(function (time) {
