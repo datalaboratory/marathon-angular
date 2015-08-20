@@ -58,7 +58,7 @@
     font-size: 10px;
 }
 
-.gender-filter.dropdown-filter {
+.big-wrap .gender-filter.dropdown-filter {
     width: auto;
     margin: 0;
     box-sizing: border-box;
@@ -97,6 +97,7 @@
     background: none;
     border: none;
     padding: 0;
+    line-height: 1.5;
 }
 
 .gender-filter .dropdown-filter__item:hover {
