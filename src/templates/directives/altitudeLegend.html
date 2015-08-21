@@ -38,18 +38,18 @@
         <text
             data-ng-attr-x="{{altGraph.max.x}}"
             data-ng-attr-y="{{altGraph.max.y - 5}}"
-            class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.max.num]}}{{'METER' | translate}}
+            class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.max.num]}} {{'METER' | translate}}
         </text>
         <text
             data-ng-attr-x="{{altGraph.min.x}}"
             data-ng-attr-y="{{altGraph.min.y + 12}}"
-            class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.min.num]}}{{'METER' | translate}}
+            class="legend-altitude__min-max-text">{{altGraph.altitudes[altGraph.min.num]}} {{'METER' | translate}}
         </text>
         <text
             data-ng-if="altGraph.customMaxAlt"
             data-ng-attr-x="{{altGraph.customMaxAlt.x}}"
             data-ng-attr-y="{{altGraph.customMaxAlt.y - 5}}"
-            class="legend-altitude__min-max-text">{{altGraph.customMaxAlt.alt}}{{'METER' | translate}}
+            class="legend-altitude__min-max-text">{{altGraph.customMaxAlt.alt}} {{'METER' | translate}}
         </text>
         <image xlink:href="img/mark-yel.png"
                data-ng-attr-x="{{(scaleX(0) - altGraph.imgSize / 2) | preventNaN }}"

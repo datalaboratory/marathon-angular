@@ -1,4 +1,4 @@
-angular.module('marathon').factory('mapHelper', function (track, genderColors) {
+angular.module('marathon').factory('mapHelper', function (track, genderColors, roundTo) {
     var x_axis_points = {
         p1: {
             x: 0,
@@ -222,10 +222,20 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
         }));
     };
 
+    var customPieces = {
+        '21': 6270,
+        '10': 5050
+    };
+
     var getSteps = function (step, px_distance) {
         var pieces = d3.range(0, px_distance, step);
         pieces.push(px_distance);
-
+        var trackLength = track.getTrackLength();
+        var customPiece = customPieces[Math.round(trackLength / 1000)] / trackLength * track.getTotalLength();
+        pieces.push(customPiece, customPiece);
+        pieces.sort(function (a, b) {
+            return a - b
+        });
         var steps = [{p: 0, l: 0}].concat(pieces.map(function (piece) {
             return {
                 p: piece,

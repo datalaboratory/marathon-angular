@@ -4,7 +4,7 @@ angular.module('marathon').directive('trackSwitch', function ($timeout, $rootSco
         templateUrl: 'directives/trackSwitch.html',
         replace: true,
         link: function link($scope) {
-            var tracks = ['21km', '10km', '21km'];
+            var tracks = ['21km'];
             function nextTrack() {
                 $scope.currentTrackName = tracks.shift();
             }
