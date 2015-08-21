@@ -5,7 +5,7 @@ angular.module('marathon').constant('translationRu', {
     ALTITUDE_TITLE: 'Высотный профиль',
     GENDER_AGE_TITLE: 'Пол и возраст',
     SNAKE_WIDTH_TITLE: 'Толщина змея',
-    ALTITUDE_TEXT: 'Общий набор высоты - 73м<br>169м - самая высокая точка Московского Марафона',
+    ALTITUDE_TEXT: 'Общий набор высоты - 73&nbsp;м<br>169&nbsp;м - самая высокая точка Московского Марафона',
     RESULTS: 'Результаты',
     WINNERS: 'призёров',
     WOMEN: 'женщин',

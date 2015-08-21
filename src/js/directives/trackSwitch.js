@@ -9,7 +9,6 @@ angular.module('marathon').directive('trackSwitch', function ($timeout, $rootSco
                 $scope.currentTrackName = tracks.shift();
                 if (!tracks.length) {
                     $rootScope.$broadcast('lastTrack');
-                    console.log('broadcast last track');
                 }
             }
             nextTrack();
