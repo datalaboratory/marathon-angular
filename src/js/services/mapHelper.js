@@ -225,7 +225,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors) {
     var getSteps = function (step, px_distance) {
         var pieces = d3.range(0, px_distance, step);
         pieces.push(px_distance);
-        var customPiece = 10300 / track.getTrackLength() * track.getTotalLength();
+        var customPiece = 9980 / track.getTrackLength() * track.getTotalLength();
         pieces.push(customPiece, customPiece);
         pieces.sort(function (a, b) {
             return a - b

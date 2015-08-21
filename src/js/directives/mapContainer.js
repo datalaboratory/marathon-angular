@@ -18,13 +18,13 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 '21km': {
                     width: 635,
                     height: 500,
-                    x: 21,
+                    x: 27,
                     y: 97
                 },
                 'hb': {
                     width: 635,
                     height: 500,
-                    x: 21,
+                    x: 27,
                     y: 97
                 }//todo: в отдельный json
             };
