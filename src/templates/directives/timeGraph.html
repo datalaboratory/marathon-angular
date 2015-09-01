@@ -20,9 +20,9 @@
         data-ng-mousemove="selectRunnerOnGraph($event)"
         data-lab-size-to-scales="timeGraphScales">
         <symbol id="graph">
-            <g
-                data-ng-repeat="area in ageAreas">
+            <g data-ng-repeat="area in ageAreas">
                 <path
+                    data-lab-render="renderAgeArea"
                     data-ng-attr-d="{{area.d}}"
                     data-ng-attr-fill="{{area.color}}"></path>
             </g>

@@ -1,4 +1,4 @@
-angular.module('marathon').directive('altitudeLegend', function ($timeout, $rootScope, mapHelper, track) {
+angular.module('marathon').directive('altitudeLegend', function ($timeout, $rootScope, mapHelper, track, applyTransition) {
     var render = {
         margin: {
             left: 7,
@@ -41,16 +41,16 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                 x: [$scope.scaleX, $scope.scaleXFromDistance],
                 y: $scope.scaleY
             };
-            $scope.altGraph = {};
-            $scope.altGraph.pointRadius = 1.5;
-            $scope.altGraph.imgSize = 15;
+            $scope.altGraph = {
+                pointRadius: 1.5,
+                imgSize: 15
+            };
 
             function formatAltitudePath(alt) {
                 var altObjects = alt.map(function (altPoint, i) {
                     return {
                         y: $scope.scaleY(altPoint),
                         x: $scope.scaleX(i),
-                        num: i,
                         alt: altPoint
                     }
                 });
@@ -63,13 +63,16 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                     if (b.alt > a.alt) return b;
                     return a
                 });
+                $scope.altGraph.points = [];
+                $scope.altGraph.points.push(minAlt, maxAlt);
                 var customMaxPoint = distanceParams()[$scope.currentTrackName].maxPoint;
                 if (customMaxPoint) {
                     $scope.altGraph.customMaxAlt = {
                         x: $scope.scaleXFromDistance(customMaxPoint.x * track.getTrackLength() / 1000),
                         y: $scope.scaleY(customMaxPoint.alt),
                         alt: customMaxPoint.alt
-                    }
+                    };
+                    $scope.altGraph.points.push($scope.altGraph.customMaxAlt);
                 } else {
                     delete $scope.altGraph.customMaxAlt
                 }
@@ -78,9 +81,67 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                 $scope.altGraph.max = maxAlt;
             }
 
+            $scope.renderAltitudePath = function () {
+                if (!$scope.altGraph.pathData) return;
+                var d3element = d3.select(this);
+                d3element.attr('d', $scope.altGraph.pathData);
+            };
+
+            $scope.renderPoint = function () {
+                var $scope = angular.element(this).scope();
+                if (!$scope.altGraph.points.length) return;
+                var d3element = d3.select(this);
+                d3element.select('circle')
+                    .attr('cx', $scope.point.x)
+                    .attr('cy', $scope.point.y)
+                    .attr('r', $scope.altGraph.pointRadius);
+                d3element.select('text')
+                    .attr('x', $scope.point.x)
+                    .attr('y', function () {
+                        if ($scope.point.alt == $scope.altGraph.min.alt) return $scope.point.y + 12;
+                        return $scope.point.y - 5;
+                    })
+            };
+
+            $scope.renderDistanceMark = function () {
+                var $scope = angular.element(this).scope();
+                if (!$scope.altGraph.distanceMarks) return;
+                var d3element = d3.select(this);
+                d3element.select('line')
+                    .attr('x1', $scope.scaleXFromDistance($scope.mark))
+                    .attr('x2', $scope.scaleXFromDistance($scope.mark))
+                    .attr('y1', $scope.altGraph.min.y + 10)
+                    .attr('y2', $scope.altGraph.max.y - 5);
+                d3element.select('text')
+                    .attr('x', $scope.scaleXFromDistance($scope.mark))
+                    .attr('y', $scope.altGraph.min.y + 10)
+            };
+            
+            $scope.renderFlag = function () {
+                var $scope = angular.element(this).scope();
+                if (!$scope.altGraph.flags) return;
+                var d3element = d3.select(this);
+                d3element
+                    .attr('x', $scope.scaleX($scope.flag.position) - $scope.altGraph.imgSize / 2)
+                    .attr('y', $scope.scaleY($scope.altGraph.altitudes[$scope.flag.position]) - $scope.altGraph.imgSize)
+                    .attr('width', $scope.altGraph.imgSize)
+                    .attr('height', $scope.altGraph.imgSize)
+                    .attr('xlink:href', 'img/mark-' + $scope.flag.image + '.png')
+            };
+            
+            $scope.renderGradient = function () {
+                if (!$scope.altGraph.min) return;
+                var d3element = d3.select(this);
+                d3element
+                    .attr('x1', $scope.altGraph.min.x)
+                    .attr('x2', $scope.altGraph.min.x)
+                    .attr('y1', $scope.altGraph.min.y)
+            };
+            
             $rootScope.$on('startRender', function () {
                 $scope.$broadcast('render', render);
             });
+
             $scope.$on('trackUpdated', function () {
                 $timeout(function () {
                     var altitudes = track.getAltitudes();
@@ -99,9 +160,15 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                     $scope.scaleX
                         .domain([0, altitudes.length]);
                     $scope.altGraph.altitudes = altitudes;
-                    $scope.altGraph.distanceInKm = distance_in_km;
                     $scope.altGraph.distanceMarks = distanceParams()[$scope.currentTrackName]['marks'];
+                    $scope.altGraph.flags = [
+                        {position: 0, image: 'yel'},
+                        {position: altitudes.length - 1, image: 'red'}
+                    ];
                     formatAltitudePath(altitudes);
+                    $timeout(function () {
+                        $scope.$broadcast('render', render);
+                    });
                 });
             });
         }

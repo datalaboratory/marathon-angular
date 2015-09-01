@@ -39,7 +39,6 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                 };
 
                 var stepsCount = Math.floor(width / px_step);
-                var prevStepsCount;
 
                 var time_step = 1000 * $scope.time.maxTime / stepsCount;
                 $scope.$watch('time.maxTime', function (time) {
@@ -171,12 +170,8 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                     })[1];
                     graphHeight = Math.max(height, max_runners_in_step * y_scale);
 
-                    if (!height_factor || prevStepsCount != stepsCount) {
-                        height_factor = height / (max_runners_in_step * y_scale);
-                        $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
-                    }
-                    prevStepsCount = stepsCount;
-
+                    height_factor = height / (max_runners_in_step * y_scale);
+                    $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
                 }
 
                 function updatePaths() {
@@ -195,7 +190,6 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                 }
 
                 $scope.$watch('timeScale.domain()', function () {
-                    height_factor = null;
                     updateRunnersData();
                     updateWinnersData();
                     updatePaths();
