@@ -27,9 +27,7 @@
                         <div class="legend">
                             <div class="legend__altitude">
                                 <span class="legend__header">{{ 'ALTITUDE_TITLE' | translate }}</span>
-                                <div class="legend__altitude-container">
                                     <altitude-legend></altitude-legend>
-                                </div>
                             <span class="legend__altitude-text"
                                   data-ng-bind-html="'ALTITUDE_TEXT' | translate | trust "></span>
                             </div>
@@ -37,7 +35,7 @@
                                 <span class="legend__header">{{ 'GENDER_AGE_TITLE' | translate }}</span>
 
                                 <div class="legend__gender-age-container">
-                                    <gender-age-legend data-ng-if="runnersData"></gender-age-legend>
+                                    <gender-age-legend></gender-age-legend>
                                 </div>
                             </div>
                             <div class="legend__snake-rise">

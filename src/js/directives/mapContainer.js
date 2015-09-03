@@ -13,6 +13,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
         restrict: 'E',
         templateUrl: 'directives/mapContainer.html',
         replace: true,
+        scope: true,
         link: function link($scope, $element) {
             $scope.mapParams = {
                 '10km': {
@@ -41,20 +42,20 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 var start = track.getProjectedPoint(geoData.geometry.coordinates[0]);
                 var finish = track.getProjectedPoint(geoData.geometry.coordinates[geoData.geometry.coordinates.length - 1]);
 
-                $scope.flags = {
-                    start: {
+                $scope.flags = [{
                         x: start[0],
                         y: start[1],
-                        deg: -25
-                    },
-                    finish: {
+                        deg: -25,
+                        image: 'yel'
+                    }, {
                         x: finish[0],
                         y: finish[1],
-                        deg: 25
-                    },
-                    width: 14,
-                    height: 19
-                };
+                        deg: 25,
+                        image: 'red'
+                    }
+                ];
+                $scope.flags.width = 14;
+                $scope.flags.height = 19;
                 $scope.pathData = track.getPathData();
             }
             function drawSnake(time) {
@@ -73,6 +74,47 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     step);
             }
 
+            $scope.scaleAll = function () {
+                var d3element = d3.select(this);
+                d3element
+                    .attr('transform', 'scale(' + $scope.scale + ')');
+                var params = $scope.mapParams[$scope.currentTrackName];
+                d3element.select('.map-container__background-map')
+                    .attr('x', params.x)
+                    .attr('y', params.y)
+                    .attr('width', params.width)
+                    .attr('height', params.height)
+            };
+            $scope.renderFlag = function () {
+                var $scope = angular.element(this).scope();
+                if (!$scope.flags) return;
+                var d3element = d3.select(this);
+                d3element
+                    .attr('xlink:href', 'img/mark-' + $scope.flag.image + '.png')
+                    .attr('width', $scope.flags.width / $scope.scale)
+                    .attr('height', $scope.flags.height / $scope.scale)
+                    .attr('transform', 'translate(' +
+                    ($scope.flag.x - $scope.flags.width / 2 / $scope.scale) + ',' +
+                    ($scope.flag.y - $scope.flags.height / $scope.scale) +
+                    ') rotate(' + $scope.flag.deg + ',' +
+                    $scope.flags.width / 2 / $scope.scale + ',' +
+                    $scope.flags.height / $scope.scale + ')')
+            };
+
+            $scope.renderSnakeGroup = function () {
+                var d3element = d3.select(this);
+                d3element.select('.snake-group__track')
+                    .attr('d', $scope.pathData);
+                d3element.selectAll('.snake-group__snake')
+                    .attr('d', function () { return angular.element(this).scope().area.d })
+                    .attr('fill', function () { return angular.element(this).scope().area.color });
+                d3element.selectAll('circle')
+                    .attr('cx', function () { return angular.element(this).scope().circle.cx })
+                    .attr('cy', function () { return angular.element(this).scope().circle.cy })
+                    .attr('r', function () { return angular.element(this).scope().circle.r })
+                    .attr('fill', function () { return angular.element(this).scope().circle.fill })
+            };
+
             var firstTime = true;
             $scope.$watch('selectedTrack', function (selectedTrack) {
                 selectedTrack.then(function (data) {
@@ -89,13 +131,9 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     });
                     if (firstTime) {
                         firstTime = false;
-                        $scope.$watch('filterValues', function () {
-                            drawSnake($scope.time.current);
-                        }, true);
-                        $scope.$watch('time.current', drawSnake);
 
                         $rootScope.$on('startRender', function () {
-                            $scope.$broadcast('render', render);
+                            $scope.$broadcast('render');
                         });
                         $scope.$on('render', function () {
                             var currentWidth = $element.width();

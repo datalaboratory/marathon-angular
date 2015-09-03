@@ -25,7 +25,6 @@ angular.module('marathon').factory('runnerClassificator', function (ageGroups) {
 
         runners.forEach(function (runner) {
             if (runner.gender > 1) return;
-            if (!genders_groups[runner.gender]) debugger
             genders_groups[runner.gender].push(runner);
         });
 
@@ -36,6 +35,7 @@ angular.module('marathon').factory('runnerClassificator', function (ageGroups) {
                     key: gender + '-' + i,
                     num: i + 1,
                     gender: gender,
+                    label: age_ranges_to_use[i].label,
                     runners: ageGroup
                 });
             })
@@ -63,7 +63,8 @@ angular.module('marathon').factory('runnerClassificator', function (ageGroups) {
         return {
             genders_groups: ga_groups.genders_groups,
             runners_groups: ga_groups.runners_groups,
-            big_genders_groups: big_ga_groups.genders_groups
+            big_genders_groups: big_ga_groups.genders_groups,
+            big_runners_groups: big_ga_groups.runners_groups
         }
     };
 

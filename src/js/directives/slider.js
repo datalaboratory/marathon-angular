@@ -58,6 +58,7 @@ angular.module('marathon').directive('slider', function ($document, $interval, $
                 $scope.time.current = moment(time);
                 $scope.selectedTime = moment(time).subtract($scope.time.start).format('HH:mm');
                 $scope.sliderLeft = x;
+                $scope.$emit('renderRequired');
             }
 
             function setTimeFromTime(time) {
@@ -65,6 +66,7 @@ angular.module('marathon').directive('slider', function ($document, $interval, $
                 $scope.time.current = moment(time);
                 $scope.selectedTime = moment(time).subtract($scope.time.start).format('HH:mm');
                 $scope.sliderLeft = x;
+                $scope.$emit('renderRequired');
             }
 
             $scope.$on('legendReady', function () {
@@ -72,7 +74,7 @@ angular.module('marathon').directive('slider', function ($document, $interval, $
                 played = true;
                 var stopTime = moment($scope.time.current).add(9, 'minute');
 
-                var ticks = $interval(tick, 50);
+                //var ticks = $interval(tick, 50);
                 function tick() {
                     setTimeFromTime($scope.time.current);
                     $scope.time.current.add(30, 'second');

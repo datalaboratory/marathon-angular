@@ -11,6 +11,7 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
         restrict: 'E',
         templateUrl: 'directives/timeGraph.html',
         replace: true,
+        scope: true,
         link: {
             pre: function prelink($scope) {
                 $scope.timeScale = d3.time.scale()
@@ -20,8 +21,9 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                 };
             },
             post: function postlink($scope, $element) {
-                $scope.$watch('time.start', function (start) {
-                    $scope.timeScale.domain([start, start + $scope.time.maxTime * 1000]);
+                $scope.$watch('time.maxTime', function () {
+                    console.log($scope.time.maxTime, 'start');
+                    $scope.timeScale.domain([$scope.time.start, $scope.time.start + $scope.time.maxTime * 1000]);
                 });
 
                 $scope.ageAreas = {};
@@ -172,14 +174,16 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
 
                     height_factor = height / (max_runners_in_step * y_scale);
                     $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
+                    updatePaths();
+                    console.log('update runners data');
+                    $timeout(function () {
+                        $scope.$broadcast('render', render);
+                    });
                 }
 
                 function updatePaths() {
                     if (!reversed_groups) return;
                     points_byd = {};
-                    stepsCount = Math.floor(width / px_step);
-
-                    time_step = 1000 * $scope.time.maxTime / stepsCount;
 
                     reversed_groups.forEach(function (el, i) {
                         var prev = reversed_groups[i - 1];
@@ -189,26 +193,31 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                     });
                 }
 
+                $scope.renderAgeArea = function () {
+                    console.log('renderAgeArea');
+                    var $scope = angular.element(this).scope();
+                    if (!$scope.ageAreas) return;
+                    var d3element = d3.select(this);
+                    d3element
+                        .attr('d', $scope.area.d)
+                        .attr('fill', $scope.area.color)
+                };
+
                 $scope.$watch('timeScale.domain()', function () {
                     updateRunnersData();
                     updateWinnersData();
-                    updatePaths();
                 }, true);
 
 
-                $rootScope.$on('startRender', function () {
-                    $scope.$broadcast('render', render);
-                });
-                $scope.$on('render', function () {
-                    $timeout(function () {
-                        width = $element.width();
-                        stepsCount = Math.floor(width / px_step);
-                        time_step = 1000 * $scope.time.maxTime / stepsCount;
-                        updateRunnersData();
-                        updateWinnersData();
-                        updatePaths();
-                    });
-                });
+                function getStepsCount() {
+                    width = $element.width();
+                    stepsCount = Math.floor(width / px_step);
+                    time_step = 1000 * $scope.time.maxTime / stepsCount;
+                    return stepsCount
+                }
+
+                $scope.$watch(getStepsCount, updateRunnersData);
+                $scope.$watch('filterValues', updateRunnersData, true);
 
                 $scope.selectRunnerOnGraph = function ($event) {
                     var x = $event.offsetX - 3;

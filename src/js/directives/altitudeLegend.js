@@ -1,4 +1,4 @@
-angular.module('marathon').directive('altitudeLegend', function ($timeout, $rootScope, mapHelper, track, applyTransition) {
+angular.module('marathon').directive('altitudeLegend', function ($timeout, $rootScope, mapHelper, track) {
     var render = {
         margin: {
             left: 7,
@@ -32,7 +32,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
         restrict: 'E',
         templateUrl: 'directives/altitudeLegend.html',
         replace: true,
-        templateNamespace: 'svg',
+        scope: true,
         link: function ($scope) {
             $scope.scaleX = d3.scale.linear();
             $scope.scaleY = d3.scale.linear();
@@ -79,6 +79,9 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                 $scope.altGraph.pathData = mapHelper.formatPathPoints(altObjects);
                 $scope.altGraph.min = minAlt;
                 $scope.altGraph.max = maxAlt;
+                $timeout(function () {
+                    $scope.$broadcast('render', render);
+                });
             }
 
             $scope.renderAltitudePath = function () {
@@ -137,10 +140,6 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                     .attr('x2', $scope.altGraph.min.x)
                     .attr('y1', $scope.altGraph.min.y)
             };
-            
-            $rootScope.$on('startRender', function () {
-                $scope.$broadcast('render', render);
-            });
 
             $scope.$on('trackUpdated', function () {
                 $timeout(function () {
@@ -166,9 +165,6 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                         {position: altitudes.length - 1, image: 'red'}
                     ];
                     formatAltitudePath(altitudes);
-                    $timeout(function () {
-                        $scope.$broadcast('render', render);
-                    });
                 });
             });
         }

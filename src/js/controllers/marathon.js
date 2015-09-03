@@ -3,7 +3,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     var counter = 0;
     $scope.$watch(function () {
         counter++;
-        console.log('counter', counter);
+        //console.log('counter', counter);
     });
     function changeLanguage() {
         $rootScope.location = document.location.href;
@@ -236,6 +236,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     $scope.selectedRunners.push(runner);
                 }
             });
+            $rootScope.$broadcast('runnersUpdated');
         });
     });
 
