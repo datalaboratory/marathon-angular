@@ -8,10 +8,19 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             count: 970
         }
     };
+    var render = {
+        margin: {
+            left: 0,
+            right: 0,
+            top: 15,
+            bottom: 0
+        }
+    };
     return {
         restrict: 'E',
         templateUrl: 'directives/snakeRiseLegend.html',
         replace: true,
+        scope: true,
         link: function ($scope, $element) {
             var width = 77;
             var originalHeight = 150;
@@ -61,8 +70,6 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             $scope.$on('trackUpdated', function(){
                 $timeout(updateMaxHeight);
             });
-            $scope.$watch('time.current', updateSnakes);
-            $scope.$watch('filterValues', updateSnakes, true);
 
             function updateContainerHeight() {
                 currentScale = mapHelper.getMapScale();
@@ -76,10 +83,26 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 });
             }
 
+            $rootScope.$on('startRender', function () {
+                $scope.$broadcast('render', render);
+            });
             $scope.$on('render', function () {
                 updateContainerHeight();
                 updateSnakes();
             });
+
+            $scope.renderSnakeLegend = function () {
+                if (!$scope.snake || !$scope.snake.path) return;
+                var d3element = d3.select(this);
+                d3element.select('.snake-rise-legend__male-path')
+                    .attr('d', $scope.snake.path.male);
+                d3element.select('.snake-rise-legend__female-path')
+                    .attr('d', $scope.snake.path.female);
+                d3element.select('.snake-rise-legend__all-path')
+                    .attr('d', $scope.snake.path.all);
+                d3element.select('.snake-rise-legend__counter')
+                    .attr('y', $scope.snake.maxHeight + 20)
+            };
 
             function getMaxSnakeHeight(time, runners) {
                 var dots_on_distance = d3.range(0, track.getTrackLength(), step_for_dots);

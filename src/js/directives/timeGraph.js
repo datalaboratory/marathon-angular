@@ -22,7 +22,6 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
             },
             post: function postlink($scope, $element) {
                 $scope.$watch('time.maxTime', function () {
-                    console.log($scope.time.maxTime, 'start');
                     $scope.timeScale.domain([$scope.time.start, $scope.time.start + $scope.time.maxTime * 1000]);
                 });
 
@@ -175,7 +174,6 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                     height_factor = height / (max_runners_in_step * y_scale);
                     $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
                     updatePaths();
-                    console.log('update runners data');
                     $timeout(function () {
                         $scope.$broadcast('render', render);
                     });
@@ -194,7 +192,6 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                 }
 
                 $scope.renderAgeArea = function () {
-                    console.log('renderAgeArea');
                     var $scope = angular.element(this).scope();
                     if (!$scope.ageAreas) return;
                     var d3element = d3.select(this);

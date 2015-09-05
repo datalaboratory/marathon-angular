@@ -69,7 +69,6 @@ angular.module('marathon').directive('genderAgeLegend', function ($rootScope, ru
                         label: key
                     }
                 });
-                console.log($scope.ageGraphData.ageItems);
                 function getRunnersDataByGender(ageGroup, i) {
                     return {
                         width: getGroupWidth(ageGroup.runners, i),

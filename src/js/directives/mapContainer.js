@@ -1,4 +1,4 @@
-angular.module('marathon').directive('mapContainer', function ($rootScope, mapHelper, track, runnerClassificator, genderColors) {
+angular.module('marathon').directive('mapContainer', function ($rootScope, mapHelper, track, runnerClassificator, genderColors, $timeout) {
     var render = {
         margin: {
             left: 0,
@@ -87,7 +87,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             };
             $scope.renderFlag = function () {
                 var $scope = angular.element(this).scope();
-                if (!$scope.flags) return;
+                if (!$scope || !$scope.flags) return;
                 var d3element = d3.select(this);
                 d3element
                     .attr('xlink:href', 'img/mark-' + $scope.flag.image + '.png')
@@ -102,6 +102,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             };
 
             $scope.renderSnakeGroup = function () {
+                if (!angular.element(this).scope() || !$scope.ageAreas) return;
                 var d3element = d3.select(this);
                 d3element.select('.snake-group__track')
                     .attr('d', $scope.pathData);
