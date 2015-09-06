@@ -52,6 +52,7 @@ angular.module('marathon').factory('track', function ($rootScope) {
         geodata = data;
         updateAll();
         $rootScope.$broadcast('trackUpdated');
+        console.log('trackUpdated')
     }
 
     function getAltitudes() {

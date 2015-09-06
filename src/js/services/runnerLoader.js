@@ -94,7 +94,8 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                         end_time: finishTime * 1,
                         result_time_string: result_time_string,
                         result_time: +getSecondsFromString(result_time_string),
-                        result_steps: processedRunner['result_steps']
+                        result_steps: processedRunner['result_steps'],
+                        all_result_steps: null
                     };
                 });
                 runners.sort(function (a, b) {

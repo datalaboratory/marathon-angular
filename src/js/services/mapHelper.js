@@ -1,4 +1,4 @@
-angular.module('marathon').factory('mapHelper', function (track, genderColors, roundTo) {
+angular.module('marathon').factory('mapHelper', function (track, genderColors, last) {
     var x_axis_points = {
         p1: {
             x: 0,
@@ -56,80 +56,74 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
 
     };
 
-    var getDistance = function (startTime, startDistance, endTime, endDistance, timestamp) {
+    function getDistance(startTime, startDistance, endTime, endDistance, timestamp) {
         return ((timestamp - startTime) * (endDistance - startDistance)) / (endTime - startTime) + startDistance;
-    };
+    }
 
-    var getDistanceByTime = function (runner, miliseconds) {
+    function getCurrentSection(sections, milliseconds) {
+        var section;
+        var i = 0;
+
+        var length = sections.length;
+        var step = sections[0];
+
+        while ((section === undefined) && i < length) {
+            var nextStep = sections[i + 1];
+            if (step && nextStep && step.time <= milliseconds && milliseconds <= nextStep.time) {
+                section = i;
+            }
+            step = nextStep;
+            i++;
+        }
+        return section;
+    }
+
+    function getDistanceByTime(runner, milliseconds) {
+        if (!runner.all_result_steps) {
+            runner.all_result_steps = runner.result_steps.slice();
+            runner.all_result_steps.push({
+                distance: Math.round(track.getTrackLength()),
+                time: runner.end_time
+            });
+        }
+        var sections = runner.all_result_steps;
+        var section = getCurrentSection(sections, milliseconds);
         var start, end;
-        var done = false;
-        var trackLength = track.getTrackLength();
-        var resultSteps = runner.result_steps.slice();
-        resultSteps.push({distance: Math.round(trackLength), time: runner.end_time});
-        for (var i = 0; i < resultSteps.length; i++) {
-            var cur = resultSteps[i];
-            var next = resultSteps[i + 1];
-            if (!cur || !next) {
-                break;
-            }
-            if (cur.time <= miliseconds && miliseconds <= next.time) {
-                done = true;
-
-                start = cur;
-                end = next;
-
-                break;
-            }
+        if (section === undefined) {
+            start = sections[0];
+            end = last(sections);
+        } else {
+            start = sections[section];
+            end = sections[section + 1];
         }
-        if (!done) {
-            start = resultSteps[0];
-            end = resultSteps[runner.result_steps.length - 1];
-        }
-        var d = getDistance(
+        return getDistance(
             start.time, start.distance,
             end.time, end.distance,
-            miliseconds
+            milliseconds
         );
+    }
 
-        return d;
-    };
-
-
-    var getDistances = function (runners, miliseconds, full) {
-        var result = [];
-        runners.forEach(function (runner) {
-            var time = getDistanceByTime(runner, miliseconds);
-
-            if (typeof time == 'number' && !isNaN(time)) {
-                result.push(full ? {
-                    time: time,
-                    item: runner
-                } : time);
-            }
+    function getDistances(runners, miliseconds) {
+        return runners.map(function (runner) {
+            var currentDistance = getDistanceByTime(runner, miliseconds);
+            return {
+                distance: currentDistance,
+                item: runner
+            };
         });
-        return result;
-    };
+    }
 
-    var getFullRunners = function (array, d_ge, d_l) {
+
+    var getRunners = function (array, d_ge, d_l) {
         var result = [];
 
         for (var i = 0; i < array.length; i++) {
             var cur = array[i];
-            if (cur.time >= d_ge && cur.time < d_l) {
+            if (cur.distance >= d_ge && cur.distance < d_l) {
                 result.push(cur.item);
             }
         }
         return result;
-    };
-
-    var getRunners = function (array, d_ge, d_l, full) {
-        if (full) {
-            return getFullRunners(array, d_ge, d_l);
-        }
-        return array.filter(function (item) {
-            return item >= d_ge && item < d_l
-        }).length;
-
     };
 
     var format = function (p) {
@@ -156,7 +150,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
             part1.push(formatCurve(prevp, cur.pcurv1, cur.pm));
         }
         bstr += ' C' + part1.join(' ');
-        bstr += ' L' + format(base_districts[base_districts.length - 1].pm);
+        bstr += ' L' + format(last(base_districts).pm);
 
 
         for (i = (base_districts.length - 1) - 1; i >= 0; i--) {
@@ -184,15 +178,17 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
         return (height * step) / (hclc.height_scale * hclc.man_place_square);
     };
 
-    var getStepsRunners = function (runners_array, base_districts, seconds, full) {
-        var distances = getDistances(runners_array, seconds, full);
+    var getStepsRunners = function (runners_array, base_districts, seconds) {
+        var distances = getDistances(runners_array, seconds);
         return base_districts.map(function (district) {
-            return getRunners(distances, district.start, district.end, full);
+            return getRunners(distances, district.start, district.end);
         })
     };
 
     var getAreaByData = function (runners_array, base_districts, prev_districts, seconds, step) {
-        var steps_runners = getStepsRunners(runners_array, base_districts, seconds);
+        var steps_runners = getStepsRunners(runners_array, base_districts, seconds).map(function (step) {
+            return step.length
+        });
 
         return (prev_districts.map(function (prev_di, i) {
             var obj = {};
@@ -250,12 +246,11 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
     };
     var getRunnersToArray = function (array, d_ge, d_l) {
         return array.filter(function (item) {
-            return item.time >= d_ge && item.time < d_l
+            return item.distance >= d_ge && item.distance < d_l
         });
-
     };
 
-    var getStepHeight = function (current_distance, timestamp, runners_array, step_distance) {
+    function getStep(current_distance, timestamp, runners_array, step_distance) {
         var total_distance = track.getTrackLength(),
             px_distance = track.getTotalLength(),
             px_in_m = px_distance / total_distance;
@@ -264,7 +259,6 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
 
         var step_start = current_distance;
         var step_end = current_distance + step / px_in_m;
-
 
         var distances = getDistances(runners_array, timestamp, true);
         var runners = getRunnersToArray(distances, step_start, step_end);
@@ -283,7 +277,26 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
             step_m: step_distance || step / px_in_m,
             distance: current_distance
         };
-    };
+    }
+
+    function getMaxHeightSection(time, runners, step_for_dots) {
+        var dots_on_distance = d3.range(0, track.getTrackLength(), step_for_dots);
+
+        var maxHeightSection = {height: -Infinity};
+
+        time *= 1;
+
+        dots_on_distance.forEach(function (dot) {
+            var section = getStep(
+                dot,
+                time,
+                runners,
+                step_for_dots);
+            if (section.height > maxHeightSection.height)
+                maxHeightSection = section;
+        });
+        return maxHeightSection;
+    }
 
     var base_points_cache = {};
     var getBasePoints = function (step_in_m) {
@@ -351,7 +364,6 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
                 px_current_length -= 1;
                 cur_coord = track.getPointAtLength(px_current_length);
                 i++;
-                if (i == 100) debugger
             }
         }
         var movedPosition = getPointOnPerpendicularM(
@@ -388,7 +400,8 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
                 cx: position.x,
                 cy: position.y,
                 r: point_radius,
-                fill: genderColors.genderGradients[runner.gender](genderColors.colorNumberScale(runner.age))
+                fill: genderColors.genderGradients[runner.gender](genderColors.colorNumberScale(runner.age)),
+                number: runner.num
             }
         };
 
@@ -425,17 +438,20 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, r
         return complects;
     };
     var mapScale = 1;
+
     function setMapScale(scale) {
         mapScale = scale;
     }
+
     function getMapScale() {
         return mapScale;
     }
+
     return {
         getPoints: getPoints,
         format: format,
         getStepValueByHeight: getStepValueByHeight,
-        getStepHeight: getStepHeight,
+        getMaxHeightSection: getMaxHeightSection,
         getHeightByRunners: getHeightByRunners,
         formatPathPoints: function (array) {
             if (!array.length) return;

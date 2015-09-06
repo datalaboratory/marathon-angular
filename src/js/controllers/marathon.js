@@ -241,6 +241,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 }
             });
             $rootScope.$broadcast('runnersUpdated');
+            console.log('runnersUpdated')
         });
     });
 

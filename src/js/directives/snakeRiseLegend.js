@@ -48,7 +48,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 } else {
                     var timeStamps = d3.range($scope.time.start, $scope.time.start + $scope.time.maxTime * 1000, 60000);
                     var section_with_max_height = timeStamps.map(function (time) {
-                        return getMaxSnakeHeight(time, $scope.runnersData.items)
+                        return mapHelper.getMaxHeightSection(time, $scope.runnersData.items, step_for_dots)
                     }).reduce(function (a, b) {
                         if (a.height > b.height) return a;
                         return b
@@ -104,31 +104,18 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                     .attr('y', $scope.snake.maxHeight + 20)
             };
 
-            function getMaxSnakeHeight(time, runners) {
-                var dots_on_distance = d3.range(0, track.getTrackLength(), step_for_dots);
-                return dots_on_distance.map(function (dot) {
-                    return mapHelper.getStepHeight(
-                        dot,
-                        time,
-                        runners,
-                        step_for_dots);
-                }).reduce(function (a, b) {
-                    if (a.height > b.height) return a;
-                    return b
-                });
-            }
 
             function updateSnakes() {
                 if (!track.getTrackLength()) return;
                 if (isNaN(maxHeight)) return;
-                var maxHeightSection = getMaxSnakeHeight($scope.time.current, $scope.filteredRunners);
+                var maxHeightSection = mapHelper.getMaxHeightSection($scope.time.current, $scope.filteredRunners, step_for_dots);
                 var countMale = round(maxHeightSection.runners.male / ratio);
                 var countFemale = round(maxHeightSection.runners.female / ratio);
                 var malePosition = countFemale ? Math.min(
                     heightScale(countFemale + countMale / 2),
                     (heightScale(countFemale / 2) - 10)
                 ) : heightScale(countMale / 2);
-                var femalePercent = maxHeightSection.runners.female / (maxHeightSection.runners.female + maxHeightSection.runners.male)
+                var femalePercent = maxHeightSection.runners.female / (maxHeightSection.runners.female + maxHeightSection.runners.male);
                 if (!femalePercent) femalePercent = 0;
                 $scope.snake = {
                     path: {

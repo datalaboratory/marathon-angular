@@ -109,11 +109,11 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 d3element.selectAll('.snake-group__snake')
                     .attr('d', function () { return angular.element(this).scope().area.d })
                     .attr('fill', function () { return angular.element(this).scope().area.color });
-                d3element.selectAll('circle')
-                    .attr('cx', function () { return angular.element(this).scope().circle.cx })
-                    .attr('cy', function () { return angular.element(this).scope().circle.cy })
-                    .attr('r', function () { return angular.element(this).scope().circle.r })
-                    .attr('fill', function () { return angular.element(this).scope().circle.fill })
+                d3element.selectAll('.snake-group__circle')
+                    .attr('cx', function () { return angular.element(this).scope().runner.cx })
+                    .attr('cy', function () { return angular.element(this).scope().runner.cy })
+                    .attr('r', function () { return angular.element(this).scope().runner.r })
+                    .attr('fill', function () { return angular.element(this).scope().runner.fill });
             };
 
             var firstTime = true;
