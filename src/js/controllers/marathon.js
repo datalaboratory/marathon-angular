@@ -52,18 +52,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             delete $scope.states.activatingWinners
         });
     });
-    $scope.selectedRunnersWatch = function (z) {
-        if (!z) return false;
-        return z.some(function (runner) {
-            return runner.full_name == 'wat'
-        });
-    };
-    $scope.$watch(function () {
-        if (!$scope.selectedRunners) return;
-        if ($scope.selectedRunnersWatch($scope.selectedRunners)) {
-            console.log('waaat')
-        }
-    });
+
     $scope.clearFilters = function () {
         Object.keys($scope.filterValues).forEach(function (key) {
             if (key == 'gender') return;

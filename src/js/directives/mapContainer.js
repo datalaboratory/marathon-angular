@@ -36,6 +36,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             $scope.scale = 1;
             if (!originalHeight) originalHeight = $element.height();
             var geoData;
+
             function updateTrack(geoData) {
                 track.updateContainerSize(originalWidth, originalHeight);
 
@@ -43,21 +44,22 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 var finish = track.getProjectedPoint(geoData.geometry.coordinates[geoData.geometry.coordinates.length - 1]);
 
                 $scope.flags = [{
-                        x: start[0],
-                        y: start[1],
-                        deg: -25,
-                        image: 'yel'
-                    }, {
-                        x: finish[0],
-                        y: finish[1],
-                        deg: 25,
-                        image: 'red'
-                    }
+                    x: start[0],
+                    y: start[1],
+                    deg: -25,
+                    image: 'yel'
+                }, {
+                    x: finish[0],
+                    y: finish[1],
+                    deg: 25,
+                    image: 'red'
+                }
                 ];
                 $scope.flags.width = 14;
                 $scope.flags.height = 19;
                 $scope.pathData = track.getPathData();
             }
+
             function drawSnake(time) {
                 if (!time) return;
                 time *= 1;
@@ -107,13 +109,25 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 d3element.select('.snake-group__track')
                     .attr('d', $scope.pathData);
                 d3element.selectAll('.snake-group__snake')
-                    .attr('d', function () { return angular.element(this).scope().area.d })
-                    .attr('fill', function () { return angular.element(this).scope().area.color });
+                    .attr('d', function () {
+                        return angular.element(this).scope().area.d
+                    })
+                    .attr('fill', function () {
+                        return angular.element(this).scope().area.color
+                    });
                 d3element.selectAll('.snake-group__circle')
-                    .attr('cx', function () { return angular.element(this).scope().runner.cx })
-                    .attr('cy', function () { return angular.element(this).scope().runner.cy })
-                    .attr('r', function () { return angular.element(this).scope().runner.r })
-                    .attr('fill', function () { return angular.element(this).scope().runner.fill });
+                    .attr('cx', function () {
+                        return angular.element(this).scope().runner.cx
+                    })
+                    .attr('cy', function () {
+                        return angular.element(this).scope().runner.cy
+                    })
+                    .attr('r', function () {
+                        return angular.element(this).scope().runner.r
+                    })
+                    .attr('fill', function () {
+                        return angular.element(this).scope().runner.fill
+                    });
             };
 
             var firstTime = true;
@@ -133,11 +147,15 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     if (firstTime) {
                         firstTime = false;
 
-                        $rootScope.$on('startRender', function () {
-                            $scope.$broadcast('render');
+                        var unbindStartRender = $rootScope.$on('startRender', function () {
+                            $scope.$broadcast('render', render);
+                        });
+                        $scope.$on('$destroy', function () {
+                            unbindStartRender();
                         });
                         $scope.$on('render', function () {
                             var currentWidth = $element.width();
+                            if (!currentWidth) debugger;
                             var scale = currentWidth / originalWidth;
                             $scope.scale = scale;
                             mapHelper.setMapScale(scale);
@@ -147,7 +165,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                             drawSnake($scope.time.current);
                         });
                     }
-                })
+                });
             });
         }
     }

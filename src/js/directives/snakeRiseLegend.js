@@ -83,8 +83,11 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 });
             }
 
-            $rootScope.$on('startRender', function () {
+            var unbindStartRender = $rootScope.$on('startRender', function () {
                 $scope.$broadcast('render', render);
+            });
+            $scope.$on('$destroy', function () {
+                unbindStartRender();
             });
             $scope.$on('render', function () {
                 updateContainerHeight();
