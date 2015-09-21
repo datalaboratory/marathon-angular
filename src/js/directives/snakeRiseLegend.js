@@ -96,7 +96,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
 
             $scope.renderSnakeLegend = function () {
                 if (!$scope.snake || !$scope.snake.path) return;
-                var d3element = d3.select(this);
+                var d3element = this;
                 d3element.select('.snake-rise-legend__male-path')
                     .attr('d', $scope.snake.path.male);
                 d3element.select('.snake-rise-legend__female-path')

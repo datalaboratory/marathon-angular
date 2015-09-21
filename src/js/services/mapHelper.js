@@ -232,16 +232,22 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
         pieces.sort(function (a, b) {
             return a - b
         });
-        var steps = [{p: 0, l: 0}].concat(pieces.map(function (piece) {
+        var steps = [{p: track.getPointAtLength(0), l: 0}].concat(pieces.map(function (piece) {
             return {
-                p: piece,
+                p: track.getPointAtLength(piece),
                 l: piece
             };
         }));
         steps.push({
-            p: px_distance,
+            p: track.getPointAtLength(px_distance),
             l: 0
         });
+        /*steps = track.getSimplifiedPoints().map(function (point) {
+            return {
+                p: {x: point[0], y: point[1]},
+                l: step
+            }
+        });*/
         return steps;
     };
     var getRunnersToArray = function (array, d_ge, d_l) {
@@ -313,9 +319,6 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
 
         var step = step_in_m * px_per_m;
         var steps = getSteps(step, px_distance);
-        steps.forEach(function (step) {
-            step.p = track.getPointAtLength(step.p);
-        });
 
         for (i = 1; i < steps.length; i++) {
             var c1 = steps[i - 1],

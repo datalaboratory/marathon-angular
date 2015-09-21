@@ -1,4 +1,4 @@
-angular.module('marathon').factory('track', function ($rootScope) {
+angular.module('marathon').factory('track', function ($rootScope, last) {
     var earth_radius = 6371000;
     var projection;
     var path;
@@ -11,6 +11,7 @@ angular.module('marathon').factory('track', function ($rootScope) {
     var height;
     var pathData;
     var trackLength;
+    var simplifiedPoints;
 
     var magicNumbers = {
         scale: 0.6,
@@ -40,6 +41,7 @@ angular.module('marathon').factory('track', function ($rootScope) {
         projection.scale(calculatedMagicNumbers.s).translate(calculatedMagicNumbers.t);
         pathData = path(geodata);
         pathElement.attr('d', pathData);
+        simplifiedPoints = calculateSimplifiedPoints();
     }
 
     function updateContainerSize(w, h) {
@@ -81,6 +83,58 @@ angular.module('marathon').factory('track', function ($rootScope) {
         return projection(latlon)
     }
 
+    function calculateSimplifiedPoints() {
+        var maxDelta = 1;
+        var savedPoints = [];
+        var element = $('<svg><path d="" /></svg>').find('path');
+
+        function getPerpendicularLength(startPoint, endPoint, currentPoint) {
+            var x = endPoint[0] - startPoint[0];
+            var y = endPoint[1] - startPoint[1];
+            var currentX = currentPoint[0] - startPoint[0];
+            var currentY = currentPoint[1] - startPoint[1];
+            var cos = x / (Math.sqrt(x * x + y * y));
+            var l = currentY - y * currentX / x;
+            return Math.abs(l * cos);
+        }
+
+        function getPoint(coordinates, savedPoints) {
+            var startPoint = coordinates[0];
+            var endPoint = last(coordinates);
+
+            var maxPerpendicularLength = 0;
+            var savedPoint;
+            var number;
+            coordinates.forEach(function (point, i) {
+                var d = getPerpendicularLength(projection(startPoint), projection(endPoint), projection(point));
+                if (d > maxPerpendicularLength) {
+                    maxPerpendicularLength = d;
+                    savedPoint = point;
+                    number = i
+                }
+            });
+            if (maxPerpendicularLength >= maxDelta) {
+                savedPoints.push(savedPoint);
+                getPoint(coordinates.slice(1, number), savedPoints);
+                getPoint(coordinates.slice(number), savedPoints);
+            }
+        }
+
+        var coordinates = geodata.geometry.coordinates.map(function (point, i) {
+            point.push(i);
+            return point;
+        });
+        getPoint(coordinates, savedPoints);
+        savedPoints.sort(function (a, b) {
+            return last(b) - last(a);
+        });
+        return savedPoints.map(projection);
+    }
+
+    function getSimplifiedPoints() {
+        return simplifiedPoints;
+    }
+
     return {
         earth_radius: 6371000,
         getTotalLength: getTotalLength,
@@ -89,6 +143,7 @@ angular.module('marathon').factory('track', function ($rootScope) {
         getPathData: getPathData,
         getProjectedPoint: getProjectedPoint,
         getAltitudes: getAltitudes,
+        getSimplifiedPoints: getSimplifiedPoints,
         updateContainerSize: updateContainerSize,
         updateGeodata: updateGeodata
     };

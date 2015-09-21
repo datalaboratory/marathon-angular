@@ -77,7 +77,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             }
 
             $scope.scaleAll = function () {
-                var d3element = d3.select(this);
+                var d3element = this;
                 d3element
                     .attr('transform', 'scale(' + $scope.scale + ')');
                 var params = $scope.mapParams[$scope.currentTrackName];
@@ -88,9 +88,9 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     .attr('height', params.height)
             };
             $scope.renderFlag = function () {
-                var $scope = angular.element(this).scope();
+                var $scope = angular.element(this.node()).scope();
                 if (!$scope || !$scope.flags) return;
-                var d3element = d3.select(this);
+                var d3element = this;
                 d3element
                     .attr('xlink:href', 'img/mark-' + $scope.flag.image + '.png')
                     .attr('width', $scope.flags.width / $scope.scale)
@@ -104,8 +104,8 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             };
 
             $scope.renderSnakeGroup = function () {
-                if (!angular.element(this).scope() || !$scope.ageAreas) return;
-                var d3element = d3.select(this);
+                if (!angular.element(this.node()).scope() || !$scope.ageAreas) return;
+                var d3element = this;
                 d3element.select('.snake-group__track')
                     .attr('d', $scope.pathData);
                 d3element.selectAll('.snake-group__snake')

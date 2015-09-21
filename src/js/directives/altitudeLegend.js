@@ -49,8 +49,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
             function formatAltitudePath(alt) {
                 var altObjects = alt.map(function (altPoint, i) {
                     return {
-                        y: $scope.scaleY(altPoint),
-                        x: $scope.scaleX(i),
+                        i: i,
                         alt: altPoint
                     }
                 });
@@ -68,15 +67,13 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                 var customMaxPoint = distanceParams()[$scope.currentTrackName].maxPoint;
                 if (customMaxPoint) {
                     $scope.altGraph.customMaxAlt = {
-                        x: $scope.scaleXFromDistance(customMaxPoint.x * track.getTrackLength() / 1000),
-                        y: $scope.scaleY(customMaxPoint.alt),
+                        i: customMaxPoint.x * alt.length,
                         alt: customMaxPoint.alt
                     };
                     $scope.altGraph.points.push($scope.altGraph.customMaxAlt);
                 } else {
                     delete $scope.altGraph.customMaxAlt
                 }
-                $scope.altGraph.pathData = mapHelper.formatPathPoints(altObjects);
                 $scope.altGraph.min = minAlt;
                 $scope.altGraph.max = maxAlt;
                 $timeout(function () {
@@ -85,45 +82,52 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
             }
 
             $scope.renderAltitudePath = function () {
-                if (!$scope.altGraph.pathData) return;
-                var d3element = d3.select(this);
-                d3element.attr('d', $scope.altGraph.pathData);
+                if (!$scope.altitudes) return;
+
+                var d3element = this;
+                d3element.attr('d', mapHelper.formatPathPoints($scope.altitudes.map(function (altPoint, i) {
+                    return {
+                        x: $scope.scaleX(i),
+                        y: $scope.scaleY(altPoint)
+                    }
+                })));
             };
 
             $scope.renderPoint = function () {
-                var $scope = angular.element(this).scope();
+                var $scope = angular.element(this.node()).scope();
                 if (!$scope.altGraph.points.length) return;
-                var d3element = d3.select(this);
+                var d3element = this;
                 d3element.select('circle')
-                    .attr('cx', $scope.point.x)
-                    .attr('cy', $scope.point.y)
+                    .attr('cx', $scope.scaleX($scope.point.i))
+                    .attr('cy', $scope.scaleY($scope.point.alt))
                     .attr('r', $scope.altGraph.pointRadius);
                 d3element.select('text')
-                    .attr('x', $scope.point.x)
+                    .attr('x', $scope.scaleX($scope.point.i))
                     .attr('y', function () {
-                        if ($scope.point.alt == $scope.altGraph.min.alt) return $scope.point.y + 12;
-                        return $scope.point.y - 5;
+                        if ($scope.point.alt == $scope.altGraph.min.alt) return $scope.scaleY($scope.point.alt) + 12;
+                        return $scope.scaleY($scope.point.alt) - 5;
                     })
             };
 
             $scope.renderDistanceMark = function () {
-                var $scope = angular.element(this).scope();
+                var $scope = angular.element(this.node()).scope();
                 if (!$scope.altGraph.distanceMarks) return;
-                var d3element = d3.select(this);
+                var d3element = this;
+                var x = $scope.scaleXFromDistance($scope.mark);
                 d3element.select('line')
-                    .attr('x1', $scope.scaleXFromDistance($scope.mark))
-                    .attr('x2', $scope.scaleXFromDistance($scope.mark))
-                    .attr('y1', $scope.altGraph.min.y + 10)
-                    .attr('y2', $scope.altGraph.max.y - 5);
+                    .attr('x1', x)
+                    .attr('x2', x)
+                    .attr('y1', $scope.scaleY($scope.altGraph.min.alt) + 10)
+                    .attr('y2', $scope.scaleY($scope.altGraph.max.alt) - 5);
                 d3element.select('text')
-                    .attr('x', $scope.scaleXFromDistance($scope.mark))
-                    .attr('y', $scope.altGraph.min.y + 10)
+                    .attr('x', x)
+                    .attr('y', $scope.scaleY($scope.altGraph.min.alt) + 10)
             };
             
             $scope.renderFlag = function () {
-                var $scope = angular.element(this).scope();
+                var $scope = angular.element(this.node()).scope();
                 if (!$scope.altGraph.flags) return;
-                var d3element = d3.select(this);
+                var d3element = this;
                 d3element
                     .attr('x', $scope.scaleX($scope.flag.position) - $scope.altGraph.imgSize / 2)
                     .attr('y', $scope.scaleY($scope.altGraph.altitudes[$scope.flag.position]) - $scope.altGraph.imgSize)
@@ -134,16 +138,17 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
             
             $scope.renderGradient = function () {
                 if (!$scope.altGraph.min) return;
-                var d3element = d3.select(this);
+                var d3element = this;
                 d3element
-                    .attr('x1', $scope.altGraph.min.x)
-                    .attr('x2', $scope.altGraph.min.x)
-                    .attr('y1', $scope.altGraph.min.y)
+                    .attr('x1', $scope.scaleX($scope.altGraph.min.i))
+                    .attr('x2', $scope.scaleX($scope.altGraph.min.i))
+                    .attr('y1', $scope.scaleY($scope.altGraph.min.alt))
             };
 
             $scope.$on('trackUpdated', function () {
                 $timeout(function () {
                     var altitudes = track.getAltitudes();
+                    $scope.altitudes = altitudes;
                     var distance_in_km = Math.round(track.getTrackLength() / 1000); // 21\42\10 и т.п. для рисок на графике
 
                     var customMaxPoint = distanceParams()[$scope.currentTrackName].maxPoint;

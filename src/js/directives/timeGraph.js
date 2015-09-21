@@ -192,9 +192,9 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                 }
 
                 $scope.renderAgeArea = function () {
-                    var $scope = angular.element(this).scope();
+                    var $scope = angular.element(this.node()).scope();
                     if (!$scope.ageAreas) return;
-                    var d3element = d3.select(this);
+                    var d3element = this;
                     d3element
                         .attr('d', $scope.area.d)
                         .attr('fill', $scope.area.color)

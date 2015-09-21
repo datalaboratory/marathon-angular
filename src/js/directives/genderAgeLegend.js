@@ -87,14 +87,14 @@ angular.module('marathon').directive('genderAgeLegend', function ($rootScope, ru
             }
 
             $scope.renderText = function () {
-                var $scope = angular.element(this).scope();
-                var d3element = d3.select(this);
+                var $scope = angular.element(this.node()).scope();
+                var d3element = this;
                 d3element.select('text')
                     .attr('x', $scope.ageGraphData.maxMaleWidth + $scope.ageGraphData.maxFemaleWidth + 4)
                     .attr('y', $scope.item.y + $scope.item.height / 2);
             };
             $scope.renderBlurRect = function () {
-                var d3element = d3.select(this);
+                var d3element = this;
                 d3element
                     .attr('y', last($scope.ageGraphData.ageItems).y)
                     .attr('width', $scope.ageGraphData.maxMaleWidth + $scope.ageGraphData.maxFemaleWidth)
@@ -102,9 +102,9 @@ angular.module('marathon').directive('genderAgeLegend', function ($rootScope, ru
                     .attr('fill', 'url(' + $rootScope.location + '#ageBottomGradient)')
             };
             $scope.renderRect = function () {
-                var $scope = angular.element(this).scope();
+                var $scope = angular.element(this.node()).scope();
                 var maxWidth = [$scope.ageGraphData.maxFemaleWidth, $scope.ageGraphData.maxMaleWidth];
-                var d3element = d3.select(this);
+                var d3element = this;
                 d3element.selectAll('.gender-age-legend__color-rect')
                     .attr('x', function () {
                         var gender = $scope.genderGroup.gender;
