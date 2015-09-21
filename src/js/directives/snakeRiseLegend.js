@@ -1,11 +1,14 @@
 angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, track, roundTo, $timeout, $rootScope) {
     var round = roundTo(10);
     var cache = {
-        '21km': {
-            count: 1180
+        '42km': {
+            count: 2590
+        },
+        'hb': {
+            count: 10
         },
         '10km': {
-            count: 970
+            count: 2130
         }
     };
     var render = {

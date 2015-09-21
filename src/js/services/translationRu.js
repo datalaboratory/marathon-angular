@@ -1,7 +1,7 @@
 angular.module('marathon').constant('translationRu', {
-    HEAD_TITLE: 'Результаты Московского полумарафона 17 мая 2015 года',
+    HEAD_TITLE: 'Результаты Московского Марафона 20 сентября 2015 года',
     SHARED_IMG: '/img/screenshot.png',
-    MAIN_TITLE: 'МОСКОВСКИЙ ПОЛУМАРАФОН',
+    MAIN_TITLE: 'МОСКОВСКИЙ МАРАФОН',
     ALTITUDE_TITLE: 'Высотный профиль',
     GENDER_AGE_TITLE: 'Пол и возраст',
     SNAKE_WIDTH_TITLE: 'Толщина змея',
@@ -33,5 +33,7 @@ angular.module('marathon').constant('translationRu', {
     SHOW_MORE_RESULTS: 'Показать ещё 100 результатов',
     VISUALIZATION: 'Визуализация',
     BY_DATA_LABORATORY: 'Лаборатории&nbsp;данных',
-    MAP_SRC: 'img/half-marathon-map.png'
+    MAP_SRC_10km: 'img/10km-marathon-map.png',
+    MAP_SRC_hb: 'img/music-marathon-map.png',
+    MAP_SRC_42km: 'img/music-marathon-map.png'
 });

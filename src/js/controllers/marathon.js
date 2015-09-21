@@ -21,21 +21,23 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '10km': $http.get('data/geo/mm2015_17may-10km-geo.json'),
-            '21km': $http.get('data/geo/mm2015_17may-21km-geo.json')
+            '42km': $http.get('data/geo/42km.json'),
+            'hb': $http.get('data/geo/42km.json'),
+            '10km': $http.get('data/geo/10km.json')
         },
         runners: {
-            '10km': runnerLoader.loadRunners([
-                /*'http://reg.newrunners.ru/static/protocols/2015/half_run/10km-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/10km-women.json',*/
+            'hb': loadRunners([
+                'data/runners/21km-handbiker-men.json',
+                'data/runners/21km-handbiker-woman.json'
+            ]),
+            '42km': loadRunners([
+                'data/runners/42km-men.json',
+                'data/runners/42km-women.json'
+            ]),
+            '10km': loadRunners([
                 'data/runners/10km-men.json',
                 'data/runners/10km-women.json'
-            ]),
-            '21km': runnerLoader.loadRunners([
-                /*'http://reg.newrunners.ru/static/protocols/2015/half_run/21km-men.json',
-                'http://reg.newrunners.ru/static/protocols/2015/half_run/21km-women.json',*/
-                'data/runners/21km-men.json',
-                'data/runners/21km-women.json'])
+            ])
         }
     };
 
@@ -248,6 +250,14 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 runner.team += ' '
             }
         });
+        if ($scope.currentTrackName == 'hb') {
+            var smallTeams = []
+        } else {
+            smallTeams = _.countBy(runnersData.items, 'team');
+            smallTeams = Object.keys(smallTeams).filter(function (team) {
+                return smallTeams[team] < 3;
+            });
+        }
 
         var smallTeams = _.countBy(runnersData.items, 'team');
         smallTeams = Object.keys(smallTeams).filter(function (team) {

@@ -26,10 +26,12 @@
 .track-switch__item {
     float: left;
     cursor: pointer;
+    border-left: 1px solid #ccc;
 }
 
-.track-switch__item:last-child {
-    border-left: 1px solid #ccc;
+
+.track-switch__item:first-child {
+    border-left: none;
 }
 
 .track-switch__item--active {

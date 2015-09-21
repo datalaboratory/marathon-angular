@@ -11,12 +11,25 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
     var height;
     var pathData;
     var trackLength;
+    var currentTrackName = '42km';
     var simplifiedPoints;
 
     var magicNumbers = {
-        scale: 0.6,
-        x: -100,
-        y: 70
+        '42km': {
+            scale: 0.75,
+            x: -120,
+            y: 30
+        },
+        'hb': {
+            scale: 0.75,
+            x: -120,
+            y: 30
+        },
+        '10km': {
+            scale: 0.8,
+            x: -130,
+            y: 30
+        }
     };
     var calculatedMagicNumbers = {};
 
@@ -27,16 +40,16 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
         trackLength = d3.geo.length(geodata) * earth_radius;
         projection = d3.geo.mercator().scale(1).translate([0, 0]);
         path = d3.geo.path().projection(projection);
-        if (!calculatedMagicNumbers.s) {
-            var b = path.bounds(geodata);
-            var s = magicNumbers.scale / Math.max((b[END][X] - b[START][X]) / width, (b[END][Y] - b[START][Y]) / height);
-            var t = [
-                (width - s * (b[END][X] + b[START][X])) / 2 + magicNumbers.x,
-                (height - s * (b[END][Y] + b[START][Y])) / 2 + magicNumbers.y
-            ];
-            calculatedMagicNumbers.s = s;
-            calculatedMagicNumbers.t = t;
-        }
+        var b = path.bounds(geodata);
+        var s = magicNumbers[currentTrackName].scale / Math.max((b[END][X] - b[START][X]) / width, (b[END][Y] - b[START][Y]) / height);
+        var t = [
+            (width - s * (b[END][X] + b[START][X])) / 2 + magicNumbers[currentTrackName].x,
+            (height - s * (b[END][Y] + b[START][Y])) / 2 + magicNumbers[currentTrackName].y
+        ];
+        console.log('s, t', s, t);
+        calculatedMagicNumbers.s = s;
+        calculatedMagicNumbers.t = t;
+
 
         projection.scale(calculatedMagicNumbers.s).translate(calculatedMagicNumbers.t);
         pathData = path(geodata);
@@ -50,8 +63,9 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
         updateAll();
     }
 
-    function updateGeodata(data) {
+    function updateGeodata(data, trackName) {
         geodata = data;
+        currentTrackName = trackName;
         updateAll();
         $rootScope.$broadcast('trackUpdated');
         console.log('trackUpdated')

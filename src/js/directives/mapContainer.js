@@ -16,17 +16,26 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
         scope: true,
         link: function link($scope, $element) {
             $scope.mapParams = {
-                '10km': {
-                    width: 610,
-                    height: 540,
-                    x: 26,
-                    y: 100
+                '42km': {
+                    width: 635,
+                    height: 500,
+                    x: 27,
+                    y: 97,
+                    snakeHeight: 0.4
                 },
-                '21km': {
-                    width: 610,
-                    height: 540,
-                    x: 26,
-                    y: 100
+                'hb': {
+                    width: 635,
+                    height: 500,
+                    x: 27,
+                    y: 97,
+                    snakeHeight: 0.4
+                },
+                '10km': {
+                    width: 635,
+                    height: 500,
+                    x: 27,
+                    y: 97,
+                    snakeHeight: 0.6
                 }//todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {
@@ -63,7 +72,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             function drawSnake(time) {
                 if (!time) return;
                 time *= 1;
-                var step = 500;
+                var step = 400;
                 var runners = runnerClassificator.checkData($scope.filteredRunners);
                 mapHelper.getPoints(
                     runners.runners_groups,
@@ -134,7 +143,9 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             $scope.$watch('selectedTrack', function (selectedTrack) {
                 selectedTrack.then(function (data) {
                     geoData = data.data;
-                    track.updateGeodata(geoData);
+                    track.updateGeodata(geoData, $scope.currentTrackName);
+                    mapHelper.setSnakeHeightCoefficient($scope.mapParams[$scope.currentTrackName].snakeHeight);
+
                     updateTrack(geoData);
 
                     $scope.ageAreas = {};

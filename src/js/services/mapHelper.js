@@ -165,17 +165,21 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
 
     };
 
-    var hclc = {
-        height_scale: 0.8,
+    var magicNumbers = {
+        height_scale: 0.4,
         man_place_square: Math.pow(3, 2)
     };
 
+    function setSnakeHeightCoefficient(heightScale) {
+        magicNumbers.height_scale = heightScale;
+    }
+
     var getHeightByRunners = function (runners_count, step) {
-        return (hclc.height_scale * hclc.man_place_square * runners_count) / step;
+        return (magicNumbers.height_scale * magicNumbers.man_place_square * runners_count) / step;
     };
 
     var getStepValueByHeight = function (height, step) {
-        return (height * step) / (hclc.height_scale * hclc.man_place_square);
+        return (height * step) / (magicNumbers.height_scale * magicNumbers.man_place_square);
     };
 
     var getStepsRunners = function (runners_array, base_districts, seconds) {
@@ -469,6 +473,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
         drawRunnersPoints: drawRunnersPoints,
         getDistanceByRangesAndTime: getDistanceByTime,
         setMapScale: setMapScale,
-        getMapScale: getMapScale
+        getMapScale: getMapScale,
+        setSnakeHeightCoefficient: setSnakeHeightCoefficient
     };
 });
