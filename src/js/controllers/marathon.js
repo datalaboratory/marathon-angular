@@ -26,15 +26,15 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             '10km': $http.get('data/geo/10km.json')
         },
         runners: {
-            'hb': loadRunners([
+            'hb': runnerLoader.loadRunners([
                 'data/runners/21km-handbiker-men.json',
                 'data/runners/21km-handbiker-woman.json'
             ]),
-            '42km': loadRunners([
+            '42km': runnerLoader.loadRunners([
                 'data/runners/42km-men.json',
                 'data/runners/42km-women.json'
             ]),
-            '10km': loadRunners([
+            '10km': runnerLoader.loadRunners([
                 'data/runners/10km-men.json',
                 'data/runners/10km-women.json'
             ])
@@ -259,10 +259,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             });
         }
 
-        var smallTeams = _.countBy(runnersData.items, 'team');
-        smallTeams = Object.keys(smallTeams).filter(function (team) {
-            return smallTeams[team] < 3;
-        });
         runnersData.items.forEach(function (runner) {
             if (!angular.isDefined(runner.realTeam)) {
                 runner.realTeam = runner.team;

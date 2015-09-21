@@ -17,25 +17,25 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
         link: function link($scope, $element) {
             $scope.mapParams = {
                 '42km': {
-                    width: 635,
-                    height: 500,
-                    x: 27,
-                    y: 97,
+                    width: 570,
+                    height: 510,
+                    x: 112,
+                    y: 105,
                     snakeHeight: 0.4
                 },
                 'hb': {
-                    width: 635,
-                    height: 500,
-                    x: 27,
-                    y: 97,
+                    width: 570,
+                    height: 510,
+                    x: 112,
+                    y: 105,
                     snakeHeight: 0.4
                 },
                 '10km': {
-                    width: 635,
-                    height: 500,
-                    x: 27,
-                    y: 97,
-                    snakeHeight: 0.6
+                    width: 510,
+                    height: 495,
+                    x: 138,
+                    y: 107,
+                    snakeHeight: 0.45
                 }//todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {
@@ -55,12 +55,12 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 $scope.flags = [{
                     x: start[0],
                     y: start[1],
-                    deg: -25,
+                    deg: 0,
                     image: 'yel'
                 }, {
                     x: finish[0],
                     y: finish[1],
-                    deg: 25,
+                    deg: 0,
                     image: 'red'
                 }
                 ];

@@ -26,9 +26,9 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
             y: 30
         },
         '10km': {
-            scale: 0.8,
+            scale: 0.6,
             x: -130,
-            y: 30
+            y: 60
         }
     };
     var calculatedMagicNumbers = {};
@@ -46,7 +46,6 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
             (width - s * (b[END][X] + b[START][X])) / 2 + magicNumbers[currentTrackName].x,
             (height - s * (b[END][Y] + b[START][Y])) / 2 + magicNumbers[currentTrackName].y
         ];
-        console.log('s, t', s, t);
         calculatedMagicNumbers.s = s;
         calculatedMagicNumbers.t = t;
 

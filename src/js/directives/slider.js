@@ -74,7 +74,7 @@ angular.module('marathon').directive('slider', function ($document, $interval, $
                 played = true;
                 var stopTime = moment($scope.time.current).add(9, 'minute');
 
-                //var ticks = $interval(tick, 50);
+                var ticks = $interval(tick, 50);
                 function tick() {
                     setTimeFromTime($scope.time.current);
                     $scope.time.current.add(30, 'second');

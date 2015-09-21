@@ -230,12 +230,12 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
     var getSteps = function (step, px_distance) {
         var pieces = d3.range(0, px_distance, step);
         pieces.push(px_distance);
-        var trackLength = track.getTrackLength();
+        /*var trackLength = track.getTrackLength();
         var customPiece = customPieces[Math.round(trackLength / 1000)] / trackLength * track.getTotalLength();
         pieces.push(customPiece, customPiece);
         pieces.sort(function (a, b) {
             return a - b
-        });
+        });*/
         var steps = [{p: track.getPointAtLength(0), l: 0}].concat(pieces.map(function (piece) {
             return {
                 p: track.getPointAtLength(piece),

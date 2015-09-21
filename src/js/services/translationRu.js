@@ -34,6 +34,6 @@ angular.module('marathon').constant('translationRu', {
     VISUALIZATION: 'Визуализация',
     BY_DATA_LABORATORY: 'Лаборатории&nbsp;данных',
     MAP_SRC_10km: 'img/10km-marathon-map.png',
-    MAP_SRC_hb: 'img/music-marathon-map.png',
-    MAP_SRC_42km: 'img/music-marathon-map.png'
+    MAP_SRC_hb: 'img/42km-marathon-map.png',
+    MAP_SRC_42km: 'img/42km-marathon-map.png'
 });

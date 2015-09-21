@@ -7,7 +7,7 @@
         <g data-lab-render="scaleAll">
         <image
             class="map-container__background-map"
-            xlink:href="" data-ng-href="{{'MAP_SRC' | translate}}"/>
+            xlink:href="" data-ng-href="{{('MAP_SRC_' + currentTrackName) | translate}}"/>
         <g class="snakeGroup" data-lab-render="renderSnakeGroup">
             <path class="snake-group__track"></path>
             <path data-ng-repeat="area in ageAreas" class="snake-group__snake"></path>
