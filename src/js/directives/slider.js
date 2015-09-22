@@ -17,6 +17,7 @@ angular.module('marathon').directive('slider', function ($document, $interval, $
             var x = startX;
             var minX = 0;
             var maxX = $element.parent().width();
+            var throttledMousemove = _.throttle(mousemove, 100);
             $scope.$watch('timeScale.domain()', function () {
                 startX = $scope.timeScale($scope.time.current);
                 x = startX;
@@ -31,7 +32,7 @@ angular.module('marathon').directive('slider', function ($document, $interval, $
             function mousedown(event) {
                 event.preventDefault();
                 startX = event.screenX - x;
-                $document.on('mousemove', mousemove);
+                $document.on('mousemove', throttledMousemove);
                 $document.on('mouseup', mouseup);
             }
             $element.on('mousedown', mousedown);
@@ -48,7 +49,7 @@ angular.module('marathon').directive('slider', function ($document, $interval, $
             }
 
             function mouseup() {
-                $document.off('mousemove', mousemove);
+                $document.off('mousemove', throttledMousemove);
                 $document.off('mouseup', mouseup)
             }
 

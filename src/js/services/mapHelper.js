@@ -310,7 +310,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
 
     var base_points_cache = {};
     var getBasePoints = function (step_in_m) {
-        var points_key = null; //base.projection_key; TODO: вернуть кэширование
+        var points_key = track.getTrackLength(); //base.projection_key; TODO: вернуть кэширование
         if (base_points_cache[points_key]) {
             return base_points_cache[points_key];
         }
@@ -353,7 +353,6 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
             complects: complects,
             step: step
         };
-        return result;
         base_points_cache[points_key] = result;
         return base_points_cache[points_key];
     };

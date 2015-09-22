@@ -5,7 +5,7 @@ angular.module('marathon').constant('translationEn', {
     ALTITUDE_TITLE: 'Altitude',
     GENDER_AGE_TITLE: 'Age and sex',
     SNAKE_WIDTH_TITLE: 'Snake width',
-    ALTITUDE_TEXT: 'Total climb: 73&nbsp;m<br>Highest point of Moscow Marathon: 169&nbsp;m',
+    ALTITUDE_TEXT: 'Total climb: 73&nbsp;m<br>',
     RESULTS: 'Results',
     WINNERS: 'winners',
     WOMEN: 'women',

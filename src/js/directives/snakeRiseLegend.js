@@ -34,8 +34,8 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             var currentScale = 1;
             var realMaxHeight;
             var heightScale = d3.scale.linear();
-
-            function updateMaxHeight() {
+            $rootScope.$broadcast('legendReady')
+            /*function updateMaxHeight() {
                 var cached = cache[$scope.currentTrackName];
                 if (cached) {
                     maxCount = cached.count;
@@ -108,7 +108,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                     .attr('d', $scope.snake.path.all);
                 d3element.select('.snake-rise-legend__counter')
                     .attr('y', $scope.snake.maxHeight + 20)
-            };
+            };*/
 
 
             function updateSnakes() {
