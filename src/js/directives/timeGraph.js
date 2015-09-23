@@ -139,10 +139,8 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                 function updateRunnersData() {
                     runners = runnerClassificator.checkData($scope.filteredRunners);
 
-                    $scope.runnersCount = {
-                        male: runners.genders_groups[1].length,
-                        female: runners.genders_groups[0].length
-                    };
+                    $scope.runnersCount.male = runners.genders_groups[1].length;
+                    $scope.runnersCount.female = runners.genders_groups[0].length;
 
                     var minMax = d3.extent($scope.filteredRunners, function (runner) {
                         return runner.age

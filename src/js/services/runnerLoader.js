@@ -24,6 +24,33 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
         return hours * 3600 + minutes * 60 + seconds;
     }
 
+    function capitalize(s) {
+        return s[0].toUpperCase() + s.slice(1).toLowerCase();
+    }
+
+    function capitalizeFirstLetters(name) {
+        if (!name) return;
+        name = capitalize(name);
+        ['-', '—', ' '].forEach(function (separator) {
+            if (name.indexOf(separator) == -1) return;
+            name = name.split(separator).map(capitalize).join(separator);
+        });
+        return name
+    }
+
+    function removeSpaces(name) {
+        while (name[0] == ' ') {
+            name = name.slice(1)
+        }
+        return name
+    }
+    function renameTeam(name) {
+        var iLoveRunning = /i\s?love\s?running/i;
+        var noComand = /нет|лично/i;
+        if (iLoveRunning.exec(name)) return 'I ❤ running';
+        if (noComand.exec(name)) return '';
+        else return name
+    }
     return {
         loadRunners: function loadRunners(data) {
             return $q.all(data.map(function (url) {
@@ -68,18 +95,16 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                         result_time_string = processedRunner['resultTime'];
                         var finishTime = getDateFromString(result_time_string, startTime)
                     }
-                    function capitalize(s) {
-                        return s[0].toUpperCase() + s.slice(1).toLowerCase();
-                    }
 
-                    var city = processedRunner['city'];
-                    if (city) {
-                        city = capitalize(city);
-                        ['-', '—', ' '].forEach(function (separator) {
-                            if (city.indexOf(separator) == -1) return;
-                            city = city.split(separator).map(capitalize).join(separator);
-                        });
+                    var country = removeSpaces(processedRunner['country']);
+
+                    var city = capitalizeFirstLetters((processedRunner['city']));
+
+                    country = capitalizeFirstLetters(country);
+                    if (country != 'Россия') {
+                        city += (', ' + country)
                     }
+                    var team = renameTeam(processedRunner['team']);
                     return {
                         gender: runner.gender,
                         winner: processedRunner['genderPosition'] < 7,
@@ -88,9 +113,9 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                         num: processedRunner['number'],
                         full_name: processedRunner['last_name'] + ' ' + processedRunner['first_name'],
                         age: processedRunner['age'],
-                        country: processedRunner['country'],
+                        country: country,
                         city: city,
-                        team: processedRunner['team'],
+                        team: team,
                         end_time: finishTime * 1,
                         result_time_string: result_time_string,
                         result_time: +getSecondsFromString(result_time_string),

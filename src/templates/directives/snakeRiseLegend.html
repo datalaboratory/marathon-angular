@@ -31,15 +31,17 @@
         <circle
             data-ng-repeat="item in [0, 1, 2]"
             class="snake-rise-legend__male-circle"
-            cy="10" r="3"></circle>
-        <text
-            class="snake-rise-legend__counter-male">{{}}</text>
+            cy="10" r="2"></circle>
+        <text x="50" y="10"
+            class="snake-rise-legend__counter">
+            {{runnersCount.male}} {{runnersCount.male | numberDeclension:( 'MEN_DECLENSION' | translate)}}</text>
 
         <circle
             data-ng-repeat="item in [0, 1, 2]"
             class="snake-rise-legend__female-circle"
-            cy="25" r="3"></circle>
-        <text
-            class="snake-rise-legend__counter-female">{{}}</text>
+            cy="30" r="2"></circle>
+        <text x="50" y="30"
+              class="snake-rise-legend__counter">
+            {{runnersCount.female}} {{runnersCount.female | numberDeclension:( 'WOMEN_DECLENSION' | translate)}}</text>
     </g>
 </svg>

@@ -62,6 +62,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         })
     };
 
+    $scope.runnersCount = {};
     $scope.limit = 100;
     $scope.filterValues = {};
     $scope.filterGender = {

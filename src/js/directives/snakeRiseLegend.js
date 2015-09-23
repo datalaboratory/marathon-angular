@@ -123,14 +123,14 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 var d3element = this;
                 d3element.selectAll('.snake-rise-legend__male-circle')
                     .attr('cx', function (d, i) {
-                        return i * 15 + 15
+                        return i * 10 + 15
                     })
                     .attr('fill', function (d, i) {
                     return genderColors.genderGradients[1](i + 1)
                 });
                 d3element.selectAll('.snake-rise-legend__female-circle')
                     .attr('cx', function (d, i) {
-                        return i * 15 + 15
+                        return i * 10 + 15
                     })
                     .attr('fill', function (d, i) {
                         return genderColors.genderGradients[0](i + 1)

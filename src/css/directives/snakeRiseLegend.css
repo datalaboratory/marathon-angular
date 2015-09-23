@@ -31,3 +31,7 @@
     alignment-baseline: central;
     font-size: 10px;
 }
+
+.snake-rise-legend__counter {
+    alignment-baseline: central;
+}
