@@ -135,22 +135,22 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
     };
 
     var getAreaPathData = function (area, base_districts) {
-        var bstr = "M";
+        var bstr = [];
         var part1 = [], part2 = [];
         var cur;
         var i, prevp;
 
         var zero_base_district = base_districts[0];
 
-        bstr += format(zero_base_district.pm);
+        bstr.push('M' + format(zero_base_district.pm));
         for (i = 1; i < area.length; i++) {
 
             prevp = (i - 1 == 0) ? zero_base_district.pcurv2 : area[i - 1].pcurv2;
             cur = area[i];
             part1.push(formatCurve(prevp, cur.pcurv1, cur.pm));
         }
-        bstr += ' C' + part1.join(' ');
-        bstr += ' L' + format(last(base_districts).pm);
+        bstr.push('C' + part1.join(' '));
+        bstr.push('L' + format(last(base_districts).pm));
 
 
         for (i = (base_districts.length - 1) - 1; i >= 0; i--) {
@@ -160,8 +160,8 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
 
         }
 
-        bstr += ' C' + part2.join(' ') + 'Z';
-        return bstr;
+        bstr.push('C' + part2.join(' ') + 'Z');
+        return bstr.join(' ');
 
     };
 
@@ -189,17 +189,18 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
         })
     };
 
-    var getAreaByData = function (runners_array, base_districts, prev_districts, seconds, step) {
+    var getAreaByData = function (runners_array, base_districts, prev_districts, seconds, step, gender) {
         var steps_runners = getStepsRunners(runners_array, base_districts, seconds).map(function (step) {
             return step.length
         });
 
-        return (prev_districts.map(function (prev_di, i) {
+        return prev_districts.map(function (prev_di, i) {
             var obj = {};
             var runnersCount = steps_runners[i];
 
             obj.height = getHeightByRunners(runnersCount, step);
             obj.runners = runnersCount;
+            obj.gender = gender;
 
             var spcurv1 = getPointOnPerpendicularM(prev_di.pcurv1, prev_di.pcurv2, prev_di.pcurv1, obj.height);
             var spcurv2 = getPointOnPerpendicularM(prev_di.pcurv1, prev_di.pcurv2, prev_di.pcurv2, obj.height);
@@ -217,9 +218,8 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
                 x: perppoints[0],
                 y: perppoints[1]
             };
-
             return obj;
-        }));
+        });
     };
 
     var customPieces = {
@@ -289,7 +289,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
         };
     }
 
-    function getMaxHeightSection(time, runners, step_for_dots) {
+    /*function getMaxHeightSection(time, runners, step_for_dots) {
         var dots_on_distance = d3.range(0, track.getTrackLength(), step_for_dots);
 
         var maxHeightSection = {height: -Infinity};
@@ -306,7 +306,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
                 maxHeightSection = section;
         });
         return maxHeightSection;
-    }
+    }*/
 
     var base_points_cache = {};
     var getBasePoints = function (step_in_m) {
@@ -320,7 +320,6 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
             i;
         var complects = [],
             px_per_m = px_distance / total_distance;
-
         var step = step_in_m * px_per_m;
         var steps = getSteps(step, px_distance);
 
@@ -426,23 +425,47 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
             .map(getSQPoints)
 
     };
-
-
-    var getPoints = function (runners_groups, age_areas, seconds, step) {
+    var maxHeightSection = {};
+    function getPoints(runners_groups, age_areas, seconds, step) {
         var data = getBasePoints(step);
         var complects = data.complects;
 
         var prev;
-
-        runners_groups.forEach(function (el) {
-            var prev_districts = (prev) ? prev : complects;
-            var areas_data = getAreaByData(el.runners, complects, prev_districts, seconds, data.step);
+        var calculatedSections = [];
+        runners_groups.forEach(function (el, i) {
+            var prev_districts = prev ? prev : complects;
+            var areas_data = getAreaByData(el.runners, complects, prev_districts, seconds, data.step, el.gender);
             prev = areas_data;
             age_areas[el.key].d = getAreaPathData(areas_data, complects);
+            calculatedSections.push(areas_data);
         });
+        maxHeightSection = d3.transpose(calculatedSections).map(function (sectionArray) {
+            return {
+                height: d3.sum(sectionArray, function (section) {
+                    return section.height
+                }),
+                runners: {
+                    male: d3.sum(sectionArray.filter(function (section) {
+                        return section.gender == 1
+                    }), function (section) {
+                        return section.runners
+                    }),
+                    female: d3.sum(sectionArray.filter(function (section) {
+                        return section.gender == 0
+                    }), function (section) {
+                        return section.runners
+                    })
+                }
+            }
+        }).reduce(function (a, b) {
+            if (a.height > b.height) return a;
+            return b
+        });
+    }
+    function getMaxHeightSection() {
+        return maxHeightSection;
+    }
 
-        return complects;
-    };
     var mapScale = 1;
 
     function setMapScale(scale) {

@@ -1,14 +1,14 @@
-angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, track, roundTo, $timeout, $rootScope) {
+angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, track, roundTo, $timeout, $rootScope, genderColors) {
     var round = roundTo(10);
     var cache = {
         '42km': {
-            count: 2130
+            count: 2800
         },
         'hb': {
             count: 10
         },
         '10km': {
-            count: 2630
+            count: 4020
         }
     };
     var render = {
@@ -27,15 +27,15 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
         link: function ($scope, $element) {
             var width = 77;
             var originalHeight = 150;
-            var ratio = 2;
+            var ratio = 0.4;
             var step_for_dots = ratio * 1000; // шаг на дистанции с которым смотрим высоту змея
             var maxHeight;
             var maxCount;
             var currentScale = 1;
             var realMaxHeight;
             var heightScale = d3.scale.linear();
-            $rootScope.$broadcast('legendReady')
-            /*function updateMaxHeight() {
+
+            function updateMaxHeight() {
                 var cached = cache[$scope.currentTrackName];
                 if (cached) {
                     maxCount = cached.count;
@@ -45,7 +45,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                         var total_distance = track.getTrackLength(),
                             px_distance = track.getTotalLength(),
                             px_in_m = px_distance / total_distance;
-                        maxHeight = mapHelper.getHeightByRunners(maxCount, 1000 * px_in_m);
+                        maxHeight = mapHelper.getHeightByRunners(maxCount * 400 / 1000, 400 * px_in_m);
                         cache[$scope.currentTrackName].height = maxHeight;
                     }
                 } else {
@@ -89,8 +89,17 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             var unbindStartRender = $rootScope.$on('startRender', function () {
                 $scope.$broadcast('render', render);
             });
+            var renderRequired;
             $scope.$on('$destroy', function () {
                 unbindStartRender();
+            });
+            $scope.$on('render', function() {
+                $timeout(function () {
+                    console.log('render took', performance.now() - renderRequired);
+                });
+            });
+            $rootScope.$on('renderRequired', function() {
+                renderRequired = performance.now();
             });
             $scope.$on('render', function () {
                 updateContainerHeight();
@@ -108,13 +117,30 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                     .attr('d', $scope.snake.path.all);
                 d3element.select('.snake-rise-legend__counter')
                     .attr('y', $scope.snake.maxHeight + 20)
-            };*/
+            };
 
+            $scope.renderCircleLegend = function () {
+                var d3element = this;
+                d3element.selectAll('.snake-rise-legend__male-circle')
+                    .attr('cx', function (d, i) {
+                        return i * 15 + 15
+                    })
+                    .attr('fill', function (d, i) {
+                    return genderColors.genderGradients[1](i + 1)
+                });
+                d3element.selectAll('.snake-rise-legend__female-circle')
+                    .attr('cx', function (d, i) {
+                        return i * 15 + 15
+                    })
+                    .attr('fill', function (d, i) {
+                        return genderColors.genderGradients[0](i + 1)
+                    });
+            };
 
             function updateSnakes() {
                 if (!track.getTrackLength()) return;
                 if (isNaN(maxHeight)) return;
-                var maxHeightSection = mapHelper.getMaxHeightSection($scope.time.current, $scope.filteredRunners, step_for_dots);
+                var maxHeightSection = mapHelper.getMaxHeightSection();
                 var countMale = round(maxHeightSection.runners.male / ratio);
                 var countFemale = round(maxHeightSection.runners.female / ratio);
                 var malePosition = countFemale ? Math.min(

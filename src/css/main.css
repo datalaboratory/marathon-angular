@@ -122,6 +122,10 @@ svg {
     float: left;
 }
 
+.legend__altitude-text:last-child {
+    margin-top: 0px;
+}
+
 .legend__gender-age {
     width: 50%;
     float: left;

@@ -29,7 +29,9 @@
                                 <span class="legend__header">{{ 'ALTITUDE_TITLE' | translate }}</span>
                                     <altitude-legend></altitude-legend>
                             <span class="legend__altitude-text"
-                                  data-ng-bind-html="'ALTITUDE_TEXT' | translate | trust "></span>
+                                  data-ng-bind-html="'ALTITUDE_TEXT1' | translate | trust "></span>
+                            <span data-ng-show="currentTrackName == '10km'" class="legend__altitude-text"
+                                  data-ng-bind-html="'ALTITUDE_TEXT2' | translate | trust "></span>
                             </div>
                             <div class="legend__gender-age">
                                 <span class="legend__header">{{ 'GENDER_AGE_TITLE' | translate }}</span>
@@ -39,7 +41,9 @@
                                 </div>
                             </div>
                             <div class="legend__snake-rise">
-                                <span class="legend__header">{{ 'SNAKE_WIDTH_TITLE' | translate }}</span>
+                                <span data-ng-show="currentTrackName != 'hb'" class="legend__header">{{ 'SNAKE_WIDTH_TITLE' | translate }}</span>
+                                <span data-ng-show="currentTrackName == 'hb'" class="legend__header">{{ 'SNAKE_WIDTH_TITLE_HB' | translate }}</span>
+
                                 <div class="legend__snake-rise-container">
                                     <snake-rise-legend data-ng-if="filteredRunners"></snake-rise-legend>
                                 </div>

@@ -46,7 +46,7 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                     var processedRunner = {
                         result_steps: [{
                             distance: 0,
-                            time: realStartTime
+                            time: realStartTime * 1
                         }]
                     };
 

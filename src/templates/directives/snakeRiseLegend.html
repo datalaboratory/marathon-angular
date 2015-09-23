@@ -1,5 +1,5 @@
 <svg class="snake-rise-legend">
-    <g data-lab-render="renderSnakeLegend" data-lab-margin>
+    <g data-ng-if="currentTrackName != 'hb'" data-lab-render="renderSnakeLegend" data-lab-margin>
         <path class="snake-rise-legend__male-path"></path>
         <path class="snake-rise-legend__female-path"></path>
         <path class="snake-rise-legend__all-path"></path>
@@ -26,5 +26,20 @@
                 data-ng-show="snake.count.female">{{snake.count.female}}
             </text>
         </g>
+    </g>
+    <g data-ng-if="currentTrackName == 'hb'" data-lab-render="renderCircleLegend" data-lab-margin>
+        <circle
+            data-ng-repeat="item in [0, 1, 2]"
+            class="snake-rise-legend__male-circle"
+            cy="10" r="3"></circle>
+        <text
+            class="snake-rise-legend__counter-male">{{}}</text>
+
+        <circle
+            data-ng-repeat="item in [0, 1, 2]"
+            class="snake-rise-legend__female-circle"
+            cy="25" r="3"></circle>
+        <text
+            class="snake-rise-legend__counter-female">{{}}</text>
     </g>
 </svg>
