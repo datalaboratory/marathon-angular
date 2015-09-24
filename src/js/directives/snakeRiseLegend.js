@@ -29,6 +29,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             var originalHeight = 150;
             var ratio = 0.4;
             var step_for_dots = ratio * 1000; // шаг на дистанции с которым смотрим высоту змея
+            var magicCoeff = 0.8;
             var maxHeight;
             var maxCount;
             var currentScale = 1;
@@ -45,7 +46,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                         var total_distance = track.getTrackLength(),
                             px_distance = track.getTotalLength(),
                             px_in_m = px_distance / total_distance;
-                        maxHeight = mapHelper.getHeightByRunners(maxCount * 400 / 1000, 400 * px_in_m);
+                        maxHeight = mapHelper.getHeightByRunners(maxCount * 400 / 1000, 400 * px_in_m) * magicCoeff;
                         cache[$scope.currentTrackName].height = maxHeight;
                     }
                 } else {
@@ -151,8 +152,8 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 if (!femalePercent) femalePercent = 0;
                 $scope.snake = {
                     path: {
-                        male: formatSnakePath(width, maxHeightSection.height * currentScale, 1),
-                        female: formatSnakePath(width, maxHeightSection.height * currentScale, femalePercent),
+                        male: formatSnakePath(width, maxHeightSection.height * currentScale * magicCoeff, 1),
+                        female: formatSnakePath(width, maxHeightSection.height * currentScale * magicCoeff, femalePercent),
                         all: formatSnakePath(width, maxHeight * currentScale, 1)
                     },
                     maxHeight: maxHeight * currentScale,

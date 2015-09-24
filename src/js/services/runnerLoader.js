@@ -46,8 +46,10 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
     }
     function renameTeam(name) {
         var iLoveRunning = /i\s?love\s?running/i;
-        var noComand = /нет|лично/i;
+        var adidasBoost = /adidas\s?boost/i;
+        var noComand = /^(нет|лично|[0\s]+)$/i;
         if (iLoveRunning.exec(name)) return 'I ❤ running';
+        if (adidasBoost.exec(name)) return 'Adidas Boost team';
         if (noComand.exec(name)) return '';
         else return name
     }

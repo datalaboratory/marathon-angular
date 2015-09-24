@@ -19,15 +19,15 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 '42km': {
                     width: 570,
                     height: 510,
-                    x: 112,
-                    y: 105,
+                    x: 110,
+                    y: 103,
                     snakeHeight: 0.4
                 },
                 'hb': {
                     width: 570,
                     height: 510,
-                    x: 112,
-                    y: 105,
+                    x: 110,
+                    y: 103,
                     snakeHeight: 0.4
                 },
                 '10km': {
@@ -35,7 +35,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     height: 495,
                     x: 138,
                     y: 107,
-                    snakeHeight: 0.45
+                    snakeHeight: 0.4
                 }//todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {
