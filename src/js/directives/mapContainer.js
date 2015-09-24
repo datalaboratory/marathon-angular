@@ -159,14 +159,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                         firstTime = false;
 
                         var unbindStartRender = $rootScope.$on('startRender', function () {
-                            $scope.$broadcast('render', render);
-                        });
-                        $scope.$on('$destroy', function () {
-                            unbindStartRender();
-                        });
-                        $scope.$on('render', function () {
                             var currentWidth = $element.width();
-                            if (!currentWidth) debugger;
                             var scale = currentWidth / originalWidth;
                             $scope.scale = scale;
                             mapHelper.setMapScale(scale);
@@ -174,6 +167,10 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                                 height: originalHeight * scale
                             });
                             drawSnake($scope.time.current);
+                            $scope.$broadcast('render', render);
+                        });
+                        $scope.$on('$destroy', function () {
+                            unbindStartRender();
                         });
                     }
                 });

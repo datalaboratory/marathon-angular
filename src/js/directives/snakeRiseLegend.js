@@ -49,20 +49,6 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                         maxHeight = mapHelper.getHeightByRunners(maxCount * 400 / 1000, 400 * px_in_m) * magicCoeff;
                         cache[$scope.currentTrackName].height = maxHeight;
                     }
-                } else {
-                    var timeStamps = d3.range($scope.time.start, $scope.time.start + $scope.time.maxTime * 1000, 60000);
-                    var section_with_max_height = timeStamps.map(function (time) {
-                        return mapHelper.getMaxHeightSection(time, $scope.runnersData.items, step_for_dots)
-                    }).reduce(function (a, b) {
-                        if (a.height > b.height) return a;
-                        return b
-                    });
-                    maxHeight = section_with_max_height.height;
-                    maxCount = (section_with_max_height.runners.male + section_with_max_height.runners.female) / ratio;
-                    cache[$scope.currentTrackName] = {
-                        height: maxHeight,
-                        count: maxCount
-                    };
                 }
                 heightScale
                     .domain([0, maxCount]);
@@ -88,7 +74,11 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             }
 
             var unbindStartRender = $rootScope.$on('startRender', function () {
-                $scope.$broadcast('render', render);
+                $timeout(function () {
+                    updateContainerHeight();
+                    updateSnakes();
+                    $scope.$broadcast('render', render);
+                })
             });
             var renderRequired;
             $scope.$on('$destroy', function () {
@@ -103,8 +93,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
                 renderRequired = performance.now();
             });
             $scope.$on('render', function () {
-                updateContainerHeight();
-                updateSnakes();
+
             });
 
             $scope.renderSnakeLegend = function () {

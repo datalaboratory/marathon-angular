@@ -223,19 +223,25 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
     };
 
     var customPieces = {
-        '21': 6270,
-        '10': 5050
+        '42': [20680, 22000, 26520, 29760, 34320]
     };
 
     var getSteps = function (step, px_distance) {
         var pieces = d3.range(0, px_distance, step);
         pieces.push(px_distance);
-        /*var trackLength = track.getTrackLength();
-        var customPiece = customPieces[Math.round(trackLength / 1000)] / trackLength * track.getTotalLength();
-        pieces.push(customPiece, customPiece);
+        var trackLength = track.getTrackLength();
+        var customPiece = customPieces[Math.round(trackLength / 1000)] ;
+        if (customPiece) {
+            customPiece.forEach(function(piece) {
+                piece = piece / trackLength * track.getTotalLength();
+                pieces.push(piece, piece)
+            });
+        } else {
+            console.log()
+        }
         pieces.sort(function (a, b) {
             return a - b
-        });*/
+        });
         var steps = [{p: track.getPointAtLength(0), l: 0}].concat(pieces.map(function (piece) {
             return {
                 p: track.getPointAtLength(piece),
@@ -289,28 +295,9 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
         };
     }
 
-    /*function getMaxHeightSection(time, runners, step_for_dots) {
-        var dots_on_distance = d3.range(0, track.getTrackLength(), step_for_dots);
-
-        var maxHeightSection = {height: -Infinity};
-
-        time *= 1;
-
-        dots_on_distance.forEach(function (dot) {
-            var section = getStep(
-                dot,
-                time,
-                runners,
-                step_for_dots);
-            if (section.height > maxHeightSection.height)
-                maxHeightSection = section;
-        });
-        return maxHeightSection;
-    }*/
-
     var base_points_cache = {};
     var getBasePoints = function (step_in_m) {
-        var points_key = track.getTrackLength(); //base.projection_key; TODO: вернуть кэширование
+        var points_key = track.getTrackLength();
         if (base_points_cache[points_key]) {
             return base_points_cache[points_key];
         }
@@ -348,11 +335,11 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
             complects.push(obj);
         }
 
-        var result = {
+        base_points_cache[points_key] = {
             complects: complects,
             step: step
         };
-        base_points_cache[points_key] = result;
+
         return base_points_cache[points_key];
     };
 
