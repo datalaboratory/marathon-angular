@@ -17,12 +17,12 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
     var magicNumbers = {
         '42km': {
             scale: 0.75,
-            x: -120,
+            x: -170,
             y: 30
         },
         'hb': {
             scale: 0.75,
-            x: -120,
+            x: -170,
             y: 30
         },
         '10km': {

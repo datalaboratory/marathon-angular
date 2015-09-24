@@ -19,14 +19,14 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 '42km': {
                     width: 570,
                     height: 510,
-                    x: 110,
+                    x: 60,
                     y: 103,
                     snakeHeight: 0.4
                 },
                 'hb': {
                     width: 570,
                     height: 510,
-                    x: 110,
+                    x: 60,
                     y: 103,
                     snakeHeight: 0.4
                 },
