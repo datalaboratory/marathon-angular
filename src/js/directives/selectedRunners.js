@@ -1,4 +1,4 @@
-angular.module('marathon').directive('selectedRunners', function (mapHelper, track) {
+angular.module('marathon').directive('selectedRunners', function (mapHelper, track, $rootScope) {
     return {
         restrict: 'E',
         templateUrl: 'directives/selectedRunners.html',
@@ -27,7 +27,23 @@ angular.module('marathon').directive('selectedRunners', function (mapHelper, tra
                 var x = $event.originalEvent.layerX || $event.offsetX;
                 var y = $event.originalEvent.layerY || $event.offsetY;
                 $scope.selectedRunnerOnMap.position = "left:" + (x + 6) + 'px;top:' + (y + 6) + 'px;';
-            }
+            };
+
+            $scope.renderSelectedRunner = function () {
+                var d3element = this;
+                var $scope = angular.element(this.node()).scope();
+                var coord = $scope.getRunnerPosition($scope.runner);
+                var scale = $scope.getScale();
+                d3element
+                    .attr('transform', 'translate(' + coord.x + ',' + coord.y + ') scale(' + scale + ')')
+            };
+
+            /*var unbindStartRender = $rootScope.$on('startRender', function () {
+                $scope.$broadcast('render', render);
+            });
+            $scope.$on('$destroy', function () {
+                unbindStartRender();
+            });*/
         }
     }
 });

@@ -66,7 +66,6 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
         currentTrackName = trackName;
         updateAll();
         $rootScope.$broadcast('trackUpdated');
-        console.log('trackUpdated')
     }
 
     function getAltitudes() {

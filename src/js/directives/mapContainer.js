@@ -169,9 +169,13 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                             drawSnake($scope.time.current);
                             $scope.$broadcast('render', render);
                         });
+
                         $scope.$on('$destroy', function () {
                             unbindStartRender();
                         });
+
+                        $scope.$on('render', function () {
+                        })
                     }
                 });
             });

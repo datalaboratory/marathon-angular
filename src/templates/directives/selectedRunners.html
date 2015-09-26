@@ -1,7 +1,7 @@
 <g
         class="selected-runners"
         data-ng-repeat="runner in selectedRunners"
-        data-ng-attr-transform="translate({{getRunnerPosition(runner).x}},{{getRunnerPosition(runner).y}}) scale({{getScale()}})"
+        data-lab-render="renderSelectedRunner"
         data-ng-mousemove="showTooltip($event, runner)"
         data-ng-mouseleave="selectedRunnerOnMap.runner = null">
     <selected-runner-dot

@@ -226,14 +226,10 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                     $scope.winnersForTable.push(runner)
                 }
                 if (runner.gender_pos == 1) {
-                    if (runner.full_name == 'wat') {
-                        debugger
-                    }
                     $scope.selectedRunners.push(runner);
                 }
             });
             $rootScope.$broadcast('runnersUpdated');
-            console.log('runnersUpdated')
         });
     });
 
