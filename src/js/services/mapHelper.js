@@ -193,7 +193,6 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
         var steps_runners = getStepsRunners(runners_array, base_districts, seconds).map(function (step) {
             return step.length
         });
-
         return prev_districts.map(function (prev_di, i) {
             var obj = {};
             var runnersCount = steps_runners[i];
@@ -223,7 +222,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
     };
 
     var customPieces = {
-        '42': [20680, 22000, 26520, 29760, 34320]
+        '42': [20680, 22000, 26520, 29730, 34320]
     };
 
     var getSteps = function (step, px_distance) {
@@ -236,67 +235,27 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
                 piece = piece / trackLength * track.getTotalLength();
                 pieces.push(piece, piece)
             });
-        } else {
-            console.log()
         }
         pieces.sort(function (a, b) {
             return a - b
         });
-        var steps = [{p: track.getPointAtLength(0), l: 0}].concat(pieces.map(function (piece) {
+        var steps = [{point: track.getPointAtLength(0), distance: 0}].concat(pieces.map(function (piece) {
             return {
-                p: track.getPointAtLength(piece),
-                l: piece
+                point: track.getPointAtLength(piece),
+                distance: piece
             };
         }));
         steps.push({
-            p: track.getPointAtLength(px_distance),
-            l: 0
+            point: track.getPointAtLength(px_distance),
+            distance: 0
         });
-        /*steps = track.getSimplifiedPoints().map(function (point) {
-            return {
-                p: {x: point[0], y: point[1]},
-                l: step
-            }
-        });*/
+
         return steps;
     };
-    var getRunnersToArray = function (array, d_ge, d_l) {
-        return array.filter(function (item) {
-            return item.distance >= d_ge && item.distance < d_l
-        });
-    };
 
-    function getStep(current_distance, timestamp, runners_array, step_distance) {
-        var total_distance = track.getTrackLength(),
-            px_distance = track.getTotalLength(),
-            px_in_m = px_distance / total_distance;
-
-        var step = step_distance * px_in_m;
-
-        var step_start = current_distance;
-        var step_end = current_distance + step / px_in_m;
-
-        var distances = getDistances(runners_array, timestamp, true);
-        var runners = getRunnersToArray(distances, step_start, step_end);
-        var height = getHeightByRunners(runners.length, step);
-        return {
-            step: step,
-            height: height,
-            runners: {
-                male: runners.filter(function (runner) {
-                    return runner.item.gender == 1
-                }).length,
-                female: runners.filter(function (runner) {
-                    return runner.item.gender == 0
-                }).length
-            },
-            step_m: step_distance || step / px_in_m,
-            distance: current_distance
-        };
-    }
 
     var base_points_cache = {};
-    var getBasePoints = function (step_in_m) {
+    function getBasePoints (step_in_m) {
         var points_key = track.getTrackLength();
         if (base_points_cache[points_key]) {
             return base_points_cache[points_key];
@@ -313,14 +272,14 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
         for (i = 1; i < steps.length; i++) {
             var c1 = steps[i - 1],
                 c2 = steps[i],
-                p1 = c1.p,
-                p2 = c2.p;
+                p1 = c1.point,
+                p2 = c2.point;
 
             var obj = {
                 p1: p1,
                 p2: p2,
-                start: c1.l / px_per_m,
-                end: c2.l / px_per_m,
+                start: c1.distance / px_per_m,
+                end: c2.distance / px_per_m,
                 pm: {
                     x: (p1.x + p2.x) / 2,
                     y: (p1.y + p2.y) / 2

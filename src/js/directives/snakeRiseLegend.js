@@ -86,7 +86,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             });
             $scope.$on('render', function() {
                 $timeout(function () {
-                    console.log('render took', performance.now() - renderRequired);
+                    //console.log('render took', performance.now() - renderRequired);
                 });
             });
             $rootScope.$on('renderRequired', function() {

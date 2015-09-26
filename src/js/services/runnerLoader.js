@@ -48,6 +48,13 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
         var iLoveRunning = /i\s?love\s?running/i;
         var adidasBoost = /adidas\s?boost/i;
         var noComand = /^(нет|лично|[0\s]+)$/i;
+        var trilife = /trilife|трилайф/i;
+        var BiM = /^\s*бим\s*$/i;
+        var nike = /(найк|nike)\s*(\+|плюс|plus)/i;
+
+        if (nike.exec(name)) return 'Nike+';
+        if (BiM.exec(name)) return 'БиМ';
+        if (trilife.exec(name)) return 'Trilife';
         if (iLoveRunning.exec(name)) return 'I ❤ running';
         if (adidasBoost.exec(name)) return 'Adidas Boost team';
         if (noComand.exec(name)) return '';

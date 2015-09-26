@@ -53,7 +53,6 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
         projection.scale(calculatedMagicNumbers.s).translate(calculatedMagicNumbers.t);
         pathData = path(geodata);
         pathElement.attr('d', pathData);
-        simplifiedPoints = calculateSimplifiedPoints();
     }
 
     function updateContainerSize(w, h) {
@@ -102,24 +101,25 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
         var element = $('<svg><path d="" /></svg>').find('path');
 
         function getPerpendicularLength(startPoint, endPoint, currentPoint) {
-            var x = endPoint[0] - startPoint[0];
-            var y = endPoint[1] - startPoint[1];
-            var currentX = currentPoint[0] - startPoint[0];
-            var currentY = currentPoint[1] - startPoint[1];
+            var x = endPoint.x - startPoint.x;
+            var y = endPoint.y - startPoint.y;
+            var currentX = currentPoint.x - startPoint.x;
+            var currentY = currentPoint.y - startPoint.y;
             var cos = x / (Math.sqrt(x * x + y * y));
             var l = currentY - y * currentX / x;
             return Math.abs(l * cos);
         }
 
         function getPoint(coordinates, savedPoints) {
-            var startPoint = coordinates[0];
-            var endPoint = last(coordinates);
+            if (!coordinates.length) return;
+            var startPoint = coordinates[0].point;
+            var endPoint = last(coordinates).point;
 
             var maxPerpendicularLength = 0;
             var savedPoint;
             var number;
             coordinates.forEach(function (point, i) {
-                var d = getPerpendicularLength(projection(startPoint), projection(endPoint), projection(point));
+                var d = getPerpendicularLength(startPoint, endPoint, point.point);
                 if (d > maxPerpendicularLength) {
                     maxPerpendicularLength = d;
                     savedPoint = point;
@@ -128,20 +128,28 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
             });
             if (maxPerpendicularLength >= maxDelta) {
                 savedPoints.push(savedPoint);
+
                 getPoint(coordinates.slice(1, number), savedPoints);
                 getPoint(coordinates.slice(number), savedPoints);
             }
         }
 
-        var coordinates = geodata.geometry.coordinates.map(function (point, i) {
-            point.push(i);
-            return point;
+        var px_distance = getTotalLength();
+        var step = px_distance / geodata.geometry.coordinates.length;
+        var pieces = d3.range(0, px_distance, step);
+        pieces.push(px_distance);
+        var coordinates = pieces.map(function (piece) {
+            return {
+                point: getPointAtLength(piece),
+                distance: piece
+            };
         });
+
         getPoint(coordinates, savedPoints);
         savedPoints.sort(function (a, b) {
-            return last(b) - last(a);
+            return a.distance - b.distance;
         });
-        return savedPoints.map(projection);
+        return savedPoints;
     }
 
     function getSimplifiedPoints() {
