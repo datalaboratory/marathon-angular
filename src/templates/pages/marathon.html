@@ -28,7 +28,7 @@
                             <div class="legend__altitude">
                                 <span class="legend__header">{{ 'ALTITUDE_TITLE' | translate }}</span>
                                     <altitude-legend></altitude-legend>
-                            <span class="legend__altitude-text"
+                            <span data-ng-show="currentTrackName != '10km'" class="legend__altitude-text"
                                   data-ng-bind-html="'ALTITUDE_TEXT1' | translate | trust "></span>
                             <span data-ng-show="currentTrackName == '10km'" class="legend__altitude-text"
                                   data-ng-bind-html="'ALTITUDE_TEXT2' | translate | trust "></span>

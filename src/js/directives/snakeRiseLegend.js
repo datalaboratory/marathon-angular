@@ -92,9 +92,6 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             $rootScope.$on('renderRequired', function() {
                 renderRequired = performance.now();
             });
-            $scope.$on('render', function () {
-
-            });
 
             $scope.renderSnakeLegend = function () {
                 if (!$scope.snake || !$scope.snake.path) return;

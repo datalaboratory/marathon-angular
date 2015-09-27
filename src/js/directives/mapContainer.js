@@ -74,15 +74,21 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 time *= 1;
                 var step = 400;
                 var runners = runnerClassificator.checkData($scope.filteredRunners);
-                mapHelper.getPoints(
-                    runners.runners_groups,
-                    $scope.ageAreas,
-                    time,
-                    step);
+                if ($scope.currentTrackName != 'hb'){
+                    mapHelper.getPoints(
+                        runners.runners_groups,
+                        $scope.ageAreas,
+                        time,
+                        step);
+                }
                 $scope.circles = mapHelper.drawRunnersPoints(
                     $scope.filteredRunners,
                     time,
-                    step);
+                    step,
+                    $scope.currentTrackName);
+                $timeout(function () {
+                    $scope.$broadcast('render', render);
+                })
             }
 
             $scope.scaleAll = function () {
@@ -167,15 +173,13 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                                 height: originalHeight * scale
                             });
                             drawSnake($scope.time.current);
-                            $scope.$broadcast('render', render);
+
                         });
 
                         $scope.$on('$destroy', function () {
                             unbindStartRender();
                         });
 
-                        $scope.$on('render', function () {
-                        })
                     }
                 });
             });

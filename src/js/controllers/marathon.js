@@ -1,13 +1,8 @@
 angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, $location, numberDeclension, multifilter, ageGroups, runnerLoader) {
 
-    var counter = 0;
-    $scope.$watch(function () {
-        counter++;
-        //console.log('counter', counter);
-    });
     function changeLanguage() {
         $rootScope.location = document.location.href;
-        var lang = ($rootScope.location.indexOf('/en/') > -1) ? 'en' : 'ru';
+        var lang = ($rootScope.location.indexOf('/ru/') > -1) ? 'ru' : 'en';
         $rootScope.language = lang;
         $translate.use(lang);
     }
@@ -27,16 +22,16 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             'hb': runnerLoader.loadRunners([
-                'data/runners/21km-handbiker-men.json',
-                'data/runners/21km-handbiker-woman.json'
+                '../../../protocols/2015/moscowmarathon/42km-handbiker-men.json',
+                '../../../protocols/2015/moscowmarathon/42km-handbiker-women.json'
             ]),
             '42km': runnerLoader.loadRunners([
-                'data/runners/42km-men.json',
-                'data/runners/42km-women.json'
+                '../../../protocols/2015/moscowmarathon/42km-men.json',
+                '../../../protocols/2015/moscowmarathon/42km-women.json'
             ]),
             '10km': runnerLoader.loadRunners([
-                'data/runners/10km-men.json',
-                'data/runners/10km-women.json'
+                '../../../protocols/2015/moscowmarathon/10km-men.json',
+                '../../../protocols/2015/moscowmarathon/10km-women.json'
             ])
         }
     };

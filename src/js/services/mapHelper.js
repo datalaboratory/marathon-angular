@@ -327,7 +327,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
         };
     };
 
-    var drawRunnersPoints = function (runners, timestamp, step) {
+    var drawRunnersPoints = function (runners, timestamp, step, trackName) {
         var point_radius = 2;
         var prevPosition;
 
@@ -356,7 +356,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
             }
         };
 
-        var limit = 5;
+        var limit = (trackName == 'hb')?  20 : 5;
 
         var steps_runners = getStepsRunners(runners, complects, timestamp, true);
 
