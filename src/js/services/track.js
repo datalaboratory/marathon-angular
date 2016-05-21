@@ -11,24 +11,14 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
     var height;
     var pathData;
     var trackLength;
-    var currentTrackName = '42km';
+    var currentTrackName = '21km';
     var simplifiedPoints;
 
     var magicNumbers = {
-        '42km': {
-            scale: 0.75,
-            x: -170,
-            y: 30
-        },
-        'hb': {
-            scale: 0.75,
-            x: -170,
-            y: 30
-        },
-        '10km': {
+        '21km': {
             scale: 0.6,
-            x: -130,
-            y: 60
+            x: -100,
+            y: 70
         }
     };
     var calculatedMagicNumbers = {};

@@ -2,7 +2,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     function changeLanguage() {
         $rootScope.location = document.location.href;
-        var lang = ($rootScope.location.indexOf('/ru/') > -1) ? 'ru' : 'en';
+        var lang = ($rootScope.location.indexOf('/en/') > -1) ? 'en' : 'ru';
         $rootScope.language = lang;
         $translate.use(lang);
     }
@@ -16,22 +16,12 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '42km': $http.get('data/geo/42km.json'),
-            'hb': $http.get('data/geo/42km.json'),
-            '10km': $http.get('data/geo/10km.json')
+            '21km': $http.get('data/geo/mm2015_17may-21km-geo.json')
         },
         runners: {
-            'hb': runnerLoader.loadRunners([
-                'data/runners/42km-handbiker-men.json',
-                'data/runners/42km-handbiker-women.json'
-            ]),
-            '42km': runnerLoader.loadRunners([
-                'data/runners/42km-men.json',
-                'data/runners/42km-women.json'
-            ]),
-            '10km': runnerLoader.loadRunners([
-                'data/runners/10km-men.json',
-                'data/runners/10km-women.json'
+            '21km': runnerLoader.loadRunners([
+                'data/runners/20160515_halfm_m_21km.json',
+                'data/runners/20160515_halfm_f_21km.json'
             ])
         }
     };

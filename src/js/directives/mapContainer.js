@@ -31,10 +31,17 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     snakeHeight: 0.4
                 },
                 '10km': {
-                    width: 510,
-                    height: 495,
-                    x: 138,
-                    y: 107,
+                    width: 610,
+                    height: 540,
+                    x: 26,
+                    y: 100,
+                    snakeHeight: 0.4
+                },
+                '21km': {
+                    width: 610,
+                    height: 540,
+                    x: 26,
+                    y: 100,
                     snakeHeight: 0.4
                 }//todo: в отдельный json
             };
@@ -55,12 +62,12 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 $scope.flags = [{
                     x: start[0],
                     y: start[1],
-                    deg: 0,
+                    deg: 25,
                     image: 'yel'
                 }, {
                     x: finish[0],
                     y: finish[1],
-                    deg: 0,
+                    deg: -25,
                     image: 'red'
                 }
                 ];

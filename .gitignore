@@ -1,4 +1,5 @@
 .idea
+*.iml
 static/js
 static/css
 bower_components

@@ -19,12 +19,14 @@ angular.module('marathon').directive('runnersList', function () {
                 var n = $scope.selectedRunners.indexOf(runner);
                 if (n >= 0) {
                     $scope.selectedRunners.splice(n,1);
+                    $scope.$emit('renderRequired');
                     return
                 }
                 $scope.selectedRunners.push(runner);
                 if ($scope.selectedRunners.length > 5) {
                     $scope.selectedRunners.shift();
                 }
+                $scope.$emit('renderRequired');
             }
         }
     }
