@@ -22,16 +22,16 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             'hb': runnerLoader.loadRunners([
-                '../../../protocols/2015/moscowmarathon/42km-handbiker-men.json',
-                '../../../protocols/2015/moscowmarathon/42km-handbiker-women.json'
+                'data/runners/42km-handbiker-men.json',
+                'data/runners/42km-handbiker-women.json'
             ]),
             '42km': runnerLoader.loadRunners([
-                '../../../protocols/2015/moscowmarathon/42km-men.json',
-                '../../../protocols/2015/moscowmarathon/42km-women.json'
+                'data/runners/42km-men.json',
+                'data/runners/42km-women.json'
             ]),
             '10km': runnerLoader.loadRunners([
-                '../../../protocols/2015/moscowmarathon/10km-men.json',
-                '../../../protocols/2015/moscowmarathon/10km-women.json'
+                'data/runners/10km-men.json',
+                'data/runners/10km-women.json'
             ])
         }
     };
