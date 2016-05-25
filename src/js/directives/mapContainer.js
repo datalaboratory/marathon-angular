@@ -56,8 +56,9 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             function updateTrack(geoData) {
                 track.updateContainerSize(originalWidth, originalHeight);
 
-                var start = track.getProjectedPoint(geoData.geometry.coordinates[0]);
-                var finish = track.getProjectedPoint(geoData.geometry.coordinates[geoData.geometry.coordinates.length - 1]);
+                var coordinates = geoData.geometry.coordinates;
+                var start = track.getProjectedPoint(coordinates[0]);
+                var finish = track.getProjectedPoint(coordinates[coordinates.length - 1]);
 
                 $scope.flags = [{
                     x: start[0],

@@ -1,13 +1,13 @@
 angular.module('marathon').constant('translationEn', {
-    HEAD_TITLE: 'Results Moscow marathon September 20, 2015',
+    HEAD_TITLE: 'Results Moscow halfmarathon May 15, 2016',
     SHARED_IMG: '/img/screenshot_eng.png',
     MAIN_TITLE: 'MOSCOW MARATHON',
     ALTITUDE_TITLE: 'Altitude',
     GENDER_AGE_TITLE: 'Age and sex',
     SNAKE_WIDTH_TITLE: 'Snake width',
     SNAKE_WIDTH_TITLE_HB: 'Handbikers on map',
-    ALTITUDE_TEXT1: 'Total climb: 230&nbsp;m<br>',
-    ALTITUDE_TEXT2: 'Highest point of Moscow Marathon: 169&nbsp;m',
+    ALTITUDE_TEXT1: 'Total climb: 121&nbsp;m<br>',
+    ALTITUDE_TEXT2: 'Highest point of Moscow Halfmarathon: 134&nbsp;m',
     RESULTS: 'Results',
     WINNERS: 'winners',
     WOMEN: 'women',
@@ -38,5 +38,5 @@ angular.module('marathon').constant('translationEn', {
     MAP_SRC_10km: 'img/10km-marathon-map.png',
     MAP_SRC_hb: 'img/42km-marathon-map.png',
     MAP_SRC_42km: 'img/42km-marathon-map.png',
-    MAP_SRC_21km: 'img/half-marathon-map.png'
+    MAP_SRC_21km: 'img/music-marathon-map.png'
 });

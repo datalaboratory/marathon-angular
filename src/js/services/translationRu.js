@@ -1,13 +1,13 @@
 angular.module('marathon').constant('translationRu', {
-    HEAD_TITLE: 'Результаты Московского Марафона 20 сентября 2015 года',
+    HEAD_TITLE: 'Результаты Московского Полумарафона 15 мая 2016 года',
     SHARED_IMG: '/img/screenshot.png',
-    MAIN_TITLE: 'МОСКОВСКИЙ МАРАФОН',
+    MAIN_TITLE: 'МОСКОВСКИЙ ПОЛУМАРАФОН',
     ALTITUDE_TITLE: 'Высотный профиль',
     GENDER_AGE_TITLE: 'Пол и возраст',
     SNAKE_WIDTH_TITLE: 'Толщина змея',
     SNAKE_WIDTH_TITLE_HB: 'Участники забега',
-    ALTITUDE_TEXT1: 'Общий набор высоты - 230&nbsp;м',
-    ALTITUDE_TEXT2: '169&nbsp;м — самая высокая точка Московского Марафона',
+    ALTITUDE_TEXT1: 'Общий набор высоты - 121&nbsp;м',
+    ALTITUDE_TEXT2: '134&nbsp;м — самая высокая точка Московского Марафона',
     RESULTS: 'Результаты',
     WINNERS: 'призёров',
     WOMEN: 'женщин',
@@ -38,5 +38,5 @@ angular.module('marathon').constant('translationRu', {
     MAP_SRC_10km: 'img/10km-marathon-map.png',
     MAP_SRC_hb: 'img/42km-marathon-map.png',
     MAP_SRC_42km: 'img/42km-marathon-map.png',
-    MAP_SRC_21km: 'img/half-marathon-map.png'
+    MAP_SRC_21km: 'img/music-marathon-map.png'
 });
