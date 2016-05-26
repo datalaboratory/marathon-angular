@@ -291,7 +291,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         });
         var maxAge = minMaxAges[1];
         if (minMaxAges[0] == minMaxAges[1]) minMaxAges.shift();
-        minMaxAges = translate('ALL') + ': ' + minMaxAges.join('–') + ' ' + numberDeclension(maxAge, translate('YEAR_DECLENSION'));
+        minMaxAges = translate('ALL') + ': ' + minMaxAges.join('–') + ' ' + numberDeclension(maxAge, translate('YEAR_DECLENSION_FILTER'));
         $scope.filters.age.allValues = minMaxAges;
     }
 

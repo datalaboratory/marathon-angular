@@ -16,9 +16,9 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
 
     var magicNumbers = {
         '21km': {
-            scale: 0.474,
-            x: -166,
-            y: 90
+            scale: 0.493,
+            x: -153,
+            y: 68
         }
     };
     var calculatedMagicNumbers = {};

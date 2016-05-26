@@ -38,11 +38,11 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     snakeHeight: 0.4
                 },
                 '21km': {
-                    width: 610,
-                    height: 540,
-                    x: 26,
-                    y: 100,
-                    snakeHeight: 0.4
+                    width: 635,
+                    height: 500,
+                    x: 27,
+                    y: 97,
+                    snakeHeight: 0.3
                 }//todo: в отдельный json
             };
             $scope.selectedRunnerOnMap = {

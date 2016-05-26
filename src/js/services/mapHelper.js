@@ -222,7 +222,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
     };
 
     var customPieces = {
-        '21': [6270]
+        '21': [6660, 10350, 14600]
     };
 
     var getSteps = function (step, px_distance) {
