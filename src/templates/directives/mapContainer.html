@@ -18,6 +18,16 @@
             data-lab-render="renderFlag"
             class="map-container__start-finish"/>
         <selected-runners></selected-runners>
+        <g data-ng-show="states.showMapAltitude">
+            <circle
+                data-ng-attr-cx="{{altitudePoint.position.x}}"
+                data-ng-attr-cy="{{altitudePoint.position.y}}"
+                r="2"></circle>
+            <text
+                data-ng-attr-x="{{altitudePoint.position.x}}"
+                data-ng-attr-y="{{altitudePoint.position.y - 5}}"
+                class="legend-altitude__min-max-text">{{altitudePoint.altitude}} {{'METER' | translate}}</text>
+        </g>
         </g>
     </svg>
 </div>

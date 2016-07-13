@@ -38,6 +38,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                 pointRadius: 1.5,
                 imgSize: 15
             };
+            $scope.movingPoint = {};
 
             function formatAltitudePath(alt) {
                 var altObjects = alt.map(function (altPoint, i) {
@@ -102,6 +103,24 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                     })
             };
 
+            $scope.moveAltitudePoint = function ($event) {
+                var x = Math.max($event.originalEvent.offsetX, 0); //$event.originalEvent.layerX || $event.offsetX;
+                x = Math.min(x, $scope.scaleX.range()[1]);
+                var altitudeNumber = Math.round($scope.scaleX.invert(x));
+                if (altitudeNumber >= $scope.altitudes.length) altitudeNumber--;
+                $scope.altitudePoint.altitude = $scope.altGraph.altitudes[altitudeNumber];
+                $scope.altitudePoint.position = track.getPointAtLength(
+                    $scope.scaleXFromDistance.invert(x) * 1000 *
+                    track.getTotalLength() / track.getTrackLength());
+
+                var y = $scope.scaleY($scope.altitudePoint.altitude);
+
+                $scope.movingPoint.position = {
+                    y: y,
+                    x: x
+                };
+            };
+
             $scope.renderDistanceMark = function () {
                 var $scope = angular.element(this.node()).scope();
                 if (!$scope.altGraph.distanceMarks) return;
@@ -142,7 +161,6 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                 $timeout(function () {
                     var altitudes = track.getAltitudes();
                     $scope.altitudes = altitudes;
-                    var distance_in_km = Math.round(track.getTrackLength() / 1000); // 21\42\10 и т.п. для рисок на графике
 
                     var customMaxPoint = distanceParams()[$scope.currentTrackName].maxPoint;
                     if (customMaxPoint) {
@@ -153,7 +171,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                             .domain(d3.extent(altitudes));
                     }
                     $scope.scaleXFromDistance
-                        .domain([0, distance_in_km]);
+                        .domain([0, track.getTrackLength() / 1000]);
                     $scope.scaleX
                         .domain([0, altitudes.length]);
                     $scope.altGraph.altitudes = altitudes;

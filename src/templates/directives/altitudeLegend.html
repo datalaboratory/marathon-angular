@@ -1,5 +1,8 @@
 <div class="legend__altitude-container">
-    <svg data-lab-size-to-scales="altitudeSizeScales" class="legend-altitude">
+    <svg data-lab-size-to-scales="altitudeSizeScales" class="legend-altitude"
+         data-ng-mouseover="states.showMapAltitude = true;"
+         data-ng-mousemove="moveAltitudePoint($event)"
+         data-ng-mouseleave="states.showMapAltitude = false">
         <g data-ng-if="altGraph" data-lab-margin>
             <path
                 class="legend-altitude__path"
@@ -16,9 +19,19 @@
                     </tspan>
                 </text>
             </g>
-            <g data-ng-repeat="point in altGraph.points" data-lab-render="renderPoint">
+            <g data-ng-repeat="point in altGraph.points" data-lab-render="renderPoint" data-ng-hide="states.showMapAltitude">
                 <circle></circle>
                 <text class="legend-altitude__min-max-text">{{point.alt}} {{'METER' | translate}}</text>
+            </g>
+            <g data-ng-if="states.showMapAltitude">
+                <circle
+                    data-ng-attr-cx="{{movingPoint.position.x}}"
+                    data-ng-attr-cy="{{movingPoint.position.y}}"
+                    data-ng-attr-r="{{altGraph.pointRadius}}"></circle>
+                <text
+                    data-ng-attr-x="{{movingPoint.position.x}}"
+                    data-ng-attr-y="{{movingPoint.position.y - 5}}"
+                    class="legend-altitude__min-max-text">{{altitudePoint.altitude}} {{'METER' | translate}}</text>
             </g>
             <image
                 data-ng-repeat="flag in altGraph.flags"

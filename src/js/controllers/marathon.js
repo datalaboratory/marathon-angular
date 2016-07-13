@@ -71,8 +71,14 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     $scope.selectedRunners = [];
     $scope.storage = {};
 
+    $scope.altitudePoint = {
+        altitude: '',
+        position: {}
+    };
+
     $scope.states = {
-        winnersInTable: true
+        winnersInTable: true,
+        showMapAltitude: false
     };
     $scope.showWinners = function () {
         if (!$scope.states.winnersInTable) {
