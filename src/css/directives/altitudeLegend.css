@@ -15,3 +15,7 @@
 .legend-altitude__min-max-text {
     font-size: 10px;
 }
+
+.legend-altitude__moving-point {
+    pointer-events: none;
+}

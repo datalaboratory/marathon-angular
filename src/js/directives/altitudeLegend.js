@@ -2,7 +2,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
     var render = {
         margin: {
             left: 7,
-            right: 7,
+            right: 25,
             top: 22,
             bottom: 22
         }
@@ -26,7 +26,9 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
         templateUrl: 'directives/altitudeLegend.html',
         replace: true,
         scope: true,
-        link: function ($scope) {
+        link: function ($scope, $element) {
+
+
             $scope.scaleX = d3.scale.linear();
             $scope.scaleY = d3.scale.linear();
             $scope.scaleXFromDistance = d3.scale.linear();
@@ -39,7 +41,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                 imgSize: 15
             };
             $scope.movingPoint = {};
-
+            $scope.selectedRunnerOnMap = {};
             function formatAltitudePath(alt) {
                 var altObjects = alt.map(function (altPoint, i) {
                     return {
@@ -103,8 +105,11 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                     })
             };
 
+            var divPosition = $($element[0]).position();
+
             $scope.moveAltitudePoint = function ($event) {
-                var x = Math.max($event.originalEvent.offsetX, 0); //$event.originalEvent.layerX || $event.offsetX;
+                var x = $event.originalEvent.layerX - divPosition.left - render.margin.left;
+                x = Math.max(x, 0);
                 x = Math.min(x, $scope.scaleX.range()[1]);
                 var altitudeNumber = Math.round($scope.scaleX.invert(x));
                 if (altitudeNumber >= $scope.altitudes.length) altitudeNumber--;
@@ -171,7 +176,8 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                             .domain(d3.extent(altitudes));
                     }
                     $scope.scaleXFromDistance
-                        .domain([0, track.getTrackLength() / 1000]);
+                        .domain([0, track.getTrackLength() / 1000])
+                        .clamp(true);
                     $scope.scaleX
                         .domain([0, altitudes.length]);
                     $scope.altGraph.altitudes = altitudes;

@@ -1,6 +1,5 @@
 .selected-runners__rect rect {
-    rx: 10px;
-    ry: 10px;
+
 }
 
 .selected-runners__text {
@@ -9,6 +8,7 @@
     alignment-baseline: central;
     cursor: default;
     pointer-events: none;
+    font-size: 10px;
 }
 
 .selected-runners__rect-male rect {

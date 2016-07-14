@@ -1,4 +1,8 @@
 <div class="legend__altitude-container">
+    <selected-runner-tooltip
+        runner="selectedRunnerOnMap.runner"
+        position="selectedRunnerOnMap.position"
+        data-ng-show="selectedRunnerOnMap.runner"></selected-runner-tooltip>
     <svg data-lab-size-to-scales="altitudeSizeScales" class="legend-altitude"
          data-ng-mouseover="states.showMapAltitude = true;"
          data-ng-mousemove="moveAltitudePoint($event)"
@@ -23,19 +27,24 @@
                 <circle></circle>
                 <text class="legend-altitude__min-max-text">{{point.alt}} {{'METER' | translate}}</text>
             </g>
-            <g data-ng-if="states.showMapAltitude">
+            <image
+                data-ng-repeat="flag in altGraph.flags"
+                data-lab-render="renderFlag"></image>
+            <g data-ng-if="altGraph.altitudes.length">
+                <selected-runners-on-altitude></selected-runners-on-altitude>
+            </g>
+            <g data-ng-if="states.showMapAltitude" class="legend-altitude__moving-point">
                 <circle
                     data-ng-attr-cx="{{movingPoint.position.x}}"
                     data-ng-attr-cy="{{movingPoint.position.y}}"
                     data-ng-attr-r="{{altGraph.pointRadius}}"></circle>
-                <text
-                    data-ng-attr-x="{{movingPoint.position.x}}"
-                    data-ng-attr-y="{{movingPoint.position.y - 5}}"
-                    class="legend-altitude__min-max-text">{{altitudePoint.altitude}} {{'METER' | translate}}</text>
+                <backed-text padding-y="1">
+                    <text
+                        data-ng-attr-x="{{movingPoint.position.x}}"
+                        data-ng-attr-y="{{movingPoint.position.y - 5}}"
+                        class="legend-altitude__min-max-text">{{altitudePoint.altitude}} {{'METER' | translate}}</text>
+                </backed-text>
             </g>
-            <image
-                data-ng-repeat="flag in altGraph.flags"
-                data-lab-render="renderFlag"></image>
             <linearGradient
                 id="altitudeGradient"
                 gradientUnits="userSpaceOnUse"

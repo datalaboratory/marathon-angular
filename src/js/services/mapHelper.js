@@ -116,7 +116,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
 
     var getRunners = function (array, d_ge, d_l) {
         var result = [];
-
+        //if (d.ge == d.l) console.log(d.ge, d.l)
         for (var i = 0; i < array.length; i++) {
             var cur = array[i];
             if (cur.distance >= d_ge && cur.distance < d_l) {
@@ -184,7 +184,13 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
 
     var getStepsRunners = function (runners_array, base_districts, seconds) {
         var distances = getDistances(runners_array, seconds);
-        return base_districts.map(function (district) {
+        return base_districts.map(function (district, i) {
+
+           /* if (district.end - district.start < 10) {
+                var prevDistrict = base_districts[i - 1];
+                if (!prevDistrict) debugger
+                return getRunners(distances, prevDistrict.start, prevDistrict.end);
+            }*/
             return getRunners(distances, district.start, district.end);
         })
     };

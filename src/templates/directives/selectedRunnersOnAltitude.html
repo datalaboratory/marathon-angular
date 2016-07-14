@@ -1,0 +1,21 @@
+<g data-lab-render="renderSelectedRunnerAlt">
+
+<g
+    class="selected-runners"
+    data-ng-repeat="runner in selectedRunners">
+    <g data-lab-render="renderSelectedRunnerAlt">
+        <selected-runner-dot
+            padding-x="6"
+            padding-top="5"
+            padding-bottom="2"
+            class="selected-runners__rect"
+            data-ng-class="{
+                'selected-runners__rect-male': runner.gender == 1,
+                'selected-runners__rect-female': runner.gender == 0}">
+            <text class="selected-runners__text" data-ng-show="!filterValues.gender && !states.winnersInTable">{{runner.pos}}</text>
+            <text class="selected-runners__text" data-ng-show="filterValues.gender || states.winnersInTable">{{runner.gender_pos}}</text>
+        </selected-runner-dot>
+
+    </g>
+</g>
+</g>

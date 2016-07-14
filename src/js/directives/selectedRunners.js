@@ -1,4 +1,4 @@
-angular.module('marathon').directive('selectedRunners', function (mapHelper, track, $rootScope) {
+angular.module('marathon').directive('selectedRunners', function (mapHelper, track) {
     return {
         restrict: 'E',
         templateUrl: 'directives/selectedRunners.html',
