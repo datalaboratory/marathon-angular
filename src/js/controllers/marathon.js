@@ -16,10 +16,15 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '21km': $http.get('data/geo/2016_msk_halfmarathon.json')
+            '21km': $http.get('data/geo/2016_msk_halfmarathon.json'),
+            'hb': $http.get('data/geo/2016_msk_halfmarathon.json')
         },
         runners: {
             '21km': runnerLoader.loadRunners([
+                'data/runners/20160515_halfm_m_21km.json',
+                'data/runners/20160515_halfm_f_21km.json'
+            ]),
+            'hb': runnerLoader.loadRunners([
                 'data/runners/20160515_halfm_m_21km.json',
                 'data/runners/20160515_halfm_f_21km.json'
             ])

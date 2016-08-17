@@ -1,7 +1,7 @@
 angular.module('marathon').constant('translationEn', {
-    HEAD_TITLE: 'Results Moscow halfmarathon May 15, 2016',
+    HEAD_TITLE: 'Results Moscow Music Half Marathon August 14, 2016',
     SHARED_IMG: '/img/screenshot_eng.png',
-    MAIN_TITLE: 'MOSCOW MARATHON',
+    MAIN_TITLE: 'MUSIC HALF MARATHON',
     ALTITUDE_TITLE: 'Altitude',
     GENDER_AGE_TITLE: 'Age and sex',
     SNAKE_WIDTH_TITLE: 'Snake width',
@@ -37,7 +37,7 @@ angular.module('marathon').constant('translationEn', {
     VISUALIZATION: 'Visualization',
     BY_DATA_LABORATORY: 'by&nbsp;Data&nbsp;laboratory',
     MAP_SRC_10km: 'img/10km-marathon-map.png',
-    MAP_SRC_hb: 'img/42km-marathon-map.png',
+    MAP_SRC_hb: 'img/music-marathon-map.png',
     MAP_SRC_42km: 'img/42km-marathon-map.png',
     MAP_SRC_21km: 'img/music-marathon-map.png'
 });

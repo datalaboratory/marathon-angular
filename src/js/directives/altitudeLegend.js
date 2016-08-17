@@ -17,6 +17,13 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
                     alt: 134,
                     x: 0.655
                 }
+            },
+            'hb': {
+                marks: [5, distance_in_km / 2, 15],
+                maxPoint: {
+                    alt: 134,
+                    x: 0.655
+                }
             }
         }
     }

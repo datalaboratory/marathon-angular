@@ -19,6 +19,11 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
             scale: 0.493,
             x: -153,
             y: 68
+        },
+        'hb': {
+            scale: 0.493,
+            x: -153,
+            y: 68
         }
     };
     var calculatedMagicNumbers = {};

@@ -1,7 +1,7 @@
 angular.module('marathon').constant('translationRu', {
-    HEAD_TITLE: 'Результаты Московского Полумарафона 15 мая 2016 года',
+    HEAD_TITLE: 'Результаты Московского Музыкального Полумарафона 14 августа 2016 года',
     SHARED_IMG: '/img/screenshot.png',
-    MAIN_TITLE: 'МОСКОВСКИЙ ПОЛУМАРАФОН',
+    MAIN_TITLE: 'МУЗЫКАЛЬНЫЙ ПОЛУМАРАФОН',
     ALTITUDE_TITLE: 'Высотный профиль',
     GENDER_AGE_TITLE: 'Пол и возраст',
     SNAKE_WIDTH_TITLE: 'Толщина змея',
@@ -37,7 +37,7 @@ angular.module('marathon').constant('translationRu', {
     VISUALIZATION: 'Визуализация',
     BY_DATA_LABORATORY: 'Лаборатории&nbsp;данных',
     MAP_SRC_10km: 'img/10km-marathon-map.png',
-    MAP_SRC_hb: 'img/42km-marathon-map.png',
+    MAP_SRC_hb: 'img/music-marathon-map.png',
     MAP_SRC_42km: 'img/42km-marathon-map.png',
     MAP_SRC_21km: 'img/music-marathon-map.png'
 });
