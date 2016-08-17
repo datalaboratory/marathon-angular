@@ -38,7 +38,7 @@ angular.module('marathon').constant('ageGroups', {
             label: '60–64'
         }, {
             start: 65,
-            end: 90,
+            end: 120,
             label: '65+'
         }
     ],
@@ -61,7 +61,7 @@ angular.module('marathon').constant('ageGroups', {
             label: '50–65'
         }, {
             start: 65,
-            end: 90,
+            end: 120,
             label: '65+'
         }
     ]

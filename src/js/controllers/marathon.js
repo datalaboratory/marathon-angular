@@ -21,8 +21,8 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             '21km': runnerLoader.loadRunners([
-                'data/runners/20160515_halfm_m_21km.json',
-                'data/runners/20160515_halfm_f_21km.json'
+                'data/runners/20160814_muscihalf_m_21km.json',
+                'data/runners/20160814_muscihalf_f_21km.json'
             ]),
             'hb': runnerLoader.loadRunners([
                 'data/runners/20160515_halfm_m_21km.json',
@@ -211,9 +211,11 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 if (!runner.age) {
                     runner.age = currentYear - runner.birthyear;
                 }
+
                 runner.ageGroup = ageGroups.small.filter(function (group) {
                     return group.start <= runner.age && runner.age <= group.end;
                 })[0].label;
+
                 runner.ageGroupForSnake = ageGroups.big.filter(function (group) {
                     return group.start <= runner.age && runner.age <= group.end;
                 })[0].label;

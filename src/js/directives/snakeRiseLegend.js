@@ -11,7 +11,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             count: 4020
         },
         '21km': {
-            count: 3010
+            count: 2920
         }
     };
     var render = {
