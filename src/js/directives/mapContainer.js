@@ -153,6 +153,12 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     });
             };
 
+            $scope.writeRunner = function(runner) {
+                console.log(runner);
+                runner.runner.all_result_steps.forEach(function(step, i){
+
+                })
+            };
             var firstTime = true;
             $scope.$watch('selectedTrack', function (selectedTrack) {
                 selectedTrack.then(function (data) {

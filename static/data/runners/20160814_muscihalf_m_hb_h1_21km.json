@@ -1,0 +1,9 @@
+{
+  "meta": ["genderPosition","absolutePosition","number","last_name","first_name","age","country","city","team","resultTime", "realStartTime", "5000", "10000", "20000"],
+  "startTime": "14.08.2016 10:20",
+  "gender": 1,
+  "hbGroup": "H1",
+  "data":[
+  [1,1,14,"Красноперов","Евгений",34,"Россия","Москва","Handbikes - идеальное движение!","3:12:50","10:20:22","0:47:59","1:42:18","3:02:58"]
+]
+}

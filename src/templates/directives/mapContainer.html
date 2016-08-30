@@ -11,7 +11,8 @@
         <g class="snakeGroup" data-lab-render="renderSnakeGroup">
             <path class="snake-group__track"></path>
             <path data-ng-repeat="area in ageAreas" class="snake-group__snake"></path>
-            <circle data-ng-repeat="runner in circles track by runner.number" class="snake-group__circle"></circle>
+            <circle data-ng-repeat="runner in circles track by runner.number"
+                    data-ng-mouseover="writeRunner(runner)" class="snake-group__circle"></circle>
         </g>
         <image
             data-ng-repeat="flag in flags"

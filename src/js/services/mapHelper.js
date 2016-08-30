@@ -80,6 +80,11 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
 
     function getDistanceByTime(runner, milliseconds) {
         if (!runner.all_result_steps) {
+            if (runner.result_steps.length == 2 &&
+                (runner.result_steps[1] < runner.result_steps[0] ||
+                runner.end_time < runner.result_steps[1])) {
+                debugger
+            }
             runner.all_result_steps = runner.result_steps.slice();
             runner.all_result_steps.push({
                 distance: Math.round(track.getTrackLength()),
@@ -354,11 +359,13 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
             prevPosition = position;
             return {
                 distance: d,
+                time: timestamp*1,
                 cx: position.x,
                 cy: position.y,
                 r: point_radius,
                 fill: genderColors.genderGradients[runner.gender](genderColors.colorNumberScale(runner.age)),
-                number: runner.num
+                number: runner.num,
+                runner: runner
             }
         };
 

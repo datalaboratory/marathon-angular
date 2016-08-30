@@ -58,6 +58,7 @@ svg {
     float: left;
     width: 100%;
     letter-spacing: 0.03em;
+    background: #fff;
 }
 .map-overlay__title {
     font-family: Bold, Arial, Helvetica, sans-serif;

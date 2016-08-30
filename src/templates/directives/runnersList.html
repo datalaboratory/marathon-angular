@@ -15,7 +15,10 @@
                 <span data-ng-show="!filterValues.gender && !states.winnersInTable">{{::runner.pos}}</span>
                 <span data-ng-show="filterValues.gender || states.winnersInTable">{{::runner.gender_pos}}</span>
             </span></div>
-        <div class="runners-list__name">{{::runner.full_name}}</div>
+        <div class="runners-list__name">{{::runner.full_name}}
+            <span
+                class="runners-list__hb-group"
+                data-ng-if="runner.hb_group">{{runner.hb_group}}</span></div>
         <div class="runners-list__number">{{::runner.num}}</div>
         <div class="runners-list__age">{{::runner.age}}</div>
         <div class="runners-list__team">{{::runner.realTeam}}</div>

@@ -25,8 +25,10 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 'data/runners/20160814_muscihalf_f_21km.json'
             ]),
             'hb': runnerLoader.loadRunners([
-                'data/runners/20160515_halfm_m_21km.json',
-                'data/runners/20160515_halfm_f_21km.json'
+                'data/runners/20160814_muscihalf_m_hb_h1_21km.json',
+                'data/runners/20160814_muscihalf_f_hb_h1_21km.json',
+                'data/runners/20160814_muscihalf_m_hb_h2_21km.json',
+                'data/runners/20160814_muscihalf_f_hb_h2_21km.json'
             ])
         }
     };

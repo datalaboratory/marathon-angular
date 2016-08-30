@@ -1,7 +1,7 @@
 angular.module('marathon').constant('ageGroups', {
     small: [
         {
-            start: 15,
+            start: 10,
             end: 19,
             label: '15–19'
         }, {
@@ -44,7 +44,7 @@ angular.module('marathon').constant('ageGroups', {
     ],
     big: [
         {
-            start: 15,
+            start: 10,
             end: 22,
             label: '16–22'
         }, {

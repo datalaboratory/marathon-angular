@@ -79,6 +79,11 @@
     width: 25%;
 }
 
+.runners-list__hb-group {
+    float: right;
+    margin-right: 30px;
+}
+
 .runners-list__number {
     width: 6%;
 }

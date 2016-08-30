@@ -70,6 +70,7 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                 results.forEach(function (result) {
                     result.data.data.forEach(function (runner) {
                         runner.gender = (result.data.gender == 1) ? 1 : 0;
+                        runner.hbGroup = (result.data.hbGroup) ? result.data.hbGroup : null;
                     })
                 });
 
@@ -110,7 +111,7 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                     var city = capitalizeFirstLetters((processedRunner['city']));
 
                     country = capitalizeFirstLetters(country);
-                    if (country != 'Россия') {
+                    if (country && country != 'Россия') {
                         city += (', ' + country)
                     }
                     var team = renameTeam(processedRunner['team']);
@@ -129,12 +130,20 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                         result_time_string: result_time_string,
                         result_time: +getSecondsFromString(result_time_string),
                         result_steps: processedRunner['result_steps'],
-                        all_result_steps: null
+                        all_result_steps: null,
+                        hb_group: runner.hbGroup
                     };
                 });
                 runners.sort(function (a, b) {
                     if (a.gender == 2) return 1;
                     if (b.gender == 2) return -1;
+                    if (a.hb_group && a.hb_group == b.hb_group) {
+                        return a.end_time - b.end_time;
+                    } else if (a.hb_group == 'H1') {
+                        return 1
+                    } else if (b.hb_group == 'H1') {
+                        return -1;
+                    }
                     return a.end_time - b.end_time;
                 });
                 var maxTime = d3.extent(runners, function (runner) {
