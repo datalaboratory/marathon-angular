@@ -21,14 +21,20 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             '21km': runnerLoader.loadRunners([
-                'data/runners/20160814_muscihalf_m_21km.json',
-                'data/runners/20160814_muscihalf_f_21km.json'
+                /*'data/runners/20160814_muscihalf_m_21km.json',
+                'data/runners/20160814_muscihalf_f_21km.json'*/
+                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_21km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_21km.json'
             ]),
             'hb': runnerLoader.loadRunners([
-                'data/runners/20160814_muscihalf_m_hb_h1_21km.json',
+                /*'data/runners/20160814_muscihalf_m_hb_h1_21km.json',
                 'data/runners/20160814_muscihalf_f_hb_h1_21km.json',
                 'data/runners/20160814_muscihalf_m_hb_h2_21km.json',
-                'data/runners/20160814_muscihalf_f_hb_h2_21km.json'
+                'data/runners/20160814_muscihalf_f_hb_h2_21km.json'*/
+                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_hb_h1_21km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_hb_h1_21km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_hb_h2_21km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_hb_h2_21km.json'
             ])
         }
     };
@@ -104,12 +110,22 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     }
 
     var othersTeam = '"TEAMS_OTHER" | translate';
-
+    var noCity = '"NO_CITY" | translate';
     function teamSort(counts) {
         var keys = Object.keys(counts);
         keys.sort(function (a, b) {
             if (a == othersTeam) return 1;
             if (b == othersTeam) return -1;
+            return counts[b] - counts[a];
+        });
+        return keys;
+    };
+
+    function citySort(counts) {
+        var keys = Object.keys(counts);
+        keys.sort(function (a, b) {
+            if (a == noCity) return 1;
+            if (b == noCity) return -1;
             return counts[b] - counts[a];
         });
         return keys;
@@ -295,7 +311,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         $scope.filters.team.allValues = (teamCount.length - 1) + ' ' + numberDeclension(teamCount.length - 1, translate('TEAMS_DECLENSION'));
 
         var prefilteredCities = prefilter('city');
-        $scope.filters.city.values = formatItems(prefilteredCities, 'city', countSort);
+        $scope.filters.city.values = formatItems(prefilteredCities, 'city', citySort);
         var cityCount = Object.keys($scope.filters.city.values);
         $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, translate('CITIES_DECLENSION'));
 

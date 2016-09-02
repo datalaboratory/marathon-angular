@@ -1,8 +1,8 @@
 angular.module('marathon').directive('selectedRunnersOnAltitude', function (mapHelper, track, $rootScope) {
     var render = {
         margin: {
-            left: 7,
-            right: 25,
+            left: 20,
+            right: 20,
             top: 22,
             bottom: 22
         }

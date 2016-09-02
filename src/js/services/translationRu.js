@@ -18,6 +18,7 @@ angular.module('marathon').constant('translationRu', {
     CITIES_DECLENSION: 'город,города,городов',
     TEAMS_DECLENSION: 'команда,команды,команд',
     TEAMS_OTHER: 'Oстальные',
+    NO_CITY: 'Город не указан',
     ALL: 'Все',
     FROM: 'от',
     TO: 'до',

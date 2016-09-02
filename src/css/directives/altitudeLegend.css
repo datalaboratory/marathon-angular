@@ -1,3 +1,7 @@
+svg.legend-altitude {
+    width: 270px;
+    margin-left: -20px;
+}
 .legend-altitude__path {
     fill: none;
 }

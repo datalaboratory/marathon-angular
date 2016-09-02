@@ -24,11 +24,11 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     snakeHeight: 0.4
                 },
                 'hb': {
-                    width: 570,
-                    height: 510,
-                    x: 60,
-                    y: 103,
-                    snakeHeight: 0.4
+                    width: 635,
+                    height: 500,
+                    x: 27,
+                    y: 97,
+                    snakeHeight: 0.3
                 },
                 '10km': {
                     width: 610,

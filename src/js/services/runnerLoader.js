@@ -109,7 +109,10 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                     var country = removeSpaces(processedRunner['country']);
 
                     var city = capitalizeFirstLetters((processedRunner['city']));
-
+                    var realCity = city;
+                    if (!city) {
+                        city = '"NO_CITY" | translate';
+                    }
                     country = capitalizeFirstLetters(country);
                     if (country && country != 'Россия') {
                         city += (', ' + country)
@@ -125,6 +128,7 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                         age: processedRunner['age'],
                         country: country,
                         city: city,
+                        realCity: realCity, //если город не указан, в фильтре будет надпись, а в таблице пустая строчка
                         team: team,
                         end_time: finishTime * 1,
                         result_time_string: result_time_string,
