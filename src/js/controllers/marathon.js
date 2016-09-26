@@ -21,20 +21,20 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             '21km': runnerLoader.loadRunners([
-                /*'data/runners/20160814_muscihalf_m_21km.json',
-                'data/runners/20160814_muscihalf_f_21km.json'*/
-                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_21km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_21km.json'
+                'data/runners/20160814_muscihalf_m_21km.json',
+                'data/runners/20160814_muscihalf_f_21km.json'
+                /*'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_21km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_21km.json'*/
             ]),
             'hb': runnerLoader.loadRunners([
-                /*'data/runners/20160814_muscihalf_m_hb_h1_21km.json',
+                'data/runners/20160814_muscihalf_m_hb_h1_21km.json',
                 'data/runners/20160814_muscihalf_f_hb_h1_21km.json',
                 'data/runners/20160814_muscihalf_m_hb_h2_21km.json',
-                'data/runners/20160814_muscihalf_f_hb_h2_21km.json'*/
-                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_hb_h1_21km.json',
+                'data/runners/20160814_muscihalf_f_hb_h2_21km.json'
+                /*'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_hb_h1_21km.json',
                 'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_hb_h1_21km.json',
                 'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_hb_h2_21km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_hb_h2_21km.json'
+                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_hb_h2_21km.json'*/
             ])
         }
     };
@@ -119,7 +119,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             return counts[b] - counts[a];
         });
         return keys;
-    };
+    }
 
     function citySort(counts) {
         var keys = Object.keys(counts);
@@ -145,6 +145,8 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         return keys;
     }
 
+    var noCityItemExist = false;
+
     function formatItems(filteredItems, key, sort) {
         var names = _.pluck(filteredItems, key);
         var counts = _.countBy(names);
@@ -162,6 +164,10 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 name = $parse(name)($scope);
             }
             result[item] = name + '<span class="dropdown-filter__count">' + count + '</span>';
+            if (item == noCity) {
+                noCityItemExist = true;
+                result[item] = '<span class="dropdown-filter__other">' + result[item] + '</span>';
+            }
         });
         return result;
     }
@@ -307,13 +313,15 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
         var prefilteredTeams = prefilter('team');
         $scope.filters.team.values = formatItems(prefilteredTeams, 'team', teamSort);
-        var teamCount = Object.keys($scope.filters.team.values);
-        $scope.filters.team.allValues = (teamCount.length - 1) + ' ' + numberDeclension(teamCount.length - 1, translate('TEAMS_DECLENSION'));
+        var teamCount = Object.keys($scope.filters.team.values).length - 1;
+        $scope.filters.team.allValues = teamCount + ' ' + numberDeclension(teamCount, translate('TEAMS_DECLENSION'));
 
+        noCityItemExist = false;
         var prefilteredCities = prefilter('city');
         $scope.filters.city.values = formatItems(prefilteredCities, 'city', citySort);
-        var cityCount = Object.keys($scope.filters.city.values);
-        $scope.filters.city.allValues = cityCount.length + ' ' + numberDeclension(cityCount.length, translate('CITIES_DECLENSION'));
+        var cityCount = Object.keys($scope.filters.city.values).length;
+        if (noCityItemExist) cityCount--;
+        $scope.filters.city.allValues = cityCount + ' ' + numberDeclension(cityCount, translate('CITIES_DECLENSION'));
 
         var prefilteredAgeGroups = prefilter('ageGroup');
         $scope.filters.age.values = formatItems(prefilteredAgeGroups, 'ageGroup', nameSort);

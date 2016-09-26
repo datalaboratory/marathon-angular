@@ -148,6 +148,10 @@ ul.dropdown-filter__list {
     color: #7f7f7f;
 }
 
+.dropdown-filter__other {
+    color: #7f7f7f;
+}
+
 .city-filter.dropdown-filter {
     width: 16.5%
 }
