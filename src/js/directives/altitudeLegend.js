@@ -1,8 +1,8 @@
 angular.module('marathon').directive('altitudeLegend', function ($timeout, $rootScope, mapHelper, track) {
     var render = {
         margin: {
-            left: 20,
-            right: 20,
+            left: 25,
+            right: 25,
             top: 22,
             bottom: 22
         }
@@ -11,19 +11,19 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
     function distanceParams() {
         var distance_in_km = Math.round(track.getTrackLength() / 1000);
         return {
-            '21km': {
-                marks: [5, distance_in_km / 2, 15],
+            '42km': {
+                marks: [10, distance_in_km / 2, 30]
+            },
+            '10km': {
+                marks: [2, distance_in_km / 2, 7],
                 maxPoint: {
-                    alt: 134,
-                    x: 0.655
+                    alt: 169,
+                    x: 0.85
                 }
             },
             'hb': {
-                marks: [5, distance_in_km / 2, 15],
-                maxPoint: {
-                    alt: 134,
-                    x: 0.655
-                }
+                marks: [10, distance_in_km / 2, 30]
+
             }
         }
     }

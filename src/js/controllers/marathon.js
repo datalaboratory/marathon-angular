@@ -16,15 +16,22 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '21km': $http.get('data/geo/2016_msk_halfmarathon.json'),
-            'hb': $http.get('data/geo/2016_msk_halfmarathon.json')
+            '42km': $http.get('data/geo/42km.json'),
+            '10km': $http.get('data/geo/10km.json'),
+            'hb': $http.get('data/geo/42km.json')
         },
         runners: {
-            '21km': runnerLoader.loadRunners([
-                'data/runners/20160814_muscihalf_m_21km.json',
-                'data/runners/20160814_muscihalf_f_21km.json'
-                /*'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_21km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_21km.json'*/
+            '42km': runnerLoader.loadRunners([
+                'data/runners/20160925_mosmarathon_m_42km.json',
+                'data/runners/20160925_mosmarathon_f_42km.json'
+                /*'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_42km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_42km.json'*/
+            ]),
+            '10km': runnerLoader.loadRunners([
+                'data/runners/20160925_mosmarathon_m_10km.json',
+                'data/runners/20160925_mosmarathon_f_10km.json',
+                /*'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_10km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_10km.json'*/
             ]),
             'hb': runnerLoader.loadRunners([
                 'data/runners/20160814_muscihalf_m_hb_h1_21km.json',
@@ -302,7 +309,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             }).length > 0 && $scope.states.activatingWinners === false) {
             $scope.states.winnersInTable = false;
         }
-        $scope.limit = 100;
+        $scope.limit = 1000;
         filterRunners();
 
         $scope.filterGender.values = {

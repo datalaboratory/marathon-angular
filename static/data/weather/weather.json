@@ -1,20 +1,20 @@
 [
   {
     "time": "10:00",
-    "temperature": "+17°",
+    "temperature": "+9°",
     "sky": "w-littlesun.png",
-    "wind": "↘ 2"
+    "wind": "↗ 1"
   },
   {
     "time": "12:00",
-    "temperature": "+19°",
+    "temperature": "+10°",
     "sky": "w-nosun.png",
-    "wind": "↘ 2"
+    "wind": "↘ 1"
   },
   {
     "time": "14:00",
-    "temperature": "+20°",
+    "temperature": "+10°",
     "sky": "w-nosun.png",
-    "wind": "↓ 2"
+    "wind": "↘ 1"
   }
 ]

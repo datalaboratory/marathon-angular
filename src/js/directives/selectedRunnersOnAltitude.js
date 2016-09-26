@@ -2,8 +2,8 @@ angular.module('marathon').directive('selectedRunnersOnAltitude', function (mapH
     var render = {
         margin: {
             left: 20,
-            right: 20,
-            top: 22,
+            right: 22,
+            top: 20,
             bottom: 22
         }
     };
@@ -31,8 +31,9 @@ angular.module('marathon').directive('selectedRunnersOnAltitude', function (mapH
             $scope.showTooltip = function($event, runner) {
                 $scope.selectedRunnerOnMap.runner = runner;
                 var runnerPosition = $scope.getRunnerPosition(runner);
-                var x = $event.originalEvent.offsetX + runnerPosition.x + render.margin.left - 186;
-                var y = $event.originalEvent.offsetY + runnerPosition.y + render.margin.top;
+
+                var x = $event.originalEvent.offsetX - render.margin.left + 5;
+                var y = $event.originalEvent.offsetY;
 
                 $scope.selectedRunnerOnMap.position = "left:" + (x + 6) + 'px;top:' + (y + 6) + 'px;';
             };

@@ -118,6 +118,7 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                         city += (', ' + country)
                     }
                     var team = renameTeam(processedRunner['team']);
+                    if (processedRunner['age'] < 10) processedRunner['age'] = 30;//temporary!!!
                     return {
                         gender: runner.gender,
                         winner: processedRunner['genderPosition'] < 7,
@@ -143,9 +144,9 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                     if (b.gender == 2) return -1;
                     if (a.hb_group && a.hb_group == b.hb_group) {
                         return a.end_time - b.end_time;
-                    } else if (a.hb_group == 'H1') {
+                    } else if (a.hb_group == 'wh1' || a.hb_group == 'mh1') {
                         return 1
-                    } else if (b.hb_group == 'H1') {
+                    } else if (b.hb_group == 'wh1' || b.hb_group == 'mh1') {
                         return -1;
                     }
                     return a.end_time - b.end_time;

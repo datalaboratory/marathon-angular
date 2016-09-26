@@ -167,8 +167,7 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                     var max_runners_in_step = d3.extent(getRunnersByTime($scope.runnersData.items), function (stepArray) {
                         return stepArray.length;
                     })[1];
-                    graphHeight = Math.max(height, max_runners_in_step * y_scale);
-
+                    graphHeight = height; //Math.max(height, max_runners_in_step * y_scale);
                     height_factor = Math.min(height / (max_runners_in_step * y_scale), 15);
                     $scope.tooltipPointer.stepSize.height = Math.round(height_factor);
                     updatePaths();
