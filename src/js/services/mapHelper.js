@@ -83,7 +83,7 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
             if (runner.result_steps.length == 2 &&
                 (runner.result_steps[1] < runner.result_steps[0] ||
                 runner.end_time < runner.result_steps[1])) {
-                debugger
+                //debugger
             }
             runner.all_result_steps = runner.result_steps.slice();
             runner.all_result_steps.push({

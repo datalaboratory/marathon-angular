@@ -16,9 +16,9 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '42km': $http.get('data/geo/42km.json'),
+            '42km': $http.get('/data/geo/Moscowmarathon2016_42km.json'),
             '10km': $http.get('data/geo/10km.json'),
-            'hb': $http.get('data/geo/42km.json')
+            'hb': $http.get('/data/geo/Moscowmarathon2016_42km.json')
         },
         runners: {
             '42km': runnerLoader.loadRunners([
@@ -229,10 +229,11 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 timePercent = ($scope.time.current - $scope.time.start) / ($scope.time.maxTime * 1000)
             }
 
+            var maxTime = $scope.currentTrackName == '10km' ? 9000 : data.max_time;
             $scope.time = {
                 start: moment(data.start_time),
                 current: moment(data.start_time + timePercent * data.max_time * 1000),
-                maxTime: data.max_time
+                maxTime: maxTime
             };
 
             var currentYear = new Date(data.start_time).getFullYear();
@@ -309,7 +310,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             }).length > 0 && $scope.states.activatingWinners === false) {
             $scope.states.winnersInTable = false;
         }
-        $scope.limit = 1000;
+        $scope.limit = 100;
         filterRunners();
 
         $scope.filterGender.values = {

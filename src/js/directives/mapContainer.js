@@ -20,14 +20,14 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     width: 570,
                     height: 510,
                     x: 60,
-                    y: 103,
+                    y: 104,
                     snakeHeight: 0.4
                 },
                 'hb': {
                     width: 570,
                     height: 510,
                     x: 60,
-                    y: 103,
+                    y: 104,
                     snakeHeight: 0.4
                 },
                 '10km': {
@@ -154,7 +154,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             };
 
             $scope.writeRunner = function(runner) {
-                console.log(runner);
+                //console.log(runner);
                 runner.runner.all_result_steps.forEach(function(step, i){
 
                 })

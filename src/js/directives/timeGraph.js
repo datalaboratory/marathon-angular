@@ -64,10 +64,11 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                 });
 
                 function getRunnersByTime(runners) {
-                    return d3.range(0, stepsCount).map(function (stepNumber) {
+                    return d3.range(0, stepsCount).map(function (stepNumber, number) {
                         var range_start = $scope.time.start + stepNumber * time_step;
                         var range_end = range_start + time_step;
                         return runners.filter(function (runner) {
+                            if (number == (stepsCount - 1) && runner.end_time > moment($scope.time.start + $scope.time.maxTime*1000)) return true;
                             return range_start < runner.end_time && runner.end_time <= range_end
                         });
                     });
@@ -218,13 +219,42 @@ angular.module('marathon').directive('timeGraph', function ($rootScope, $timeout
                     var y = $event.offsetY;
                     var posX = Math.floor(x / px_step);
                     var posY = Math.floor((graphHeight - y) / height_factor);
+                    var correct = [0,0];
                     $scope.selectedRunnerOnGraph = steps_data[posX][posY];
+                    if (!$scope.selectedRunnerOnGraph && steps_data[posX + 1] && steps_data[posX + 1][posY]) {
+                        setCorrectedRunner(1,0);
+                        if (!$scope.selectedRunnerOnGraph && steps_data[posX + 1][posY + 1]) {
+                            setCorrectedRunner(1,1);
+                        } else if(!$scope.selectedRunnerOnGraph && steps_data[posX + 1][posY - 1]) {
+                            setCorrectedRunner(1,-1);
+                        }
+                    } else if (!$scope.selectedRunnerOnGraph && steps_data[posX - 1][posY]) {
+                        setCorrectedRunner(-1,0);
+                        if (!$scope.selectedRunnerOnGraph && steps_data[posX - 1][posY + 1]) {
+                            setCorrectedRunner(-1,1);
+                        } else if(!$scope.selectedRunnerOnGraph && steps_data[posX - 1][posY - 1]) {
+                            setCorrectedRunner(-1,-1);
+                        }
+                    } else if (!$scope.selectedRunnerOnGraph && steps_data[posX]) {
+                        if (!$scope.selectedRunnerOnGraph && steps_data[posX][posY + 1]) {
+                            setCorrectedRunner(0,1);
+                        } else if(!$scope.selectedRunnerOnGraph && steps_data[posX][posY - 1]) {
+                            setCorrectedRunner(0,-1);
+                        }
+                    }
+                    function setCorrectedRunner(correctX, correctY) {
+                        $scope.selectedRunnerOnGraph = steps_data[posX + correctX][posY + correctY];
+                        correct[0] = correctX;
+                        correct[1] = correctY;
+                    }
+                    posX += correct[0];
+                    posY += correct[1];
                     $scope.selectedRunnerPosition =
                         'right: ' + (width - (posX + 1) * px_step + 4) + 'px;' +
                         'bottom: ' + (-graphHeight + (posY) * height_factor + Math.round(height_factor)) + 'px;';
                     $scope.tooltipPointer.position = {
                         x: (width - (posX + 1) * px_step),
-                        y: ((posY) * height_factor)
+                        y: (((posY) * height_factor)-0.5)
                     }
                 };
             }
