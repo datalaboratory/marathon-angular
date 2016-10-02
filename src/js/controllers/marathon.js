@@ -22,26 +22,25 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         },
         runners: {
             '42km': runnerLoader.loadRunners([
-                'data/runners/20160925_mosmarathon_m_42km.json',
-                'data/runners/20160925_mosmarathon_f_42km.json'
-                /*'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_42km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_42km.json'*/
+                /*'data/runners/20160925_mosmarathon_m_42km.json',
+                'data/runners/20160925_mosmarathon_f_42km.json'*/
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_42km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_42km.json'
             ]),
             '10km': runnerLoader.loadRunners([
-                'data/runners/20160925_mosmarathon_m_10km.json',
-                'data/runners/20160925_mosmarathon_f_10km.json',
-                /*'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_10km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_10km.json'*/
+                /*'data/runners/20160925_mosmarathon_m_10km.json',
+                'data/runners/20160925_mosmarathon_f_10km.json'*/
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_10km.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_10km.json'
             ]),
             'hb': runnerLoader.loadRunners([
-                'data/runners/20160814_muscihalf_m_hb_h1_21km.json',
-                'data/runners/20160814_muscihalf_f_hb_h1_21km.json',
-                'data/runners/20160814_muscihalf_m_hb_h2_21km.json',
-                'data/runners/20160814_muscihalf_f_hb_h2_21km.json'
-                /*'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_hb_h1_21km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_hb_h1_21km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_m_hb_h2_21km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160814_muscihalf_f_hb_h2_21km.json'*/
+                /*'data/runners/20160925_mosmarathon_m_42km_h1mm.json',
+                'data/runners/20160925_mosmarathon_m_42km_h2mm.json',
+                'data/runners/20160925_mosmarathon_f_42km_h2mm.json'*/
+
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_42km_h1mm.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_42km_h2mm.json',
+                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_42km_h2mm.json'
             ])
         }
     };
@@ -229,7 +228,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 timePercent = ($scope.time.current - $scope.time.start) / ($scope.time.maxTime * 1000)
             }
 
-            var maxTime = $scope.currentTrackName == '10km' ? 9000 : data.max_time;
+            var maxTime = $scope.currentTrackName == '10km' ? 7200 : data.max_time;
             $scope.time = {
                 start: moment(data.start_time),
                 current: moment(data.start_time + timePercent * data.max_time * 1000),

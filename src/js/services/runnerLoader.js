@@ -118,7 +118,6 @@ angular.module('marathon').factory('runnerLoader', function ($http, $q) {
                         city += (', ' + country)
                     }
                     var team = renameTeam(processedRunner['team']);
-                    if (processedRunner['age'] < 10) processedRunner['age'] = 30;//temporary!!!
                     return {
                         gender: runner.gender,
                         winner: processedRunner['genderPosition'] < 7,
