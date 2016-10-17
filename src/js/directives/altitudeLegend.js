@@ -17,7 +17,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
             '10km': {
                 marks: [2, distance_in_km / 2, 7],
                 maxPoint: {
-                    alt: 169,
+                    alt: 174,
                     x: 0.85
                 }
             },
@@ -115,7 +115,7 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
             var divPosition = $($element[0]).position();
 
             $scope.moveAltitudePoint = function ($event) {
-                var x = $event.originalEvent.layerX - divPosition.left - render.margin.left;
+                var x = $event.originalEvent.offsetX - render.margin.left;
                 x = Math.max(x, 0);
                 x = Math.min(x, $scope.scaleX.range()[1]);
                 var altitudeNumber = Math.round($scope.scaleX.invert(x));

@@ -16,9 +16,9 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '42km': $http.get('/data/geo/Moscowmarathon2016_42km.json'),
-            '10km': $http.get('data/geo/10km.json'),
-            'hb': $http.get('/data/geo/Moscowmarathon2016_42km.json')
+            '42km': $http.get('/data/geo/Moscowmarathon2016_42km_v1-1.json'),
+            '10km': $http.get('data/geo/Moscowmarathon2016_10km.json'),
+            'hb': $http.get('/data/geo/Moscowmarathon2016_42km_v1-1.json')
         },
         runners: {
             '42km': runnerLoader.loadRunners([

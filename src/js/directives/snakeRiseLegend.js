@@ -8,7 +8,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             count: 10
         },
         '10km': {
-            count: 3050
+            count: 5300
         },
         '21km': {
             count: 2920
