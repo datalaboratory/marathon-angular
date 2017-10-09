@@ -21,9 +21,16 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     height: 510,
                     x: 60,
                     y: 104,
-                    snakeHeight: 0.4
+                    snakeHeight: 0.1
                 },
                 'hb': {
+                    width: 570,
+                    height: 510,
+                    x: 60,
+                    y: 104,
+                    snakeHeight: 0.4
+                },
+                'rw': {
                     width: 570,
                     height: 510,
                     x: 60,
@@ -35,7 +42,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     height: 495,
                     x: 138,
                     y: 107,
-                    snakeHeight: 0.4
+                    snakeHeight: 0.1
                 },
                 '21km': {
                     width: 635,
@@ -56,7 +63,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
             function updateTrack(geoData) {
                 track.updateContainerSize(originalWidth, originalHeight);
 
-                var coordinates = geoData.geometry.coordinates;
+                var coordinates = geoData.features[0].geometry.coordinates[0];
                 var start = track.getProjectedPoint(coordinates[0]);
                 var finish = track.getProjectedPoint(coordinates[coordinates.length - 1]);
 
@@ -82,7 +89,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                 time *= 1;
                 var step = 400;
                 var runners = runnerClassificator.checkData($scope.filteredRunners);
-                if ($scope.currentTrackName != 'hb'){
+                if ($scope.currentTrackName != 'hb' && $scope.currentTrackName != 'rw'){
                     mapHelper.getPoints(
                         runners.runners_groups,
                         $scope.ageAreas,

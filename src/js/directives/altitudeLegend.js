@@ -23,7 +23,9 @@ angular.module('marathon').directive('altitudeLegend', function ($timeout, $root
             },
             'hb': {
                 marks: [10, distance_in_km / 2, 30]
-
+            },
+            'rw': {
+                marks: [10, distance_in_km / 2, 30]
             }
         }
     }

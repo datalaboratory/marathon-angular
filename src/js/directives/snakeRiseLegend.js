@@ -2,13 +2,16 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
     var round = roundTo(10);
     var cache = {
         '42km': {
-            count: 3120
+            count: 19240
         },
         'hb': {
-            count: 10
+            count: 8
+        },
+        'rw': {
+            count: 12
         },
         '10km': {
-            count: 5300
+            count: 32470
         },
         '21km': {
             count: 2920
@@ -135,6 +138,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             };
 
             function updateSnakes() {
+                if ($scope.currentTrackName == 'hb' || $scope.currentTrackName == 'rw') return;
                 if (!track.getTrackLength()) return;
                 if (isNaN(maxHeight)) return;
                 var maxHeightSection = mapHelper.getMaxHeightSection();

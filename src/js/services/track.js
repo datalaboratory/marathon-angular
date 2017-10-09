@@ -25,6 +25,11 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
             x: -170,
             y: 30
         },
+        'rw': {
+            scale: 0.75,
+            x: -170,
+            y: 30
+        },
         '10km': {
             scale: 0.6,
             x: -130,
@@ -69,7 +74,7 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
     }
 
     function getAltitudes() {
-        return geodata.geometry.coordinates.map(function (point) {
+        return geodata.features[0].geometry.coordinates[0].map(function (point) {
             return point[2]
         })
     }
@@ -134,7 +139,7 @@ angular.module('marathon').factory('track', function ($rootScope, last) {
         }
 
         var px_distance = getTotalLength();
-        var step = px_distance / geodata.geometry.coordinates.length;
+        var step = px_distance / geodata.features[0].geometry.coordinates[0].length;
         var pieces = d3.range(0, px_distance, step);
         pieces.push(px_distance);
         var coordinates = pieces.map(function (piece) {

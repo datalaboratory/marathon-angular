@@ -1,22 +1,28 @@
-angular.module('marathon').directive('trackSwitch', function ($timeout, $rootScope) {
+angular.module('marathon').directive('trackSwitch', function ($timeout, $rootScope, urlParameter) {
     return {
         restrict: 'E',
         templateUrl: 'directives/trackSwitch.html',
         replace: true,
         link: function link($scope) {
-            var tracks = ['42km'];
+            var trackFromUrl = urlParameter.get('track');
+            var tracks = [trackFromUrl ? trackFromUrl : '42km'];
 
             function nextTrack() {
                 $scope.currentTrackName = tracks.shift();
             }
 
             nextTrack();
+
+            $scope.onTrackChange = function (name) {
+                $scope.currentTrackName = name;
+            };
+
             $scope.$on('legendReady', function () {
                 if (tracks.length > 0) {
                     nextTrack();
                 } else {
                     $rootScope.$broadcast('hideCover:map');
-                    if ($scope.currentTrackName != 'hb') {
+                    if ($scope.currentTrackName != 'hb' && $scope.currentTrackName != 'rw') {
                         $timeout(function () {
                             $scope.states.activatingWinners = true;
                             $timeout(function () {
@@ -25,7 +31,10 @@ angular.module('marathon').directive('trackSwitch', function ($timeout, $rootSco
                             $rootScope.$broadcast('hideCover:marathon');
                         }, 500);
                     } else {
-                        $scope.states.winnersInTable = false;
+                        $timeout(function () {
+                            $scope.states.activatingWinners = false;
+                            $rootScope.$broadcast('hideCover:marathon');
+                        }, 500);
                     }
                 }
             });

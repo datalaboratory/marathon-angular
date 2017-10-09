@@ -10,6 +10,7 @@ module.exports = (grunt) ->
           'bower_components/lodash/lodash.js'
           'bower_components/d3/d3.js'
           'bower_components/angular/angular.js'
+          'bower_components/angular-route/angular-route.js'
           'bower_components/angular-translate/angular-translate.js'
           'bower_components/data-lab-blocks/dist/js/script.js'
 

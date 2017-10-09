@@ -1,12 +1,14 @@
 <html data-ng-app="marathon">
 <head>
     <meta charset="utf-8">
-    <title data-ng-bind-html="'HEAD_TITLE' | translate | trust">Moscow Music Half Marathon 2016</title>
+    <link rel="shortcut icon" href="/img/favicon.ico" />
+    <title data-ng-bind-html="'HEAD_TITLE' | translate | trust"></title>
     <meta property="og:image" content="{{'SHARED_IMG' | translate}}"/>
     <link href="/css/style.css" rel="stylesheet">
+    <base href="/"/>
 </head>
 <body>
-<div data-ng-include="'pages/marathon.html'"></div>
+<div data-ng-view></div>
 
 <script src="/js/script.js"></script>
 </body>

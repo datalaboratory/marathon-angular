@@ -41,8 +41,9 @@
                                 </div>
                             </div>
                             <div class="legend__snake-rise">
-                                <span data-ng-show="currentTrackName != 'hb'" class="legend__header">{{ 'SNAKE_WIDTH_TITLE' | translate }}</span>
+                                <span data-ng-show="currentTrackName != 'hb' && currentTrackName != 'rw'" class="legend__header">{{ 'SNAKE_WIDTH_TITLE' | translate }}</span>
                                 <span data-ng-show="currentTrackName == 'hb'" class="legend__header">{{ 'SNAKE_WIDTH_TITLE_HB' | translate }}</span>
+                                <span data-ng-show="currentTrackName == 'rw'" class="legend__header">{{ 'SNAKE_WIDTH_TITLE_RW' | translate }}</span>
 
                                 <div class="legend__snake-rise-container">
                                     <snake-rise-legend data-ng-if="filteredRunners"></snake-rise-legend>
@@ -59,14 +60,21 @@
                         </div>
                     </div>
                     <div class="map-overlay__copyright">
-                        <a href="http://datalaboratory.ru/"><img class="map-overlay__copyright-logo"
-                                                                 src="img/dl-logo.png"/></a>
-                    <span class="map-overlay__copyright-text">
-                        {{'VISUALIZATION' | translate}}
-                        <a href="http://datalaboratory.ru/"
-                           class="map-overlay__copyright-link"
-                           data-ng-bind-html="'BY_DATA_LABORATORY' | translate | trust">
+                        <a href="http://moscowmarathon.org/">
+                            <img class="map-overlay__copyright-logo mm-logo" src="img/mm-logo.png"/>
                         </a>
+                        <span class="map-overlay__copyright-text two-lines">
+                            <a href="http://moscowmarathon.org/" class="map-overlay__copyright-link" data-ng-bind-html="'PROMSVYAZBANK' | translate | trust"></a>
+                            <a href="http://moscowmarathon.org/" class="map-overlay__copyright-link" data-ng-bind-html="'MOSCOW_MARATHON' | translate | trust"></a>
+                        </span>
+                    </div>
+                    <div class="map-overlay__copyright">
+                        <a href="http://datalaboratory.ru/">
+                            <img class="map-overlay__copyright-logo dl-logo" src="img/dl-logo.png"/>
+                        </a>
+                    <span class="map-overlay__copyright-text">
+                        <span>{{'VISUALIZATION' | translate}}</span>
+                        <a href="http://datalaboratory.ru/" class="map-overlay__copyright-link" data-ng-bind-html="'BY_DATA_LABORATORY' | translate | trust"></a>
                     </span>
                     </div>
                 </div>
@@ -82,7 +90,7 @@
                         <div
                             class="filters-container__gender-filter"
                             data-ng-class="{'disable-gender': states.winnersInTable}"
-                            data-ng-hide="currentTrackName == 'hb'">
+                            data-ng-hide="currentTrackName == 'hb' || currentTrackName == 'rw'">
                             <span
                                 class="filters-container__winners-filter"
                                 data-ng-click="showWinners()"

@@ -1,11 +1,12 @@
 angular.module('marathon').constant('translationEn', {
-    HEAD_TITLE: 'Results Moscow Marathon September 24, 2016',
+    HEAD_TITLE: 'Results of Moscow Marathon 24 September 2017',
     SHARED_IMG: '/img/screenshot_eng.png',
-    MAIN_TITLE: 'PROMSVYAZBANK MOSCOW MARATHON',
+    MAIN_TITLE: 'MOSCOW MARATHON',
     ALTITUDE_TITLE: 'Altitude',
     GENDER_AGE_TITLE: 'Age and sex',
     SNAKE_WIDTH_TITLE: 'Snake width',
     SNAKE_WIDTH_TITLE_HB: 'Handbikers on map',
+    SNAKE_WIDTH_TITLE_RW: 'Racewheelchairs on map',
     ALTITUDE_TEXT1: 'Total climb: 230&nbsp;m<br>',
     ALTITUDE_TEXT2: 'Highest point of Moscow Marathon: 174&nbsp;m',
     RESULTS: 'Results',
@@ -37,8 +38,11 @@ angular.module('marathon').constant('translationEn', {
     SHOW_MORE_RESULTS: 'Show more 100 results',
     VISUALIZATION: 'Visualization',
     BY_DATA_LABORATORY: 'by&nbsp;Data&nbsp;laboratory',
+    PROMSVYAZBANK: 'Promsvyazbank',
+    MOSCOW_MARATHON: 'Moscow&nbsp;marathon',
     MAP_SRC_10km: 'img/10km-marathon-map.png',
     MAP_SRC_hb: 'img/42km-marathon-map.png',
+    MAP_SRC_rw: 'img/42km-marathon-map.png',
     MAP_SRC_42km: 'img/42km-marathon-map.png',
     MAP_SRC_21km: 'img/42km-marathon-map.png'
 });

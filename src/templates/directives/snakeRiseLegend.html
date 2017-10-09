@@ -1,5 +1,5 @@
 <svg class="snake-rise-legend">
-    <g data-ng-if="currentTrackName != 'hb'" data-lab-render="renderSnakeLegend" data-lab-margin>
+    <g data-ng-if="currentTrackName != 'hb' && currentTrackName != 'rw'" data-lab-render="renderSnakeLegend" data-lab-margin>
         <path class="snake-rise-legend__male-path"></path>
         <path class="snake-rise-legend__female-path"></path>
         <path class="snake-rise-legend__all-path"></path>
@@ -27,7 +27,7 @@
             </text>
         </g>
     </g>
-    <g data-ng-if="currentTrackName == 'hb'" data-lab-render="renderCircleLegend" data-lab-margin>
+    <g data-ng-if="currentTrackName == 'hb' || currentTrackName == 'rw'" data-lab-render="renderCircleLegend" data-lab-margin>
         <g data-ng-show="runnersCount.male">
             <circle
                 data-ng-repeat="item in [0, 1, 2]"

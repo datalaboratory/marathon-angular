@@ -99,7 +99,7 @@ angular.module('marathon').directive('genderAgeLegend', function ($rootScope, ru
                     .attr('y', last($scope.ageGraphData.ageItems).y)
                     .attr('width', $scope.ageGraphData.maxMaleWidth + $scope.ageGraphData.maxFemaleWidth)
                     .attr('height', last($scope.ageGraphData.ageItems).height)
-                    .attr('fill', 'url(' + $rootScope.location + '#ageBottomGradient)')
+                    .attr('fill', 'url(#ageBottomGradient)')
             };
             $scope.renderRect = function () {
                 var $scope = angular.element(this.node()).scope();

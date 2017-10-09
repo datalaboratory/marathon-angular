@@ -1,14 +1,8 @@
-angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, $location, numberDeclension, multifilter, ageGroups, runnerLoader) {
-
-    function changeLanguage() {
-        $rootScope.location = document.location.href;
-        var lang = ($rootScope.location.indexOf('/en/') > -1) ? 'en' : 'ru';
-        $rootScope.language = lang;
-        $translate.use(lang);
-    }
-
-    changeLanguage();
-    $rootScope.$on('$locationChangeSuccess', changeLanguage);
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, numberDeclension, multifilter, ageGroups, runnerLoader, urlParameter) {
+    var langFromUrl = urlParameter.get('lang');
+    if (!langFromUrl) langFromUrl = 'ru';
+    $rootScope.language = langFromUrl;
+    $translate.use(langFromUrl);
 
     $(window).on('resize', function () {
         $scope.$emit('renderRequired');
@@ -16,36 +10,48 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.externalData = {
         track: {
-            '42km': $http.get('/data/geo/Moscowmarathon2016_42km_v1-1.json'),
-            '10km': $http.get('data/geo/Moscowmarathon2016_10km.json'),
-            'hb': $http.get('/data/geo/Moscowmarathon2016_42km_v1-1.json')
+            '42km': $http.get('/data/geo/2017_42.json'),
+            '10km': $http.get('data/geo/2017_10.json'),
+            'hb': $http.get('/data/geo/2017_42.json'),
+            'rw': $http.get('/data/geo/2017_42.json'),
         },
         runners: {
             '42km': runnerLoader.loadRunners([
-                /*'data/runners/20160925_mosmarathon_m_42km.json',
-                'data/runners/20160925_mosmarathon_f_42km.json'*/
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_42km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_42km.json'
+                'data/runners/20170924_psb_mm_m_42km.json',
+                'data/runners/20170924_psb_mm_f_42km.json'
+                /*'http://moscowmarathon.org/media/filer_public/17/20170924_psb_mm_m_42km.json',
+                'http://moscowmarathon.org/media/filer_public/17/20170924_psb_mm_f_42km.json?'*/
             ]),
             '10km': runnerLoader.loadRunners([
-                /*'data/runners/20160925_mosmarathon_m_10km.json',
-                'data/runners/20160925_mosmarathon_f_10km.json'*/
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_10km.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_10km.json'
+                'data/runners/20170924_psb_mm_m_10km.json',
+                'data/runners/20170924_psb_mm_f_10km.json'
+                /*'http://moscowmarathon.org/media/filer_public/17/20170924_psb_mm_m_10km.json',
+                'http://moscowmarathon.org/media/filer_public/17/20170924_psb_mm_f_10km.json'*/
             ]),
             'hb': runnerLoader.loadRunners([
-                /*'data/runners/20160925_mosmarathon_m_42km_h1mm.json',
-                'data/runners/20160925_mosmarathon_m_42km_h2mm.json',
-                'data/runners/20160925_mosmarathon_f_42km_h2mm.json'*/
-
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_42km_h1mm.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_m_42km_h2mm.json',
-                'http://moscowmarathon.org/media/filer_public/16/20160925_mosmarathon_f_42km_h2mm.json'
+                'data/runners/20170924_psb_mm_m_hb.json',
+                'data/runners/20170924_psb_mm_f_hb.json'
+                /*'http://moscowmarathon.org/media/filer_public/17/20170924_psb_mm_m_hb.json',
+                'http://moscowmarathon.org/media/filer_public/17/20170924_psb_mm_f_hb.json'*/
+            ]),
+            'rw': runnerLoader.loadRunners([
+                'data/runners/20170924_psb_mm_m_rw.json',
+                'data/runners/20170924_psb_mm_f_rw.json'
+                /*'http://moscowmarathon.org/media/filer_public/17/20170924_psb_mm_m_rw.json',
+                'http://moscowmarathon.org/media/filer_public/17/20170924_psb_mm_f_rw.json'*/
             ])
         }
     };
 
+    var init = {
+        currentTrackName: true,
+        limit: true,
+        selectedRunners: true
+    };
+
     $scope.$watch('currentTrackName', function (name) {
+        if (name == '42km') urlParameter.remove('track', name);
+        if (name != '42km') urlParameter.set('track', name);
         $rootScope.$broadcast('showCover:map');
         $timeout(function () {
             $scope.selectedTrack = $scope.externalData.track[name];
@@ -54,7 +60,22 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             $scope.selectedRunners = [];
             $scope.filteredRunners = null;
             $scope.filterValues = {};
-            $scope.states.winnersInTable = true;
+
+            if (init.currentTrackName) {
+                if (name == 'hb' || name == 'rw') {
+                    $scope.states.winnersInTable = false;
+                } else {
+                    var showFromUrl = urlParameter.get('show');
+                    if (showFromUrl == 'women') $scope.filterValues.gender = 0;
+                    if (showFromUrl == 'men') $scope.filterValues.gender = 1;
+                    if (showFromUrl == 'all') $scope.filterValues.gender = null;
+                    $scope.states.winnersInTable = !showFromUrl || showFromUrl == 'winners';
+                }
+                init.currentTrackName = false;
+            } else {
+                $scope.states.winnersInTable = true;
+            }
+
             delete $scope.states.activatingWinners
         });
     });
@@ -67,7 +88,6 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
     };
 
     $scope.runnersCount = {};
-    $scope.limit = 100;
     $scope.filterValues = {};
     $scope.filterGender = {
         model: 'filterValues.gender',
@@ -107,11 +127,16 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 $scope.states.activatingWinners = false;
             })
         }
-        $scope.states.winnersInTable = !$scope.states.winnersInTable;
+        $scope.states.winnersInTable = true;
     };
 
     function updateLimit() {
         if (!$scope.filteredRunnersForTable) return;
+        if ($scope.limit == 100) {
+            urlParameter.remove('limit');
+        } else {
+            urlParameter.set('limit', $scope.limit);
+        }
         $scope.limitedFilteredRunners = $scope.filteredRunnersForTable.slice(0, $scope.limit);
     }
 
@@ -238,6 +263,14 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             var currentYear = new Date(data.start_time).getFullYear();
             $scope.winnersForTable = [];
             var runners = data.items;
+            var runnersFromUrl = urlParameter.get('runners');
+
+            if (runnersFromUrl) {
+                runnersFromUrl = runnersFromUrl.split(',');
+            } else {
+                runnersFromUrl = [];
+            }
+
             runners.forEach(function (runner) {
                 if (!runner.age) {
                     runner.age = currentYear - runner.birthyear;
@@ -254,10 +287,15 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 if (runner.winner) {
                     $scope.winnersForTable.push(runner)
                 }
-                if (runner.gender_pos == 1) {
-                    $scope.selectedRunners.push(runner);
+                if (runnersFromUrl.length && init.selectedRunners) {
+                    if (runnersFromUrl.indexOf('' + runner.num) != -1) $scope.selectedRunners.push(runner);
+                } else {
+                    if (runner.gender_pos == 1) $scope.selectedRunners.push(runner);
                 }
             });
+
+            if (init.selectedRunners) init.selectedRunners = false;
+
             $rootScope.$broadcast('runnersUpdated');
         });
     });
@@ -276,7 +314,7 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
                 runner.team += ' '
             }
         });
-        if ($scope.currentTrackName == 'hb') {
+        if ($scope.currentTrackName == 'hb' || $scope.currentTrackName == 'rw') {
             var smallTeams = []
         } else {
             smallTeams = _.countBy(runnersData.items, 'team');
@@ -302,14 +340,30 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
         return $parse("'" + word + "'" + " | translate")($scope);
     }
 
-    function updateFilters() {
+    function updateFilters(notFromWatch) {
         if (!$scope.runnersData) return;
+
+        var show = 'winners';
+        if ($scope.filterValues.gender == 0) show = 'women';
+        if ($scope.filterValues.gender == 1) show = 'men';
+        if ($scope.filterValues.gender === null) show = 'all';
+        if (show != 'winners') urlParameter.set('show', show);
+        if (show == 'winners') urlParameter.remove('show');
+
         if (Object.keys($scope.filterValues).filter(function (key) {
                 return $scope.filterValues[key] != null;
             }).length > 0 && $scope.states.activatingWinners === false) {
             $scope.states.winnersInTable = false;
         }
-        $scope.limit = 100;
+
+        if (init.limit) {
+            var limitFromUrl = urlParameter.get('limit');
+            $scope.limit = limitFromUrl ? limitFromUrl : 100;
+            init.limit = false;
+        } else {
+            $scope.limit = 100;
+        }
+
         filterRunners();
 
         $scope.filterGender.values = {
@@ -343,5 +397,17 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
 
     $scope.$watch('filterValues', updateFilters, true);
     $scope.$watch('limit', updateLimit)
+
+    $scope.$watch('selectedRunners', function() {
+        var nums = $scope.selectedRunners.map(function(r) {
+            return r.num;
+        });
+
+        if (nums.length) {
+            urlParameter.set('runners', nums.join(','));
+        } else if (!init.selectedRunners) {
+            urlParameter.remove('runners');
+        }
+    }, true);
 });
 
