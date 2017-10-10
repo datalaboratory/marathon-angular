@@ -1,8 +1,14 @@
-angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, numberDeclension, multifilter, ageGroups, runnerLoader, urlParameter) {
+angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, $location, numberDeclension, multifilter, ageGroups, runnerLoader, urlParameter) {
     var langFromUrl = urlParameter.get('lang');
     if (!langFromUrl) langFromUrl = 'ru';
     $rootScope.language = langFromUrl;
     $translate.use(langFromUrl);
+
+    $rootScope.location = document.location.href;
+
+    $rootScope.$on('$locationChangeSuccess', function() {
+        $rootScope.location = document.location.href;
+    });
 
     $(window).on('resize', function () {
         $scope.$emit('renderRequired');
