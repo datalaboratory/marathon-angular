@@ -175,12 +175,12 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
 
                     updateTrack(geoData);
 
-                    $scope.ageAreas = {};
+                    $scope.ageAreas = [];
                     var runners = runnerClassificator.checkData($scope.filteredRunners);
 
                     var runnerGroups = runners.runners_groups.slice().reverse();
-                    runnerGroups.forEach(function (el) {
-                        $scope.ageAreas[el.key] = {color: genderColors.genderGradients[el.gender](el.num)}
+                    runnerGroups.forEach(function (el, i) {
+                        $scope.ageAreas[i] = {color: genderColors.genderGradients[el.gender](el.num)}
                     });
                     if (firstTime) {
                         firstTime = false;

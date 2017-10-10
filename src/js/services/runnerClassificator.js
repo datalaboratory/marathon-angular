@@ -42,10 +42,13 @@ angular.module('marathon').factory('runnerClassificator', function (ageGroups) {
         });
 
         runners_groups.sort(function (a, b) {                        //сортируем мужские возрастные группы по возрастанию, женские наоборот
-            var groupsLength = runners_groups.length / 2;
-            var aNum = (groupsLength - a.num) * (a.gender - 0.5) * 2;
-            var bNum = (groupsLength - b.num) * (b.gender - 0.5) * 2;
-            return bNum - aNum;
+            if (a.gender == 1 && b.gender == 1) {
+                return a.num - b.num;
+            } else if (!a.gender && !b.gender) {
+                return b.num - a.num;
+            } else {
+                return b.gender - a.gender;
+            }
         });
 
         return {

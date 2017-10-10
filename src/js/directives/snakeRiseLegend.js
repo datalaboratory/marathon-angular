@@ -34,7 +34,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             var width = 77;
             var originalHeight = 150;
             var ratio = 0.4;
-            var magicCoeff = 0.8;
+            var magicCoeff = 0.5;
             var maxHeight;
             var maxCount;
             var currentScale = 1;

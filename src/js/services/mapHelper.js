@@ -391,11 +391,11 @@ angular.module('marathon').factory('mapHelper', function (track, genderColors, l
 
         var prev;
         var calculatedSections = [];
-        runners_groups.forEach(function (el, i) {
+        runners_groups.slice().reverse().forEach(function (el, i) {
             var prev_districts = prev ? prev : complects;
             var areas_data = getAreaByData(el.runners, complects, prev_districts, seconds, data.step, el.gender);
             prev = areas_data;
-            age_areas[el.key].d = getAreaPathData(areas_data, complects);
+            age_areas[i].d = getAreaPathData(areas_data, complects);
             calculatedSections.push(areas_data);
         });
         maxHeightSection = d3.transpose(calculatedSections).map(function (sectionArray) {
