@@ -15,7 +15,7 @@ angular.module('marathon').constant('translationEn', {
     MEN: 'men',
     WOMEN_DECLENSION: 'woman,women',
     MEN_DECLENSION: 'man,men',
-    ALL_RUNNERS: 'all runners',
+    ALL_RUNNERS: 'all&nbsp;runners',
     CITIES_DECLENSION: 'city,cities',
     TEAMS_DECLENSION: 'team,teams',
     TEAMS_OTHER: 'Other teams',

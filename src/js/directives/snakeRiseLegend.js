@@ -2,7 +2,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
     var round = roundTo(10);
     var cache = {
         '42km': {
-            count: 19240
+            count: 7000
         },
         'hb': {
             count: 8
@@ -11,7 +11,7 @@ angular.module('marathon').directive('snakeRiseLegend', function (mapHelper, tra
             count: 12
         },
         '10km': {
-            count: 32470
+            count: 7000
         },
         '21km': {
             count: 2920

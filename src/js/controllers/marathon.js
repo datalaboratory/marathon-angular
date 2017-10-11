@@ -1,14 +1,19 @@
 angular.module('marathon').controller('MarathonController', function ($scope, $rootScope, $http, $translate, $parse, $timeout, $location, numberDeclension, multifilter, ageGroups, runnerLoader, urlParameter) {
-    var langFromUrl = urlParameter.get('lang');
-    if (!langFromUrl) langFromUrl = 'ru';
-    $rootScope.language = langFromUrl;
-    $translate.use(langFromUrl);
-
-    $rootScope.location = document.location.href;
-
-    $rootScope.$on('$locationChangeSuccess', function() {
+    var onLocationChange = function () {
+        if ($rootScope.location == document.location.href) return;
         $rootScope.location = document.location.href;
-    });
+        var langFromUrl = urlParameter.get('lang');
+        if (!langFromUrl) langFromUrl = 'ru';
+        if ($rootScope.language == langFromUrl) return;
+        $rootScope.language = langFromUrl;
+        $translate.use($rootScope.language);
+    }
+
+    onLocationChange();
+
+    $scope.language = $rootScope.language;
+
+    $rootScope.$on('$locationChangeSuccess', onLocationChange);
 
     $(window).on('resize', function () {
         $scope.$emit('renderRequired');
@@ -415,5 +420,10 @@ angular.module('marathon').controller('MarathonController', function ($scope, $r
             urlParameter.remove('runners');
         }
     }, true);
+
+    $scope.$watch('language', function () {
+        if ($scope.language == 'ru') urlParameter.remove('lang');
+        if ($scope.language == 'en') urlParameter.set('lang', 'en');
+    });
 });
 

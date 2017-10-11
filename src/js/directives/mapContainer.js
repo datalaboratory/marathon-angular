@@ -21,7 +21,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     height: 510,
                     x: 60,
                     y: 104,
-                    snakeHeight: 0.1
+                    snakeHeight: 0.2
                 },
                 'hb': {
                     width: 570,
@@ -42,7 +42,7 @@ angular.module('marathon').directive('mapContainer', function ($rootScope, mapHe
                     height: 495,
                     x: 138,
                     y: 107,
-                    snakeHeight: 0.1
+                    snakeHeight: 0.2
                 },
                 '21km': {
                     width: 635,

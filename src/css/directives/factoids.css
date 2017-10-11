@@ -1,5 +1,6 @@
 .factoids {
-    height: 0;
+    height: 100%;
+    width: 100%;
     position: absolute;
     letter-spacing: 0.03em;
     z-index: -1;

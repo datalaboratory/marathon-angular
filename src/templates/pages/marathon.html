@@ -5,18 +5,29 @@
                 <div class="loader-container__image"></div>
             </div>
             <div class="map-container-container loader-container--inactive" loading-cover="map">
+                <factoids data-ng-if="time.start"></factoids>
                 <map-container data-ng-if="filteredRunners"></map-container>
                 <div class="loader-container__cover">
                     <div class="loader-container__image"></div>
                 </div>
             </div>
             <div class="map-overlay">
-                <factoids data-ng-if="time.start"></factoids>
                 <div class="map-overlay__header">
                     <span class="map-overlay__title">{{ 'MAIN_TITLE' | translate }}</span>
 
                     <div class="track-switch-container">
                         <track-switch></track-switch>
+                    </div>
+
+                    <div class="language-switch__container">
+                        <div
+                            class="language-switch__item"
+                            data-ng-class="{'language-switch__item-active': language == 'ru'}"
+                            data-ng-click="language = 'ru'">RU</div>
+                        <div
+                            class="language-switch__item"
+                            data-ng-class="{'language-switch__item-active': language == 'en'}"
+                            data-ng-click="language = 'en'">EN</div>
                     </div>
                 </div>
                 <div class="map-overlay__right-column">
@@ -52,9 +63,9 @@
                         </div>
                     </div>
                     <div class='map-overlay__social-buttons'>
-                        <div class="likely">
+                        <div class="likely" data-url="http://moscowmarathon2017.datalaboratory.ru/">
                             <div class="facebook"></div>
-                            <div class="twitter" data-via="moscowmarathon"></div>
+                            <div class="twitter" data-via="datalaboratory"></div>
                             <div class="vkontakte"></div>
                             <div class="gplus"></div>
                         </div>
@@ -73,7 +84,7 @@
                             <img class="map-overlay__copyright-logo dl-logo" src="img/dl-logo.png"/>
                         </a>
                     <span class="map-overlay__copyright-text">
-                        <span>{{'VISUALIZATION' | translate}}</span>
+                        <span>{{'VISUALIZATION' | translate}}</span><br/>
                         <a href="http://datalaboratory.ru/" class="map-overlay__copyright-link" data-ng-bind-html="'BY_DATA_LABORATORY' | translate | trust"></a>
                     </span>
                     </div>
